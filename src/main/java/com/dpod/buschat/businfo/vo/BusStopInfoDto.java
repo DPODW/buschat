@@ -1,0 +1,36 @@
+package com.dpod.buschat.businfo.vo;
+
+
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Setter
+@Getter
+@ToString
+@XmlAccessorType(XmlAccessType.NONE)
+public class BusStopInfoDto {
+
+    @XmlElement(name = "STOPID")
+    private String busStopId;
+    //정류장 ID
+
+    @XmlElement(name = "STOPNAME")
+    private String busStopName;
+    //정류장 이름
+
+    @XmlElement(name = "STOPX")
+    private String busStopX;
+    //정류장 경도
+
+    @XmlElement(name = "STOPY")
+    private String busStopY;
+    //정류장 위도
+
+    @XmlElement(name = "STOPREMARK")
+    private String busStopMark;
+    //정류장 비고 ( 방면 정보 )
+}
