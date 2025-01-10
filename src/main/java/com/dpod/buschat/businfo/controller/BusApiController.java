@@ -2,6 +2,7 @@ package com.dpod.buschat.businfo.controller;
 
 
 import com.dpod.buschat.businfo.entity.Members;
+import com.dpod.buschat.businfo.service.BusInfoService;
 import com.dpod.buschat.businfo.service.TestService;
 
 import com.dpod.buschat.businfo.vo.BusStopInfoDto;
@@ -21,11 +22,14 @@ public class BusApiController {
 
     private final TestService  testService;
 
+    private final BusInfoService busInfoService;
+
     @Value("${secretkey}")
     private String secretkey;
 
-    public BusApiController(TestService testService) {
+    public BusApiController(TestService testService, BusInfoService busInfoService) {
         this.testService = testService;
+        this.busInfoService = busInfoService;
     }
 
 
@@ -37,11 +41,18 @@ public class BusApiController {
         testService.testEntitySave(members);
     }
 
+    /**
+    * ---- 사용 주의 ----
+    * 버스 정보 API 데이터를 받아와서 전부 DB 에 저장하는 컨트롤러
+    * 추후 데이터 유무를 기준으로 UPDATE 처리 기능 추가할 예정
+    * 현재 실행시 동일한 데이터가 중복 저장되니 요청 X
+    **/
     @GetMapping("/stopinfo/save")
-    public List<BusStopInfoDto> saveBusStopInfo(){
+    public void saveBusStopInfo(){
         String pageNo = "1";
-        String numOfRows = "10";
+        String numOfRows = "3542";
 
+        //RestClient - JAXB 사용시 : messageConverters 에 JAXB 를 설정해주어야 함. (List)
         RestClient restClient = RestClient.builder()
                 .messageConverters(List.of(new Jaxb2RootElementHttpMessageConverter()))
                 .build();
@@ -55,9 +66,9 @@ public class BusApiController {
 
         List<BusStopInfoDto> busStopInfoDtoList = busStopInfoAllXml.getBusStopInfoXmlList().getBusStopInfoDtoList();
 
-        log.info("XML -> DTO : {}", busStopInfoDtoList);
+        busInfoService.saveBusStopInfo(busStopInfoDtoList);
 
-        return busStopInfoDtoList;
+        log.info("XML -> DTO : {}", busStopInfoDtoList);
     }
 
 }
