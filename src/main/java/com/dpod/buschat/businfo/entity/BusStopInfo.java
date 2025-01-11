@@ -1,13 +1,11 @@
 package com.dpod.buschat.businfo.entity;
 
 import jakarta.persistence.*;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
 @Table(name = "BUSSTOP_INFO")
-@Setter
-@ToString
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BusStopInfo {
 
     @Id
@@ -29,5 +27,14 @@ public class BusStopInfo {
 
     @Column(name = "BUSSTOP_MARK")
     private String busStopMark;
+
+    @Builder
+    public BusStopInfo(String busStopId,String busStopName, String busStopX, String busStopY, String busStopMark){
+     this.busStopId = busStopId;
+     this.busStopName = busStopName;
+     this.busStopX = busStopX;
+     this.busStopY = busStopY;
+     this.busStopMark = busStopMark;
+    }
 
 }

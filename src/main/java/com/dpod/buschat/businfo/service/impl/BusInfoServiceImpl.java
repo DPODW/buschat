@@ -25,19 +25,26 @@ public class BusInfoServiceImpl implements BusInfoService {
         busStopInfoDtoList.stream().forEach(
                 busStopInfoDto -> {
                     BusStopInfo busStopInfo = busStopDtoToEntity(busStopInfoDto);
-                    log.info(">>{}",busStopInfo);
                     busInfoRepository.save(busStopInfo);
                 });
     }
 
+    @Override
+    public void searchBusStopInfo(String busStopName) {
+        List<BusStopInfo> allInfoByBusStopName = busInfoRepository.findAllByBusStopName(busStopName);
+
+        log.info("{}",allInfoByBusStopName);
+    }
+
 
     private BusStopInfo busStopDtoToEntity(BusStopInfoDto busStopInfoDto){
-        BusStopInfo busStopInfo = new BusStopInfo();
-        busStopInfo.setBusStopId(busStopInfoDto.getBusStopId());
-        busStopInfo.setBusStopName(busStopInfoDto.getBusStopName());
-        busStopInfo.setBusStopX(busStopInfoDto.getBusStopX());
-        busStopInfo.setBusStopY(busStopInfoDto.getBusStopY());
-        busStopInfo.setBusStopMark(busStopInfoDto.getBusStopMark());
+        BusStopInfo busStopInfo =  BusStopInfo.builder()
+                .busStopId(busStopInfoDto.getBusStopId())
+                .busStopName(busStopInfoDto.getBusStopName())
+                .busStopX(busStopInfoDto.getBusStopX())
+                .busStopY(busStopInfoDto.getBusStopY())
+                .busStopMark(busStopInfoDto.getBusStopMark())
+                .build();
         return busStopInfo;
     }
 

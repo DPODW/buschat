@@ -10,4 +10,7 @@ public interface BusInfoService {
 
     void saveBusStopInfo(List<BusStopInfoDto> busStopInfoDto);
 
+    void searchBusStopInfo(String busStopName);
+
+
 }
