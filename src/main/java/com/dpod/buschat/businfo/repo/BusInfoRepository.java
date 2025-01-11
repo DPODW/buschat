@@ -1,7 +1,6 @@
 package com.dpod.buschat.businfo.repo;
 
 import com.dpod.buschat.businfo.entity.BusStopInfo;
-import com.dpod.buschat.businfo.vo.BusStopInfoDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

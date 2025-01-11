@@ -1,6 +1,6 @@
 package com.dpod.buschat.businfo.service;
 
-import com.dpod.buschat.businfo.vo.BusStopInfoDto;
+import com.dpod.buschat.businfo.dto.BusStopInfoDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,7 +10,7 @@ public interface BusInfoService {
 
     void saveBusStopInfo(List<BusStopInfoDto> busStopInfoDto);
 
-    void searchBusStopInfo(String busStopName);
+    List<BusStopInfoDto> searchBusStopInfo(String busStopName);
 
 
 }

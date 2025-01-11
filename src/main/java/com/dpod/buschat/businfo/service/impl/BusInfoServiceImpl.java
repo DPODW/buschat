@@ -3,7 +3,7 @@ package com.dpod.buschat.businfo.service.impl;
 import com.dpod.buschat.businfo.entity.BusStopInfo;
 import com.dpod.buschat.businfo.repo.BusInfoRepository;
 import com.dpod.buschat.businfo.service.BusInfoService;
-import com.dpod.buschat.businfo.vo.BusStopInfoDto;
+import com.dpod.buschat.businfo.dto.BusStopInfoDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,7 @@ public class BusInfoServiceImpl implements BusInfoService {
 
     @Override
     public void saveBusStopInfo(List<BusStopInfoDto> busStopInfoDtoList) {
-        busStopInfoDtoList.stream().forEach(
+        busStopInfoDtoList.forEach( //foreach : stream 생략 가능
                 busStopInfoDto -> {
                     BusStopInfo busStopInfo = busStopDtoToEntity(busStopInfoDto);
                     busInfoRepository.save(busStopInfo);
@@ -30,25 +30,41 @@ public class BusInfoServiceImpl implements BusInfoService {
     }
 
     @Override
-    public void searchBusStopInfo(String busStopName) {
+    public List<BusStopInfoDto> searchBusStopInfo(String busStopName) {
         List<BusStopInfo> allInfoByBusStopName = busInfoRepository.findAllByBusStopName(busStopName);
 
-        log.info("{}",allInfoByBusStopName);
+        List<BusStopInfoDto> busStopInfoDtoList = allInfoByBusStopName.stream()
+                .map(busStopInfo -> {
+                            BusStopInfoDto busStopInfoDto = busStopEntityToDto(busStopInfo);
+                            return busStopInfoDto;
+                        }
+                ).toList();
+
+        log.info("result: {}",busStopInfoDtoList);
+        return busStopInfoDtoList;
     }
 
 
     private BusStopInfo busStopDtoToEntity(BusStopInfoDto busStopInfoDto){
-        BusStopInfo busStopInfo =  BusStopInfo.builder()
+        return BusStopInfo.builder()
                 .busStopId(busStopInfoDto.getBusStopId())
                 .busStopName(busStopInfoDto.getBusStopName())
                 .busStopX(busStopInfoDto.getBusStopX())
                 .busStopY(busStopInfoDto.getBusStopY())
                 .busStopMark(busStopInfoDto.getBusStopMark())
                 .build();
-        return busStopInfo;
     }
 
 
 
+    private BusStopInfoDto busStopEntityToDto(BusStopInfo busStopInfo){
+        return BusStopInfoDto.builder()
+                .busStopId(busStopInfo.getBusStopId())
+                .busStopName(busStopInfo.getBusStopName())
+                .busStopX(busStopInfo.getBusStopX())
+                .busStopY(busStopInfo.getBusStopY())
+                .busStopMark(busStopInfo.getBusStopMark())
+                .build();
+    }
 
 }

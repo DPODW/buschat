@@ -6,6 +6,7 @@ import lombok.*;
 @Entity
 @Table(name = "BUSSTOP_INFO")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class BusStopInfo {
 
     @Id

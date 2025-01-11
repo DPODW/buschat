@@ -5,8 +5,8 @@ import com.dpod.buschat.businfo.entity.Members;
 import com.dpod.buschat.businfo.service.BusInfoService;
 import com.dpod.buschat.businfo.service.TestService;
 
-import com.dpod.buschat.businfo.vo.BusStopInfoDto;
-import com.dpod.buschat.businfo.vo.xml.BusStopInfoXml;
+import com.dpod.buschat.businfo.dto.BusStopInfoDto;
+import com.dpod.buschat.businfo.dto.xml.BusStopInfoXml;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
@@ -75,8 +75,9 @@ public class BusApiController {
 
     @GetMapping("/stopinfo/search")
     @ResponseBody
-    public void searchBusStopInfo(){
+    public List<BusStopInfoDto> searchBusStopInfo(){
+        //front 단에서 값 넘겨주어야함 (AXIOS)
         String busStopName = "대산빌라";
-        busInfoService.searchBusStopInfo(busStopName);
+        return busInfoService.searchBusStopInfo(busStopName);
     }
 }

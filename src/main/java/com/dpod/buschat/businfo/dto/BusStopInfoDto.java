@@ -1,4 +1,4 @@
-package com.dpod.buschat.businfo.vo;
+package com.dpod.buschat.businfo.dto;
 
 
 import jakarta.xml.bind.annotation.XmlAccessType;
@@ -6,7 +6,7 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import lombok.*;
 
-@Setter
+
 @Getter
 @Builder
 @XmlAccessorType(XmlAccessType.NONE)
