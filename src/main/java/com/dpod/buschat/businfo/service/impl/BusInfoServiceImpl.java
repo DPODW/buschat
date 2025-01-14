@@ -35,8 +35,7 @@ public class BusInfoServiceImpl implements BusInfoService {
 
         List<BusStopInfoDto> busStopInfoDtoList = allInfoByBusStopName.stream()
                 .map(busStopInfo -> {
-                            BusStopInfoDto busStopInfoDto = busStopEntityToDto(busStopInfo);
-                            return busStopInfoDto;
+                            return busStopEntityToDto(busStopInfo);
                         }
                 ).toList();
 
@@ -66,5 +65,4 @@ public class BusInfoServiceImpl implements BusInfoService {
                 .busStopMark(busStopInfo.getBusStopMark())
                 .build();
     }
-
 }

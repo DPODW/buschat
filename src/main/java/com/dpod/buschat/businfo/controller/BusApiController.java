@@ -51,7 +51,7 @@ public class BusApiController {
     * ---- 사용 주의 ----
     * 버스 정보 API 데이터를 받아와서 전부 DB 에 저장하는 컨트롤러
     * 추후 데이터 유무를 기준으로 UPDATE 처리 기능 추가할 예정
-    * 현재 실행시 동일한 데이터가 중복 저장되니 요청
+    * 현재 실행시 동일한 데이터가 중복 저장되니 요청 주의 필요
     **/
     @GetMapping("/stopinfo/save")
     public void saveBusStopInfo(){
@@ -79,9 +79,14 @@ public class BusApiController {
     @GetMapping("/stopinfo/search")
     @ResponseBody
     public List<BusStopInfoDto> searchBusStopInfo(){
-        //front 단에서 값 넘겨주어야함 (AXIOS) / sample 데이터
+        //sample 데이터
         String busStopName = "대산빌라";
-        return busInfoService.searchBusStopInfo(busStopName);
+
+        List<BusStopInfoDto> busStopInfoDtos = busInfoService.searchBusStopInfo(busStopName);
+
+        log.info("검색 결과 >>{}",busStopInfoDtos);
+
+        return busStopInfoDtos;
     }
 
 

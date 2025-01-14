@@ -8,9 +8,9 @@ import lombok.*;
 
 
 @Getter
-@Builder
 @XmlAccessorType(XmlAccessType.NONE)
 @NoArgsConstructor
+@ToString
 public class BusStopInfoDto {
 
     @XmlElement(name = "STOPID")

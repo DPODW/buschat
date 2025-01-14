@@ -12,7 +12,6 @@ import lombok.ToString;
 import java.util.List;
 
 @Getter
-@ToString
 @XmlRootElement(name = "tableInfo")
 @XmlAccessorType(XmlAccessType.NONE)
 public class BusArrivalInfoXml {
