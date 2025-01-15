@@ -13,13 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClient;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @RestController
@@ -76,25 +75,21 @@ public class BusApiController {
     }
 
 
-    @GetMapping("/stopinfo/search")
+    @PostMapping("/stopinfo/search")
     @ResponseBody
-    public List<BusStopInfoDto> searchBusStopInfo(){
-        //sample 데이터
-        String busStopName = "대산빌라";
+    public List<BusStopInfoDto> searchBusStopInfo(@RequestBody HashMap<String, Object> busStopNameMap){
+        String busStopName = busStopNameMap.get("busStopName").toString();
 
-        List<BusStopInfoDto> busStopInfoDtos = busInfoService.searchBusStopInfo(busStopName);
-
-        log.info("검색 결과 >>{}",busStopInfoDtos);
-
-        return busStopInfoDtos;
+        return busInfoService.searchBusStopInfo(busStopName);
     }
 
 
-    @GetMapping("/stopinfo/arrival")
+    @PostMapping("/stopinfo/arrival")
     @ResponseBody
-    public List<BusArrivalInfoDto> searchBusArrivalInfo(){
-        //sample 데이터
-        String stopId = "196040122";
+    public List<BusArrivalInfoDto> searchBusArrivalInfo(@RequestBody HashMap<String,Object> busStopIdMap){
+        String stopId = busStopIdMap.get("busStopId").toString();
+        log.info("searchBusArrivalInfo stopId:{}", stopId);
+
         String pageNo = "1";
         String numOfRows = "10";
 
