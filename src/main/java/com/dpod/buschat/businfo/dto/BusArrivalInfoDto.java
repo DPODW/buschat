@@ -12,6 +12,7 @@ import lombok.ToString;
 @Getter
 @XmlAccessorType(XmlAccessType.NONE)
 @NoArgsConstructor
+@ToString
 public class BusArrivalInfoDto {
 
     @XmlElement(name = "PREVSTOPCNT")

@@ -1,4 +1,4 @@
-package com.dpod.buschat.businfo.repo;
+package com.dpod.buschat.businfo.repo.member;
 
 
 import com.dpod.buschat.businfo.entity.Members;

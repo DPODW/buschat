@@ -1,7 +1,7 @@
 package com.dpod.buschat.businfo.service.impl;
 
 import com.dpod.buschat.businfo.entity.BusStopInfo;
-import com.dpod.buschat.businfo.repo.BusInfoRepository;
+import com.dpod.buschat.businfo.repo.bus.BusInfoRepository;
 import com.dpod.buschat.businfo.service.BusInfoService;
 import com.dpod.buschat.businfo.dto.BusStopInfoDto;
 import lombok.extern.slf4j.Slf4j;
@@ -31,15 +31,14 @@ public class BusInfoServiceImpl implements BusInfoService {
 
     @Override
     public List<BusStopInfoDto> searchBusStopInfo(String busStopName) {
-        List<BusStopInfo> allInfoByBusStopName = busInfoRepository.findAllByBusStopName(busStopName);
-
+        List<BusStopInfo> allInfoByBusStopName = busInfoRepository.findAllByBusStopNameLike("%"+busStopName+"%");
+        
         List<BusStopInfoDto> busStopInfoDtoList = allInfoByBusStopName.stream()
                 .map(busStopInfo -> {
                             return busStopEntityToDto(busStopInfo);
                         }
                 ).toList();
-
-        log.info("result: {}",busStopInfoDtoList);
+        log.info("{}",busStopInfoDtoList);
         return busStopInfoDtoList;
     }
 

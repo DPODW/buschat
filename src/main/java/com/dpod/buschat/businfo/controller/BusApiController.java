@@ -87,8 +87,8 @@ public class BusApiController {
     @PostMapping("/stopinfo/arrival")
     @ResponseBody
     public List<BusArrivalInfoDto> searchBusArrivalInfo(@RequestBody HashMap<String,Object> busStopIdMap){
-        String stopId = busStopIdMap.get("busStopId").toString();
-        log.info("searchBusArrivalInfo stopId:{}", stopId);
+        String busStopId = busStopIdMap.get("busStopId").toString();
+        log.info("request busStop id : {}",busStopId);
 
         String pageNo = "1";
         String numOfRows = "10";
@@ -100,9 +100,11 @@ public class BusApiController {
         BusArrivalInfoXml busArrivalInfoXml = restClient.get()
                 .uri("http://openapi.its.ulsan.kr/UlsanAPI/getBusArrivalInfo.xo?stopid={stopid}&" +
                                 "pageNo={pageNo}&numOfRows={numOfRows}&serviceKey={serviceKey}",
-                        stopId,pageNo,numOfRows,secretkey)
+                        busStopId,pageNo,numOfRows,secretkey)
                 .retrieve()
                 .body(BusArrivalInfoXml.class);
+
+        log.info("id result : {}",busArrivalInfoXml.getBusArrivalInfoXmlList().getBusArrivalInfoDtoList());
 
         return busArrivalInfoXml.getBusArrivalInfoXmlList().getBusArrivalInfoDtoList();
     }

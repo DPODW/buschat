@@ -1,6 +1,6 @@
 package com.dpod.buschat.businfo.service;
 
-import com.dpod.buschat.businfo.repo.MemberRepository;
+import com.dpod.buschat.businfo.repo.member.MemberRepository;
 import com.dpod.buschat.businfo.entity.Members;
 import org.springframework.stereotype.Service;
 
