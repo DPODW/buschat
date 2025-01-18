@@ -2,7 +2,9 @@ package com.dpod.buschat.businfo.controller;
 
 
 import com.dpod.buschat.businfo.dto.BusArrivalInfoDto;
+import com.dpod.buschat.businfo.dto.BusRouteInfoDto;
 import com.dpod.buschat.businfo.dto.xml.BusArrivalInfoXml;
+import com.dpod.buschat.businfo.dto.xml.BusRouteInfoXml;
 import com.dpod.buschat.businfo.entity.Members;
 import com.dpod.buschat.businfo.service.BusInfoService;
 import com.dpod.buschat.businfo.service.TestService;
@@ -75,6 +77,33 @@ public class BusApiController {
     }
 
 
+    /**
+     * ---- 사용 주의 ----
+     * 노선 정보 API 데이터를 받아와서 전부 DB 에 저장하는 컨트롤러
+     * 추후 데이터 유무를 기준으로 UPDATE 처리 기능 추가할 예정
+     * 현재 실행시 동일한 데이터가 중복 저장되니 요청 주의 필요
+     **/
+    @GetMapping("/busLineInfo/save")
+    public void saveBusRouteInfo(){
+        String pageNo = "1";
+        String totalCount = "500";
+
+        RestClient restClient = RestClient.builder()
+                .messageConverters(List.of(new Jaxb2RootElementHttpMessageConverter()))
+                .build();
+
+        BusRouteInfoXml busRouteInfoXml = restClient.get()
+                .uri("http://openapi.its.ulsan.kr/UlsanAPI/RouteInfo.xo?" +
+                        "pageNo={pageNo}&numOfRows={totalCount}&serviceKey={secretkey}",pageNo,totalCount,secretkey)
+                .retrieve()
+                .body(BusRouteInfoXml.class);
+
+        List<BusRouteInfoDto> busRouteInfoDtoList = busRouteInfoXml.getBusRouteInfoXmlList().getBusRouteInfoDtoList();
+
+        busInfoService.saveBusRouteInfo(busRouteInfoDtoList);
+    }
+
+
     @PostMapping("/stopinfo/search")
     @ResponseBody
     public List<BusStopInfoDto> searchBusStopInfo(@RequestBody HashMap<String, Object> busStopNameMap){
@@ -103,8 +132,6 @@ public class BusApiController {
                         busStopId,pageNo,numOfRows,secretkey)
                 .retrieve()
                 .body(BusArrivalInfoXml.class);
-
-        log.info("id result : {}",busArrivalInfoXml.getBusArrivalInfoXmlList().getBusArrivalInfoDtoList());
 
         return busArrivalInfoXml.getBusArrivalInfoXmlList().getBusArrivalInfoDtoList();
     }

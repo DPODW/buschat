@@ -1,7 +1,10 @@
 package com.dpod.buschat.businfo.service.impl;
 
+import com.dpod.buschat.businfo.dto.BusRouteInfoDto;
+import com.dpod.buschat.businfo.entity.BusRouteInfo;
 import com.dpod.buschat.businfo.entity.BusStopInfo;
 import com.dpod.buschat.businfo.repo.bus.BusInfoRepository;
+import com.dpod.buschat.businfo.repo.bus.BusRouteInfoRepo;
 import com.dpod.buschat.businfo.service.BusInfoService;
 import com.dpod.buschat.businfo.dto.BusStopInfoDto;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +19,11 @@ public class BusInfoServiceImpl implements BusInfoService {
 
     private final BusInfoRepository busInfoRepository;
 
-    public BusInfoServiceImpl(BusInfoRepository busInfoRepository) {
+    private final BusRouteInfoRepo busRouteInfoRepo;
+
+    public BusInfoServiceImpl(BusInfoRepository busInfoRepository, BusRouteInfoRepo busRouteInfoRepo) {
         this.busInfoRepository = busInfoRepository;
+        this.busRouteInfoRepo = busRouteInfoRepo;
     }
 
     @Override
@@ -26,6 +32,15 @@ public class BusInfoServiceImpl implements BusInfoService {
                 busStopInfoDto -> {
                     BusStopInfo busStopInfo = busStopDtoToEntity(busStopInfoDto);
                     busInfoRepository.save(busStopInfo);
+                });
+    }
+
+    @Override
+    public void saveBusRouteInfo(List<BusRouteInfoDto> busRouteInfoDtoList) {
+        busRouteInfoDtoList.forEach( //foreach : stream 생략 가능
+                busRouteInfoDto -> {
+                    BusRouteInfo busRouteInfo = busRouteDtoToEntity(busRouteInfoDto);
+                    busRouteInfoRepo.save(busRouteInfo);
                 });
     }
 
@@ -53,6 +68,19 @@ public class BusInfoServiceImpl implements BusInfoService {
                 .build();
     }
 
+    private BusRouteInfo busRouteDtoToEntity(BusRouteInfoDto busRouteInfoDto){
+        return BusRouteInfo.builder()
+                .brtId(busRouteInfoDto.getBrtId())
+                .brtNo(busRouteInfoDto.getBrtNo())
+                .brtName(busRouteInfoDto.getBrtName())
+                .direction(busRouteInfoDto.getDirection())
+                .company(busRouteInfoDto.getCompany())
+                .brtType(busRouteInfoDto.getBrtType())
+                .busClass(busRouteInfoDto.getBusClass())
+                .stopStId(busRouteInfoDto.getStopStId())
+                .stopEdId(busRouteInfoDto.getStopEdId())
+                .build();
+    }
 
 
     private BusStopInfoDto busStopEntityToDto(BusStopInfo busStopInfo){
