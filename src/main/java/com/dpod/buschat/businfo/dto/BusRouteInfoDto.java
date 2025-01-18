@@ -52,14 +52,14 @@ public class BusRouteInfoDto {
     //종점 정류장 ID
 
     @Builder
-    public BusRouteInfoDto(String brtId, String brtNo, String brtName, String direction, String company, String brtType, String BusClass, String stopStId, String stopEdId) {
+    public BusRouteInfoDto(String brtId, String brtNo, String brtName, String direction, String company, String brtType, String busClass, String stopStId, String stopEdId) {
         this.BrtId = brtId;
         this.BrtNo = brtNo;
         this.BrtName = brtName;
         this.Direction = direction;
         this.Company = company;
         this.BrtType = brtType;
-        this.BusClass = BusClass;
+        this.BusClass = busClass;
         this.StopStId = stopStId;
         this.StopEdId = stopEdId;
     }

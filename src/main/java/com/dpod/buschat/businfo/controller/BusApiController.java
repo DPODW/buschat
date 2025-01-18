@@ -3,6 +3,7 @@ package com.dpod.buschat.businfo.controller;
 
 import com.dpod.buschat.businfo.dto.BusArrivalInfoDto;
 import com.dpod.buschat.businfo.dto.BusRouteInfoDto;
+import com.dpod.buschat.businfo.dto.BusStopRouteInfoDto;
 import com.dpod.buschat.businfo.dto.xml.BusArrivalInfoXml;
 import com.dpod.buschat.businfo.dto.xml.BusRouteInfoXml;
 import com.dpod.buschat.businfo.entity.Members;
@@ -13,7 +14,6 @@ import com.dpod.buschat.businfo.dto.BusStopInfoDto;
 import com.dpod.buschat.businfo.dto.xml.BusStopInfoXml;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClient;
@@ -66,7 +66,7 @@ public class BusApiController {
 
         BusStopInfoXml busStopInfoAllXml = restClient.get()
                 .uri("http://openapi.its.ulsan.kr/UlsanAPI/BusStopInfo.xo?pageNo=" +
-                        "{pageNo}&numOfRows={numOfRows}&serviceKey={serviceKey}",
+                            "{pageNo}&numOfRows={numOfRows}&serviceKey={serviceKey}",
                           pageNo,totalCount,secretkey)
                 .retrieve()
                 .body(BusStopInfoXml.class);
@@ -136,7 +136,18 @@ public class BusApiController {
         return busArrivalInfoXml.getBusArrivalInfoXmlList().getBusArrivalInfoDtoList();
     }
 
+
+    @GetMapping("/stoprouteinfo/search")
+    @ResponseBody
+    public void searchBusStopRouteInfo(){
+
+        for (int i = 1; i <=10; i++) {
+            //todo:최대값 하드코딩 -> 동적으로 최대치를 가져오도록 코드 수정 필요
+            String routeId = busInfoService.searchBusRouteInfo((long) i).getBrtId();
+
+            List<BusStopRouteInfoDto> busStopRouteInfoDtoList = busInfoService.reqBusStopRouteInfoApi(secretkey, routeId);
+            log.info("request busStopRouteInfo : {}",busStopRouteInfoDtoList);
+        }
+    }
+
 }
-
-
-
