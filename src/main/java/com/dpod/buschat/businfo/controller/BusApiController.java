@@ -7,6 +7,7 @@ import com.dpod.buschat.businfo.dto.BusStopRouteInfoDto;
 import com.dpod.buschat.businfo.dto.xml.BusArrivalInfoXml;
 import com.dpod.buschat.businfo.dto.xml.BusRouteInfoXml;
 import com.dpod.buschat.businfo.entity.Members;
+import com.dpod.buschat.businfo.repo.bus.BusStopRouteRepo;
 import com.dpod.buschat.businfo.service.BusInfoService;
 import com.dpod.buschat.businfo.service.TestService;
 
@@ -18,6 +19,7 @@ import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConvert
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClient;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -31,12 +33,15 @@ public class BusApiController {
 
     private final BusInfoService busInfoService;
 
+    private final BusStopRouteRepo busStopRouteRepo;
+
     @Value("${secretkey}")
     private String secretkey;
 
-    public BusApiController(TestService testService, BusInfoService busInfoService) {
+    public BusApiController(TestService testService, BusInfoService busInfoService, BusStopRouteRepo busStopRouteRepo) {
         this.testService = testService;
         this.busInfoService = busInfoService;
+        this.busStopRouteRepo = busStopRouteRepo;
     }
 
 
@@ -117,7 +122,6 @@ public class BusApiController {
     @ResponseBody
     public List<BusArrivalInfoDto> searchBusArrivalInfo(@RequestBody HashMap<String,Object> busStopIdMap){
         String busStopId = busStopIdMap.get("busStopId").toString();
-        log.info("request busStop id : {}",busStopId);
 
         String pageNo = "1";
         String numOfRows = "10";
@@ -141,12 +145,26 @@ public class BusApiController {
     @ResponseBody
     public void searchBusStopRouteInfo(){
 
-        for (int i = 1; i <=10; i++) {
-            //todo:최대값 하드코딩 -> 동적으로 최대치를 가져오도록 코드 수정 필요
-            String routeId = busInfoService.searchBusRouteInfo((long) i).getBrtId();
+        List<BusStopRouteInfoDto> busStopRouteInfoDtoList = new ArrayList<>();
 
-            List<BusStopRouteInfoDto> busStopRouteInfoDtoList = busInfoService.reqBusStopRouteInfoApi(secretkey, routeId);
-            log.info("request busStopRouteInfo : {}",busStopRouteInfoDtoList);
+        String brtNo = null;
+
+        for (int i = 1; i <=50; i++) {
+            //todo:최대값 하드코딩 -> 동적으로 최대치를 가져오도록 코드 수정 필요
+            BusRouteInfoDto busRouteInfoDto = busInfoService.searchBusRouteInfo((long) i);
+
+            String routeId = busRouteInfoDto.getBrtId();
+             brtNo = busRouteInfoDto.getBrtNo();
+
+            //노선 정보를 배열에 담아서 가져오면
+            busStopRouteInfoDtoList = busInfoService.reqBusStopRouteInfoApi(secretkey, routeId);
+
+            //해당 배열을 순회하면서 -> 배열 정류장 ID == 저장된 정류장 ID 가 있을 시(조건문 구현 필요) -> 새로 추가된 컬럼에 brtNo 을 추가해주어야함
+        }
+        log.info("request busStopRouteInfo : {}",busStopRouteInfoDtoList);
+
+        for(BusStopRouteInfoDto busStopRouteInfoDto : busStopRouteInfoDtoList){
+            busStopRouteRepo.saveBusStopRoute(busStopRouteInfoDto.getStopId(),brtNo);
         }
     }
 

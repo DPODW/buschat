@@ -1,5 +1,6 @@
 package com.dpod.buschat.businfo.entity;
 
+import com.querydsl.core.types.EntityPath;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -7,7 +8,8 @@ import lombok.*;
 @Table(name = "BUSSTOP_INFO")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class BusStopInfo {
+@ToString
+public class BusStopInfo{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,13 +31,18 @@ public class BusStopInfo {
     @Column(name = "BUSSTOP_MARK")
     private String busStopMark;
 
+    @Column(name = "BUSSTOP_ROUTE")
+    private String busStopRoute;
+
+
     @Builder
-    public BusStopInfo(String busStopId,String busStopName, String busStopX, String busStopY, String busStopMark){
+    public BusStopInfo(String busStopId,String busStopName, String busStopX, String busStopY, String busStopMark, String busStopRoute) {
      this.busStopId = busStopId;
      this.busStopName = busStopName;
      this.busStopX = busStopX;
      this.busStopY = busStopY;
      this.busStopMark = busStopMark;
+     this.busStopRoute = busStopRoute;
     }
 
 }
