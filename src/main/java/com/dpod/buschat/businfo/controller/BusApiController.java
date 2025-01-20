@@ -147,25 +147,14 @@ public class BusApiController {
 
         List<BusStopRouteInfoDto> busStopRouteInfoDtoList = new ArrayList<>();
 
-        String brtNo = null;
-
-        for (int i = 1; i <=50; i++) {
-            //todo:최대값 하드코딩 -> 동적으로 최대치를 가져오도록 코드 수정 필요
+        for (int i = 1; i <=100; i++) {
             BusRouteInfoDto busRouteInfoDto = busInfoService.searchBusRouteInfo((long) i);
-
             String routeId = busRouteInfoDto.getBrtId();
-             brtNo = busRouteInfoDto.getBrtNo();
-
-            //노선 정보를 배열에 담아서 가져오면
             busStopRouteInfoDtoList = busInfoService.reqBusStopRouteInfoApi(secretkey, routeId);
-
-            //해당 배열을 순회하면서 -> 배열 정류장 ID == 저장된 정류장 ID 가 있을 시(조건문 구현 필요) -> 새로 추가된 컬럼에 brtNo 을 추가해주어야함
         }
-        log.info("request busStopRouteInfo : {}",busStopRouteInfoDtoList);
-
         for(BusStopRouteInfoDto busStopRouteInfoDto : busStopRouteInfoDtoList){
-            busStopRouteRepo.saveBusStopRoute(busStopRouteInfoDto.getStopId(),brtNo);
+            //TODO: REPO 계층 요청 Service 로 이동 필요
+            busStopRouteRepo.saveBusStopRoute(busStopRouteInfoDto);
         }
     }
-
 }
