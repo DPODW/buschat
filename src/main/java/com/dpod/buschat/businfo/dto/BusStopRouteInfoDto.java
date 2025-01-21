@@ -6,9 +6,11 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Getter
+@Setter
 @XmlAccessorType(XmlAccessType.NONE)
 @NoArgsConstructor
 @ToString

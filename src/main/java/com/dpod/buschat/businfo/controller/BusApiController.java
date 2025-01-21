@@ -147,13 +147,22 @@ public class BusApiController {
 
         List<BusStopRouteInfoDto> busStopRouteInfoDtoList = new ArrayList<>();
 
-        for (int i = 1; i <=100; i++) {
+        for (int i = 1; i <=3; i++) {
             BusRouteInfoDto busRouteInfoDto = busInfoService.searchBusRouteInfo((long) i);
+            log.info("busRouteInfoDto>> {}",busRouteInfoDto);
+            //DB 순서대로 노선 정보를 가져옴 (DTO 한개)
+
             String routeId = busRouteInfoDto.getBrtId();
             busStopRouteInfoDtoList = busInfoService.reqBusStopRouteInfoApi(secretkey, routeId);
+            log.info("busStopRouteInfoDtoList>> {}",busStopRouteInfoDtoList);
+            //위에서 가져온 DTO 에서 routeId 추출해서 API 요청 => 위의 DTO 에서 받은 노선의 노선 경로를 얻어옴 (List 지만, 노선 경로라 list 형식일 뿐, 노선에 대한 노선정보 1개임)
         }
+        log.info("result>{}",busStopRouteInfoDtoList);
+        //위에서 몇번의 반복 요청이 일어났든, 여기엔 마지막 노선 경로가 저장될것임
+        
         for(BusStopRouteInfoDto busStopRouteInfoDto : busStopRouteInfoDtoList){
             //TODO: REPO 계층 요청 Service 로 이동 필요
+            //고로 해당 메소드는 노선 경로 하나를 반복하면서 저장하는 수준밖에 되지 않음
             busStopRouteRepo.saveBusStopRoute(busStopRouteInfoDto);
         }
     }
