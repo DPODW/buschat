@@ -7,6 +7,7 @@ import com.dpod.buschat.businfo.entity.BusRouteInfo;
 import com.dpod.buschat.businfo.entity.BusStopInfo;
 import com.dpod.buschat.businfo.repo.bus.BusInfoRepository;
 import com.dpod.buschat.businfo.repo.bus.BusRouteInfoRepo;
+import com.dpod.buschat.businfo.repo.bus.BusStopRouteRepo;
 import com.dpod.buschat.businfo.service.BusInfoService;
 import com.dpod.buschat.businfo.dto.BusStopInfoDto;
 import lombok.extern.slf4j.Slf4j;
@@ -25,13 +26,16 @@ public class BusInfoServiceImpl implements BusInfoService {
 
     private final BusRouteInfoRepo busRouteInfoRepo;
 
+    private final BusStopRouteRepo busStopRouteRepo;
+
     private final ToEntityConvert toEntityConvert;
 
     private final ToDtoConvert toDtoConvert;
 
-    public BusInfoServiceImpl(BusInfoRepository busInfoRepository, BusRouteInfoRepo busRouteInfoRepo, ToEntityConvert toEntityConvert, ToDtoConvert toDtoConvert) {
+    public BusInfoServiceImpl(BusInfoRepository busInfoRepository, BusRouteInfoRepo busRouteInfoRepo, BusStopRouteRepo busStopRouteRepo, ToEntityConvert toEntityConvert, ToDtoConvert toDtoConvert) {
         this.busInfoRepository = busInfoRepository;
         this.busRouteInfoRepo = busRouteInfoRepo;
+        this.busStopRouteRepo = busStopRouteRepo;
         this.toEntityConvert = toEntityConvert;
         this.toDtoConvert = toDtoConvert;
     }
@@ -56,6 +60,13 @@ public class BusInfoServiceImpl implements BusInfoService {
     }
 
     @Override
+    public void saveBusStopRoute(BusStopRouteInfoDto busStopRouteInfoDto) {
+        busStopRouteRepo.saveBusStopRoute(busStopRouteInfoDto);
+    }
+
+
+
+    @Override
     public List<BusStopInfoDto> searchBusStopInfo(String busStopName) {
         List<BusStopInfo> allInfoByBusStopName = busInfoRepository.findAllByBusStopNameLike("%"+busStopName+"%");
 
@@ -74,7 +85,7 @@ public class BusInfoServiceImpl implements BusInfoService {
 
     @Override
     public List<BusStopRouteInfoDto> reqBusStopRouteInfoApi(String secretkey,String routeId) {
-        //TODO: 해당 API 에선 노선 ID 는 제공하는데, 노선 번호는 제공하지 않음(EX: 733,753..)
+        //해당 API 에선 노선 ID 는 제공하는데, 노선 번호는 제공하지 않음(EX: 733,753..)
         String pageNo = "1";
         String totalCount = "50";
 

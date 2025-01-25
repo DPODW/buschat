@@ -39,7 +39,7 @@ public class BusArrivalInfoDto {
     private String busRouteNm;
     //노선 번호
     
-    //추후 확정성을 위해 Builder 객체 생성
+
     @Builder
     public BusArrivalInfoDto(String busPrevStopCnt, int busArrivalTime, String busStopId, String busStopName, String nowBusStopName, String busRouteNm) {
         this.busPrevStopCnt = busPrevStopCnt;

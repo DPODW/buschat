@@ -14,6 +14,8 @@ public interface BusInfoService {
 
     void saveBusRouteInfo(List<BusRouteInfoDto> busRouteInfoDto);
 
+    void saveBusStopRoute(BusStopRouteInfoDto busStopRouteInfoDto);
+
     List<BusStopInfoDto> searchBusStopInfo(String busStopName);
 
     BusRouteInfoDto searchBusRouteInfo(Long sequence);

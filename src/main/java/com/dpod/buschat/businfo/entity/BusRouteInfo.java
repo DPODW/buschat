@@ -7,7 +7,6 @@ import lombok.*;
 @Table(name = "BUSROUTE_INFO")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@ToString
 public class BusRouteInfo {
 
 

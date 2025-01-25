@@ -19,20 +19,17 @@ public class BusStopRouteRepoImpl implements BusStopRouteRepo {
 
     private final JPAQueryFactory queryFactory;
 
-    private final BusInfoRepository busInfoRepository;
 
-
-    public BusStopRouteRepoImpl(JPAQueryFactory queryFactory, BusInfoRepository busInfoRepository) {
+    public BusStopRouteRepoImpl(JPAQueryFactory queryFactory) {
         this.queryFactory = queryFactory;
-        this.busInfoRepository = busInfoRepository;
     }
 
     @Transactional
     @Override
     public void saveBusStopRoute(BusStopRouteInfoDto busStopRouteInfoDto) {
+        //저장 ~ 수정이 마지막 요청 1개만 성공하는 에러 발생 -> 동시성 이슈로 추정됌
         QBusStopInfo qBusStopInfo = QBusStopInfo.busStopInfo;
 
-        // 하나의 업데이트 쿼리로 처리
         queryFactory.update(qBusStopInfo)
                 .where(qBusStopInfo.busStopId.eq(busStopRouteInfoDto.getStopId()))
                 .set(

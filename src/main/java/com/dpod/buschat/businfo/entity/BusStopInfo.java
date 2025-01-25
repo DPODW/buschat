@@ -8,7 +8,6 @@ import lombok.*;
 @Table(name = "BUSSTOP_INFO")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@ToString
 public class BusStopInfo{
 
     @Id
