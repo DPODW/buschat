@@ -2,6 +2,8 @@ package com.dpod.buschat.businfo.service.impl;
 
 import com.dpod.buschat.businfo.dto.BusRouteInfoDto;
 import com.dpod.buschat.businfo.dto.BusStopRouteInfoDto;
+import com.dpod.buschat.businfo.dto.xml.BusRouteInfoXml;
+import com.dpod.buschat.businfo.dto.xml.BusStopInfoXml;
 import com.dpod.buschat.businfo.dto.xml.BusStopRouteInfoXml;
 import com.dpod.buschat.businfo.entity.BusRouteInfo;
 import com.dpod.buschat.businfo.entity.BusStopInfo;
@@ -41,23 +43,6 @@ public class BusInfoServiceImpl implements BusInfoService {
     }
 
 
-    @Override
-    public void saveBusStopInfo(List<BusStopInfoDto> busStopInfoDtoList) {
-        busStopInfoDtoList.forEach( //foreach : stream 생략 가능
-                busStopInfoDto -> {
-                    BusStopInfo busStopInfo = toEntityConvert.busStopDtoToEntity(busStopInfoDto);
-                    busInfoRepository.save(busStopInfo);
-                });
-    }
-
-    @Override
-    public void saveBusRouteInfo(List<BusRouteInfoDto> busRouteInfoDtoList) {
-        busRouteInfoDtoList.forEach( //foreach : stream 생략 가능
-                busRouteInfoDto -> {
-                    BusRouteInfo busRouteInfo = toEntityConvert.busRouteDtoToEntity(busRouteInfoDto);
-                    busRouteInfoRepo.save(busRouteInfo);
-                });
-    }
 
     @Override
     public void saveBusStopRoute(BusStopRouteInfoDto busStopRouteInfoDto) {
@@ -76,6 +61,7 @@ public class BusInfoServiceImpl implements BusInfoService {
                         }
                 ).toList();
     }
+
 
     @Override
     public BusRouteInfoDto searchBusRouteInfo(Long sequence) {

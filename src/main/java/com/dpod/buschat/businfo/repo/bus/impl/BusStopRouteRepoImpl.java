@@ -1,14 +1,10 @@
-package com.dpod.buschat.businfo.repo.bus;
+package com.dpod.buschat.businfo.repo.bus.impl;
 
 import com.dpod.buschat.businfo.dto.BusStopRouteInfoDto;
-import com.dpod.buschat.businfo.entity.BusStopInfo;
-import com.dpod.buschat.businfo.entity.QBusRouteInfo;
 import com.dpod.buschat.businfo.entity.QBusStopInfo;
+import com.dpod.buschat.businfo.repo.bus.BusStopRouteRepo;
 import com.querydsl.core.types.dsl.CaseBuilder;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.LockModeType;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;

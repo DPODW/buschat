@@ -7,6 +7,7 @@ import com.dpod.buschat.businfo.dto.BusStopRouteInfoDto;
 import com.dpod.buschat.businfo.dto.xml.BusArrivalInfoXml;
 import com.dpod.buschat.businfo.dto.xml.BusRouteInfoXml;
 import com.dpod.buschat.businfo.repo.bus.BusStopRouteRepo;
+import com.dpod.buschat.businfo.service.BusInfoSaveService;
 import com.dpod.buschat.businfo.service.BusInfoService;
 
 import com.dpod.buschat.businfo.dto.BusStopInfoDto;
@@ -27,69 +28,9 @@ public class BusApiController {
 
     private final BusInfoService busInfoService;
 
-    @Value("${secretkey}")
-    private String secretkey;
-
     public BusApiController(BusInfoService busInfoService) {
         this.busInfoService = busInfoService;
     }
-
-    /**
-    * ---- 사용 주의 ----
-    * 버스 정보 API 데이터를 받아와서 전부 DB 에 저장하는 컨트롤러
-    * 추후 데이터 유무를 기준으로 UPDATE 처리 기능 추가할 예정
-    * 현재 실행시 동일한 데이터가 중복 저장되니 요청 주의 필요
-    **/
-    @GetMapping("/stopinfo/save")
-    public void saveBusStopInfo(){
-        String pageNo = "1";
-        String totalCount = "3542";
-
-        //RestClient - JAXB 사용시 : messageConverters 에 JAXB 를 설정해주어야 함. (List)
-        RestClient restClient = RestClient.builder()
-                .messageConverters(List.of(new Jaxb2RootElementHttpMessageConverter()))
-                .build();
-
-        BusStopInfoXml busStopInfoAllXml = restClient.get()
-                .uri("http://openapi.its.ulsan.kr/UlsanAPI/BusStopInfo.xo?pageNo=" +
-                            "{pageNo}&numOfRows={numOfRows}&serviceKey={serviceKey}",
-                          pageNo,totalCount,secretkey)
-                .retrieve()
-                .body(BusStopInfoXml.class);
-
-        List<BusStopInfoDto> busStopInfoDtoList = busStopInfoAllXml.getBusStopInfoXmlList().getBusStopInfoDtoList();
-
-        busInfoService.saveBusStopInfo(busStopInfoDtoList);
-    }
-
-
-    /**
-     * ---- 사용 주의 ----
-     * 노선 정보 API 데이터를 받아와서 전부 DB 에 저장하는 컨트롤러
-     * 추후 데이터 유무를 기준으로 UPDATE 처리 기능 추가할 예정
-     * 현재 실행시 동일한 데이터가 중복 저장되니 요청 주의 필요
-     **/
-    @Deprecated
-    @GetMapping("/buslineinfo/save")
-    public void saveBusRouteInfo(){
-        String pageNo = "1";
-        String totalCount = "500";
-
-        RestClient restClient = RestClient.builder()
-                .messageConverters(List.of(new Jaxb2RootElementHttpMessageConverter()))
-                .build();
-
-        BusRouteInfoXml busRouteInfoXml = restClient.get()
-                .uri("http://openapi.its.ulsan.kr/UlsanAPI/RouteInfo.xo?" +
-                        "pageNo={pageNo}&numOfRows={totalCount}&serviceKey={secretkey}",pageNo,totalCount,secretkey)
-                .retrieve()
-                .body(BusRouteInfoXml.class);
-
-        List<BusRouteInfoDto> busRouteInfoDtoList = busRouteInfoXml.getBusRouteInfoXmlList().getBusRouteInfoDtoList();
-
-        busInfoService.saveBusRouteInfo(busRouteInfoDtoList);
-    }
-
 
 
     @PostMapping("/stopinfo/search")
@@ -123,22 +64,4 @@ public class BusApiController {
         return busArrivalInfoXml.getBusArrivalInfoXmlList().getBusArrivalInfoDtoList();
     }
 
-
-    @GetMapping("/stoprouteinfo/search")
-    @ResponseBody
-    public void searchBusStopRouteInfo(){
-        int busStopTotalCnt = 488;
-
-        for (int i = 1; i <=busStopTotalCnt; i++) {
-            BusRouteInfoDto busRouteInfoDto = busInfoService.searchBusRouteInfo((long) i);
-            String routeId = busRouteInfoDto.getBrtId();
-
-            List<BusStopRouteInfoDto> busStopRouteInfoDtoList = busInfoService.reqBusStopRouteInfoApi(secretkey, routeId);
-
-            for(BusStopRouteInfoDto busStopRouteInfoDto : busStopRouteInfoDtoList){
-                busInfoService.saveBusStopRoute(busStopRouteInfoDto);
-            }
-
-        }
-    }
 }
