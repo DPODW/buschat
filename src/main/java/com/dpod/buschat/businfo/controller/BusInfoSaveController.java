@@ -51,7 +51,7 @@ public class BusInfoSaveController {
      * 추후 데이터 유무를 기준으로 UPDATE 처리 기능 추가할 예정
      * 현재 실행시 동일한 데이터가 중복 저장되니 요청 주의 필요
      **/
-    @GetMapping("/buslineinfo/save")
+    @GetMapping("/routeinfo/save")
     public void saveBusRouteInfo(){
         String pageNo = "1";
         String totalCount = "500";
@@ -60,25 +60,28 @@ public class BusInfoSaveController {
     }
 
 
-    @GetMapping("/buslineinfo/sav1e")
+    /**
+     * ---- 사용 주의 ----
+     * 정류장 도착 노선 데이터를 받아와서 전부 DB 에 저장하는 컨트롤러
+     * 추후 데이터 유무를 기준으로 UPDATE 처리 기능 추가할 예정
+     * 현재 실행시 동일한 데이터가 중복 저장되니 요청 주의 필요
+     **/
+    @GetMapping("/stoprouteinfo/save")
     public void saveBusStopRouteInfo(){
         int busStopTotalCnt = 488;
+        String pageNo = "1";
+        String totalCount = "100";
 
         for (int i = 1; i <=busStopTotalCnt; i++) {
             BusRouteInfoDto busRouteInfoDto = busInfoSearchService.searchBusRouteInfo((long) i);
             String routeId = busRouteInfoDto.getBrtId();
 
-            List<BusStopRouteInfoDto> busStopRouteInfoDtoList = busInfoApiService.requestBusStopRouteInfo(routeId);
-            //pageNO ,totalCount 두개 넘겨주어야 함
+            List<BusStopRouteInfoDto> busStopRouteInfoDtoList = busInfoApiService.requestBusStopRouteInfo(routeId,pageNo,totalCount);
 
             for(BusStopRouteInfoDto busStopRouteInfoDto : busStopRouteInfoDtoList){
                 busInfoSaveService.saveBusStopRoute(busStopRouteInfoDto);
             }
-
         }
-        
     }
-
-
 
 }

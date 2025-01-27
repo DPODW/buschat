@@ -8,6 +8,8 @@ import lombok.*;
 @Table(name = "BUSSTOP_INFO")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter //todo: ToDtoConvert 에서 한시적으로 setter 사용 (테스트 완료 후 즉시 제거)
+@ToString
 public class BusStopInfo{
 
     @Id
@@ -30,18 +32,18 @@ public class BusStopInfo{
     @Column(name = "BUSSTOP_MARK")
     private String busStopMark;
 
-    @Column(name = "BUSSTOP_ROUTE")
-    private String busStopRoute;
+    @Column(name = "BUSSTOP_ROUTE_ID")
+    private String busStopRouteIdList;
 
 
     @Builder
-    public BusStopInfo(String busStopId,String busStopName, String busStopX, String busStopY, String busStopMark, String busStopRoute) {
+    public BusStopInfo(String busStopId,String busStopName, String busStopX, String busStopY, String busStopMark, String busStopRouteIdList) {
      this.busStopId = busStopId;
      this.busStopName = busStopName;
      this.busStopX = busStopX;
      this.busStopY = busStopY;
      this.busStopMark = busStopMark;
-     this.busStopRoute = busStopRoute;
+     this.busStopRouteIdList = busStopRouteIdList;
     }
 
 }

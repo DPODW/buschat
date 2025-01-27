@@ -4,18 +4,29 @@ import com.dpod.buschat.businfo.dto.BusRouteInfoDto;
 import com.dpod.buschat.businfo.dto.BusStopInfoDto;
 import com.dpod.buschat.businfo.entity.BusRouteInfo;
 import com.dpod.buschat.businfo.entity.BusStopInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
+@Slf4j
 @Component
 public class ToDtoConvert {
 
     protected BusStopInfoDto busStopEntityToDto(BusStopInfo busStopInfo){
+        if(busStopInfo.getBusStopRouteIdList() == null){
+            busStopInfo.setBusStopRouteIdList("error|error|error");
+        }
+
+        List<String> busStopRouteIdSplit = List.of(busStopInfo.getBusStopRouteIdList().split("\\|"));
+
         return BusStopInfoDto.builder()
                 .busStopId(busStopInfo.getBusStopId())
                 .busStopName(busStopInfo.getBusStopName())
                 .busStopX(busStopInfo.getBusStopX())
                 .busStopY(busStopInfo.getBusStopY())
                 .busStopMark(busStopInfo.getBusStopMark())
+                .busStopRouteIdList(busStopRouteIdSplit)
                 .build();
     }
 

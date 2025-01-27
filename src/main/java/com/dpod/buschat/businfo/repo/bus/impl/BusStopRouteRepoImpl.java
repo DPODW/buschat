@@ -23,17 +23,16 @@ public class BusStopRouteRepoImpl implements BusStopRouteRepo {
     @Transactional
     @Override
     public void saveBusStopRoute(BusStopRouteInfoDto busStopRouteInfoDto) {
-        //저장 ~ 수정이 마지막 요청 1개만 성공하는 에러 발생 -> 동시성 이슈로 추정됌
         QBusStopInfo qBusStopInfo = QBusStopInfo.busStopInfo;
 
         queryFactory.update(qBusStopInfo)
                 .where(qBusStopInfo.busStopId.eq(busStopRouteInfoDto.getStopId()))
                 .set(
-                        qBusStopInfo.busStopRoute,
+                        qBusStopInfo.busStopRouteIdList,
                         new CaseBuilder()
-                                .when(qBusStopInfo.busStopRoute.isNull())
+                                .when(qBusStopInfo.busStopRouteIdList.isNull())
                                 .then(busStopRouteInfoDto.getRouteId())
-                                .otherwise(qBusStopInfo.busStopRoute.concat("|" + busStopRouteInfoDto.getRouteId()))
+                                .otherwise(qBusStopInfo.busStopRouteIdList.concat("|" + busStopRouteInfoDto.getRouteId()))
                 )
                 .execute();
     }

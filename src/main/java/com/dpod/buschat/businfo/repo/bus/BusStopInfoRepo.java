@@ -7,10 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface BusInfoRepository extends JpaRepository<BusStopInfo,Long> {
+public interface BusStopInfoRepo extends JpaRepository<BusStopInfo,Long> {
 
     List<BusStopInfo> findAllByBusStopNameLike(String busStopName);
-
-    BusStopInfo findAllByBusStopId(String busStopId);
 
 }

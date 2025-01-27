@@ -22,11 +22,15 @@ public class BusInfoApiServiceImpl implements BusInfoApiService {
     @Value("${secretkey}")
     private String secretkey;
 
-    @Override
-    public List<BusStopInfoDto> requestBusStopInfo(String pageNo, String totalCount) {
-        RestClient restClient = RestClient.builder()
+    private static RestClient getRestClient() {
+        return RestClient.builder()
                 .messageConverters(List.of(new Jaxb2RootElementHttpMessageConverter()))
                 .build();
+    }
+
+    @Override
+    public List<BusStopInfoDto> requestBusStopInfo(String pageNo, String totalCount) {
+        RestClient restClient = getRestClient();
 
         BusStopInfoXml busStopInfoAllXml = restClient.get()
                 .uri("http://openapi.its.ulsan.kr/UlsanAPI/BusStopInfo.xo?pageNo=" +
@@ -40,9 +44,7 @@ public class BusInfoApiServiceImpl implements BusInfoApiService {
 
     @Override
     public List<BusRouteInfoDto> requestBusRouteInfo(String pageNo, String totalCount) {
-        RestClient restClient = RestClient.builder()
-                .messageConverters(List.of(new Jaxb2RootElementHttpMessageConverter()))
-                .build();
+        RestClient restClient = getRestClient();
 
         BusRouteInfoXml busRouteInfoXml = restClient.get()
                 .uri("http://openapi.its.ulsan.kr/UlsanAPI/RouteInfo.xo?" +
@@ -56,9 +58,7 @@ public class BusInfoApiServiceImpl implements BusInfoApiService {
 
     @Override
     public List<BusStopRouteInfoDto> requestBusStopRouteInfo(String routeId, String pageNo, String totalCount) {
-        RestClient restClient = RestClient.builder()
-                .messageConverters(List.of(new Jaxb2RootElementHttpMessageConverter()))
-                .build();
+        RestClient restClient = getRestClient();
 
         BusStopRouteInfoXml busStopRouteInfoXml = restClient.get()
                 .uri("http://openapi.its.ulsan.kr/UlsanAPI/AllRouteDetailInfo.xo?" +
@@ -73,9 +73,7 @@ public class BusInfoApiServiceImpl implements BusInfoApiService {
 
     @Override
     public List<BusArrivalInfoDto> requestBusArrivalInfo(String busStopId,String pageNo, String numOfRows) {
-        RestClient restClient = RestClient.builder()
-                .messageConverters(List.of(new Jaxb2RootElementHttpMessageConverter()))
-                .build();
+        RestClient restClient = getRestClient();
 
         BusArrivalInfoXml busArrivalInfoXml = restClient.get()
                 .uri("http://openapi.its.ulsan.kr/UlsanAPI/getBusArrivalInfo.xo?stopid={stopid}&" +
