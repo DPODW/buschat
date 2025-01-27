@@ -16,43 +16,43 @@ public class BusRouteInfo {
     private Long sequence;
 
     @Column(name = "BRTID")
-    private String BrtId;
+    private String brtId;
 
     @Column(name = "BRTNO")
-    private String BrtNo;
+    private String brtNo;
 
     @Column(name = "BRTNAME")
-    private String BrtName;
+    private String brtName;
 
     @Column(name = "DIRECTION")
-    private String Direction;
+    private String direction;
 
     @Column(name = "COMPANY")
-    private String Company;
+    private String company;
 
     @Column(name = "BRTTYPE")
-    private String BrtType;
+    private String brtType;
 
     @Column(name = "CLASS")
-    private String BusClass;
+    private String busClass;
 
     @Column(name = "STOPSTID")
-    private String StopStId;
+    private String stopStId;
 
     @Column(name = "STOPEDID")
-    private String StopEdId;
+    private String stopEdId;
 
     @Builder
     public BusRouteInfo(Long sequence, String brtId, String brtNo, String brtName, String direction, String company, String brtType, String busClass, String stopStId, String stopEdId) {
         this.sequence = sequence;
-        this.BrtId = brtId;
-        this.BrtNo = brtNo;
-        this.BrtName = brtName;
-        this.Direction = direction;
-        this.Company = company;
-        this.BrtType = brtType;
-        this.BusClass = busClass;
-        this.StopStId = stopStId;
-        this.StopEdId = stopEdId;
+        this.brtId = brtId;
+        this.brtNo = brtNo;
+        this.brtName = brtName;
+        this.direction = direction;
+        this.company = company;
+        this.brtType = brtType;
+        this.busClass = busClass;
+        this.stopStId = stopStId;
+        this.stopEdId = stopEdId;
     }
 }

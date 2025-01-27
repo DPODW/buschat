@@ -16,52 +16,52 @@ import lombok.ToString;
 public class BusRouteInfoDto {
 
     @XmlElement(name = "BRTID")
-    private String BrtId;
+    private String brtId;
     //노선 ID
 
     @XmlElement(name = "BRTNO")
-    private String BrtNo;
+    private String brtNo;
     //노선 번호
 
     @XmlElement(name = "BRTNAME")
-    private String BrtName;
+    private String brtName;
     //노선명
 
     @XmlElement(name = "DIRECTION")
-    private String Direction;
+    private String direction;
     //방향
 
     @XmlElement(name = "COMPANY")
-    private String Company;
+    private String company;
     //회사명
 
     @XmlElement(name = "BRTTYPE")
-    private String BrtType;
+    private String brtType;
     //노선타입
 
     @XmlElement(name = "CLASS")
-    private String BusClass;
+    private String busClass;
     //노선 구분
 
     @XmlElement(name = "STOPSTID")
-    private String StopStId;
+    private String stopStId;
     //기점 정류장 ID
 
     @XmlElement(name = "STOPEDID")
-    private String StopEdId;
+    private String stopEdId;
     //종점 정류장 ID
 
     @Builder
     public BusRouteInfoDto(String brtId, String brtNo, String brtName, String direction, String company, String brtType, String busClass, String stopStId, String stopEdId) {
-        this.BrtId = brtId;
-        this.BrtNo = brtNo;
-        this.BrtName = brtName;
-        this.Direction = direction;
-        this.Company = company;
-        this.BrtType = brtType;
-        this.BusClass = busClass;
-        this.StopStId = stopStId;
-        this.StopEdId = stopEdId;
+        this.brtId = brtId;
+        this.brtNo = brtNo;
+        this.brtName = brtName;
+        this.direction = direction;
+        this.company = company;
+        this.brtType = brtType;
+        this.busClass = busClass;
+        this.stopStId = stopStId;
+        this.stopEdId = stopEdId;
     }
 
 

@@ -14,10 +14,6 @@ import java.util.List;
 public class ToDtoConvert {
 
     protected BusStopInfoDto busStopEntityToDto(BusStopInfo busStopInfo){
-        if(busStopInfo.getBusStopRouteIdList() == null){
-            busStopInfo.setBusStopRouteIdList("error|error|error");
-        }
-
         List<String> busStopRouteIdSplit = List.of(busStopInfo.getBusStopRouteIdList().split("\\|"));
 
         return BusStopInfoDto.builder()

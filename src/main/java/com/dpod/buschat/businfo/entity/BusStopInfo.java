@@ -8,7 +8,6 @@ import lombok.*;
 @Table(name = "BUSSTOP_INFO")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter //todo: ToDtoConvert 에서 한시적으로 setter 사용 (테스트 완료 후 즉시 제거)
 @ToString
 public class BusStopInfo{
 
