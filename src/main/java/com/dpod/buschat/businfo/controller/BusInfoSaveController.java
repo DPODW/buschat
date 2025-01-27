@@ -1,7 +1,7 @@
 package com.dpod.buschat.businfo.controller;
 
 import com.dpod.buschat.businfo.dto.BusRouteInfoDto;
-import com.dpod.buschat.businfo.dto.BusStopRouteInfoDto;
+import com.dpod.buschat.businfo.dto.BusRouteRoadInfoDto;
 import com.dpod.buschat.businfo.service.BusInfoApiService;
 import com.dpod.buschat.businfo.service.BusInfoSaveService;
 import com.dpod.buschat.businfo.service.BusInfoSearchService;
@@ -76,10 +76,10 @@ public class BusInfoSaveController {
             BusRouteInfoDto busRouteInfoDto = busInfoSearchService.searchBusRouteInfo((long) i);
             String routeId = busRouteInfoDto.getBrtId();
 
-            List<BusStopRouteInfoDto> busStopRouteInfoDtoList = busInfoApiService.requestBusStopRouteInfo(routeId,pageNo,totalCount);
+            List<BusRouteRoadInfoDto> busRouteRoadInfoDtoList = busInfoApiService.requestBusStopRouteInfo(routeId,pageNo,totalCount);
 
-            for(BusStopRouteInfoDto busStopRouteInfoDto : busStopRouteInfoDtoList){
-                busInfoSaveService.saveBusStopRoute(busStopRouteInfoDto);
+            for(BusRouteRoadInfoDto busRouteRoadInfoDto : busRouteRoadInfoDtoList){
+                busInfoSaveService.saveBusStopRoute(busRouteRoadInfoDto);
             }
         }
     }

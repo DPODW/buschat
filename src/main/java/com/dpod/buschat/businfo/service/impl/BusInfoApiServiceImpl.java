@@ -3,7 +3,7 @@ package com.dpod.buschat.businfo.service.impl;
 import com.dpod.buschat.businfo.dto.BusArrivalInfoDto;
 import com.dpod.buschat.businfo.dto.BusRouteInfoDto;
 import com.dpod.buschat.businfo.dto.BusStopInfoDto;
-import com.dpod.buschat.businfo.dto.BusStopRouteInfoDto;
+import com.dpod.buschat.businfo.dto.BusRouteRoadInfoDto;
 import com.dpod.buschat.businfo.dto.xml.BusArrivalInfoXml;
 import com.dpod.buschat.businfo.dto.xml.BusRouteInfoXml;
 import com.dpod.buschat.businfo.dto.xml.BusStopInfoXml;
@@ -57,7 +57,7 @@ public class BusInfoApiServiceImpl implements BusInfoApiService {
 
 
     @Override
-    public List<BusStopRouteInfoDto> requestBusStopRouteInfo(String routeId, String pageNo, String totalCount) {
+    public List<BusRouteRoadInfoDto> requestBusStopRouteInfo(String routeId, String pageNo, String totalCount) {
         RestClient restClient = getRestClient();
 
         BusStopRouteInfoXml busStopRouteInfoXml = restClient.get()
@@ -67,7 +67,7 @@ public class BusInfoApiServiceImpl implements BusInfoApiService {
                 .retrieve()
                 .body(BusStopRouteInfoXml.class);
 
-        return busStopRouteInfoXml.getBusStopRouteInfoXmlList().getBusStopRouteInfoDtoList();
+        return busStopRouteInfoXml.getBusStopRouteInfoXmlList().getBusRouteRoadInfoDtoList();
     }
 
 

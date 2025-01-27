@@ -2,7 +2,7 @@ package com.dpod.buschat.businfo.service.impl;
 
 import com.dpod.buschat.businfo.dto.BusRouteInfoDto;
 import com.dpod.buschat.businfo.dto.BusStopInfoDto;
-import com.dpod.buschat.businfo.dto.BusStopRouteInfoDto;
+import com.dpod.buschat.businfo.dto.BusRouteRoadInfoDto;
 import com.dpod.buschat.businfo.entity.BusRouteInfo;
 import com.dpod.buschat.businfo.entity.BusStopInfo;
 import com.dpod.buschat.businfo.repo.bus.BusStopInfoRepo;
@@ -63,7 +63,7 @@ public class BusInfoSaveServiceImpl implements BusInfoSaveService {
 
 
     @Override
-    public void saveBusStopRoute(BusStopRouteInfoDto busStopRouteInfoDto) {
-        busStopRouteRepo.saveBusStopRoute(busStopRouteInfoDto);
+    public void saveBusStopRoute(BusRouteRoadInfoDto busRouteRoadInfoDto) {
+        busStopRouteRepo.saveBusStopRoute(busRouteRoadInfoDto);
     }
 }

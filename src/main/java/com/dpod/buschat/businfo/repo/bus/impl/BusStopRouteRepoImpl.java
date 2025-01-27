@@ -1,6 +1,6 @@
 package com.dpod.buschat.businfo.repo.bus.impl;
 
-import com.dpod.buschat.businfo.dto.BusStopRouteInfoDto;
+import com.dpod.buschat.businfo.dto.BusRouteRoadInfoDto;
 import com.dpod.buschat.businfo.entity.QBusStopInfo;
 import com.dpod.buschat.businfo.repo.bus.BusStopRouteRepo;
 import com.querydsl.core.types.dsl.CaseBuilder;
@@ -22,17 +22,17 @@ public class BusStopRouteRepoImpl implements BusStopRouteRepo {
 
     @Transactional
     @Override
-    public void saveBusStopRoute(BusStopRouteInfoDto busStopRouteInfoDto) {
+    public void saveBusStopRoute(BusRouteRoadInfoDto busRouteRoadInfoDto) {
         QBusStopInfo qBusStopInfo = QBusStopInfo.busStopInfo;
 
         queryFactory.update(qBusStopInfo)
-                .where(qBusStopInfo.busStopId.eq(busStopRouteInfoDto.getStopId()))
+                .where(qBusStopInfo.busStopId.eq(busRouteRoadInfoDto.getStopId()))
                 .set(
                         qBusStopInfo.busStopRouteIdList,
                         new CaseBuilder()
                                 .when(qBusStopInfo.busStopRouteIdList.isNull())
-                                .then(busStopRouteInfoDto.getRouteId())
-                                .otherwise(qBusStopInfo.busStopRouteIdList.concat("|" + busStopRouteInfoDto.getRouteId()))
+                                .then(busRouteRoadInfoDto.getRouteId())
+                                .otherwise(qBusStopInfo.busStopRouteIdList.concat("|" + busRouteRoadInfoDto.getRouteId()))
                 )
                 .execute();
     }

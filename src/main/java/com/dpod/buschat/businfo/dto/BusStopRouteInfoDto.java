@@ -1,34 +1,36 @@
 package com.dpod.buschat.businfo.dto;
 
 
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlElement;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 @Getter
-@Setter
-@XmlAccessorType(XmlAccessType.NONE)
 @NoArgsConstructor
-@ToString
 public class BusStopRouteInfoDto {
 
-    @XmlElement(name = "ROUTEID")
-    private String RouteId;
-    //노선 id
+    private String brtName;
+    //노선 이름 (노선 번호 + 방면 정보)
 
-    @XmlElement(name = "BRSSEQNO")
-    private String BrsseqNo;
-    //정류장 순번
+    private String busStopStId;
+    //노선 기점 정류장 ID
 
-    @XmlElement(name = "STOPID")
-    private String StopId;
-    //정류장 id
+    private String busStopEdId;
+    //노선 종점 정류장 ID
 
-    @XmlElement(name = "STOPNM")
-    private String StopNm;
-    //정류장명
+    private String busStopStName;
+    //노선 기점 정류장 이름
+
+    private String busStopEdName;
+    //노선 종점 정류장 이름
+
+
+    @Builder
+    public BusStopRouteInfoDto(String brtName, String busStopStId, String busStopEdId, String busStopStName, String busStopEdName) {
+        this.brtName = brtName;
+        this.busStopStId = busStopStId;
+        this.busStopEdId = busStopEdId;
+        this.busStopStName = busStopStName;
+        this.busStopEdName = busStopEdName;
+    }
 }

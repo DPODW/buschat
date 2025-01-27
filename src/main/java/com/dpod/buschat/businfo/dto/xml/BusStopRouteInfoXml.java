@@ -1,7 +1,7 @@
 package com.dpod.buschat.businfo.dto.xml;
 
 
-import com.dpod.buschat.businfo.dto.BusStopRouteInfoDto;
+import com.dpod.buschat.businfo.dto.BusRouteRoadInfoDto;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
@@ -25,7 +25,7 @@ public class BusStopRouteInfoXml {
     public static class BusStopRouteInfoXmlList {
 
         @XmlElement(name = "row")
-        private List<BusStopRouteInfoDto> busStopRouteInfoDtoList;
+        private List<BusRouteRoadInfoDto> busRouteRoadInfoDtoList;
     }
 
 }

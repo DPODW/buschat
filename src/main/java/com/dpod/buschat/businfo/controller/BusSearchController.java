@@ -34,6 +34,8 @@ public class BusSearchController {
     public List<BusStopInfoDto> searchBusStopInfo(@RequestBody HashMap<String, Object> busStopNameMap){
         String busStopName = busStopNameMap.get("busStopName").toString();
 
+        //TODO: 정류장 별 노선 정보. . .
+
         return busInfoSearchService.searchBusStopInfo(busStopName);
     }
 

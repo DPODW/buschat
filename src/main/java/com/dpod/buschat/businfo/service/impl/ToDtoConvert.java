@@ -16,6 +16,8 @@ public class ToDtoConvert {
     protected BusStopInfoDto busStopEntityToDto(BusStopInfo busStopInfo){
         List<String> busStopRouteIdSplit = List.of(busStopInfo.getBusStopRouteIdList().split("\\|"));
 
+        //TODO: 노선 정보를 BusStopRouteInfoDto 로 변환하는 작업 필요
+
         return BusStopInfoDto.builder()
                 .busStopId(busStopInfo.getBusStopId())
                 .busStopName(busStopInfo.getBusStopName())
