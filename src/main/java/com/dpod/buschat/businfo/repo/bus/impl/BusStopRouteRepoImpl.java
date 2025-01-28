@@ -30,6 +30,7 @@ public class BusStopRouteRepoImpl implements BusStopRouteRepo {
     @Transactional
     @Override
     public void saveBusStopRoute(BusRouteRoadInfoDto busRouteRoadInfoDto) {
+        //동시성 이슈 방지를 위해 쿼리에 조건 삽입
         QBusStopInfo qBusStopInfo = QBusStopInfo.busStopInfo;
 
         queryFactory.update(qBusStopInfo)
