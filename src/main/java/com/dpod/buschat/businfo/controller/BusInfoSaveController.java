@@ -68,6 +68,7 @@ public class BusInfoSaveController {
      **/
     @GetMapping("/stoprouteinfo/save")
     public void saveBusStopRouteInfo(){
+        //TODO: 25-02-28 기준 노선 3개 추가됌. (UPDATE 필요)
         int busStopTotalCnt = 488;
         String pageNo = "1";
         String totalCount = "100";

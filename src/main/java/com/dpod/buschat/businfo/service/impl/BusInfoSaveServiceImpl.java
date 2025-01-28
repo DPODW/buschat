@@ -12,6 +12,7 @@ import com.dpod.buschat.businfo.service.BusInfoApiService;
 import com.dpod.buschat.businfo.service.BusInfoSaveService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -41,24 +42,29 @@ public class BusInfoSaveServiceImpl implements BusInfoSaveService {
     public void saveBusStopInfo(String pageNo, String totalCount) {
         List<BusStopInfoDto> busStopInfoDtoList = busInfoApiService.requestBusStopInfo(pageNo, totalCount);
 
+        List<BusStopInfo> busStopInfoList = new ArrayList<>();
+
         busStopInfoDtoList.forEach(
                 busStopInfoDto -> {
                     BusStopInfo busStopInfo = toEntityConvert.busStopDtoToEntity(busStopInfoDto);
-                    busStopInfoRepo.save(busStopInfo);
-                    //BULK INSERT 리팩토링 필요
+                    busStopInfoList.add(busStopInfo);
                 });
+        busStopInfoRepo.saveAll(busStopInfoList);
     }
+
 
     @Override
     public void saveBusRouteInfo(String pageNo, String totalCount) {
         List<BusRouteInfoDto> busRouteInfoDtoList = busInfoApiService.requestBusRouteInfo(pageNo, totalCount);
 
+        List<BusRouteInfo> busRouteInfoList = new ArrayList<>();
+
         busRouteInfoDtoList.forEach(
                 busRouteInfoDto -> {
                     BusRouteInfo busRouteInfo = toEntityConvert.busRouteDtoToEntity(busRouteInfoDto);
-                    busRouteInfoRepo.save(busRouteInfo);
-                    //BULK INSERT 리팩토링 필요
+                    busRouteInfoList.add(busRouteInfo);
                 });
+        busRouteInfoRepo.saveAll(busRouteInfoList);
     }
 
 
