@@ -52,7 +52,6 @@ dependencies {
 	implementation 'org.glassfish.jaxb:jaxb-runtime:3.0.1'
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
-
 }
 
 tasks.named('test') {

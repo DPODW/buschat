@@ -35,16 +35,16 @@ public class BusStopInfoDto {
     private String busStopMark;
     //정류장 비고 ( 방면 정보 )
 
-    private List<String> busStopRouteIdList;
+    private List<BusStopRouteInfoDto> busStopRouteInfoList;
     //정류장마다 멈추는 노선 아이디 LIST
 
     @Builder
-    public BusStopInfoDto(String busStopId,String busStopName,String busStopX, String busStopY, String busStopMark,List<String> busStopRouteIdList) {
+    public BusStopInfoDto(String busStopId,String busStopName,String busStopX, String busStopY, String busStopMark,List<BusStopRouteInfoDto> busStopRouteInfoList) {
         this.busStopId = busStopId;
         this.busStopName = busStopName;
         this.busStopX = busStopX;
         this.busStopY = busStopY;
         this.busStopMark = busStopMark;
-        this.busStopRouteIdList = busStopRouteIdList;
+        this.busStopRouteInfoList = busStopRouteInfoList;
     }
 }

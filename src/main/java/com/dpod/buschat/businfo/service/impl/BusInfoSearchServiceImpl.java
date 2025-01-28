@@ -33,16 +33,11 @@ public class BusInfoSearchServiceImpl implements BusInfoSearchService{
     public List<BusStopInfoDto> searchBusStopInfo(String busStopName) {
         List<BusStopInfo> allInfoByBusStopName = busStopInfoRepo.findAllByBusStopNameLike("%"+busStopName+"%");
 
-
-        List<BusStopInfoDto> busStopInfoDtoList = allInfoByBusStopName.stream()
+        return allInfoByBusStopName.stream()
                 .map(busStopInfo -> {
                             return toDtoConvert.busStopEntityToDto(busStopInfo);
                         }
                 ).toList();
-
-
-
-        return null;
     }
 
     @Override

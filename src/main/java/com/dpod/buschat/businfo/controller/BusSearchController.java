@@ -8,6 +8,7 @@ import com.dpod.buschat.businfo.service.BusInfoApiService;
 import com.dpod.buschat.businfo.service.BusInfoSearchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
+import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClient;
 
@@ -33,8 +34,6 @@ public class BusSearchController {
     @ResponseBody
     public List<BusStopInfoDto> searchBusStopInfo(@RequestBody HashMap<String, Object> busStopNameMap){
         String busStopName = busStopNameMap.get("busStopName").toString();
-
-        //TODO: 정류장 별 노선 정보. . .
 
         return busInfoSearchService.searchBusStopInfo(busStopName);
     }
