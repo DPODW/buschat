@@ -41,6 +41,7 @@ public class BusStopRouteRepoImpl implements BusStopRouteRepo {
                                 .when(qBusStopInfo.busStopRouteIdList.isNull())
                                 .then(busRouteRoadInfoDto.getRouteId())
                                 .otherwise(qBusStopInfo.busStopRouteIdList.concat("|" + busRouteRoadInfoDto.getRouteId()))
+                        //busStopRouteIdList 에 getStopId 가 있으면 건너뛰는 조건 추가 필요 ( | 기호로 이어져있는 형식이기 때문에 LIKE 처리 예상 )
                 )
                 .execute();
     }
@@ -62,7 +63,6 @@ public class BusStopRouteRepoImpl implements BusStopRouteRepo {
                 .on(qBusRouteInfo.stopEdId.eq(qEdBusStopInfo.busStopId))
                 .where(qBusRouteInfo.brtId.in(busStopRouteIdSplit))
                 .fetch();
-        // WHERE ~ IN 으로 개선하여서 반복 요청을 줄임.
     }
 
 }

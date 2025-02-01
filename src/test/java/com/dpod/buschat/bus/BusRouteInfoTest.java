@@ -33,4 +33,13 @@ public class BusRouteInfoTest {
     }
 
 
+    @Test
+    @DisplayName("String -> int 변환 테스트")
+    void castStringToInt(){
+        String testString = "123";
+        int testInt = 123;
+
+        assertThat(Integer.parseInt(testString)).isEqualTo(testInt);
+    }
+
 }

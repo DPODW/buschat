@@ -51,6 +51,10 @@ public class BusRouteInfoDto {
     private String stopEdId;
     //종점 정류장 ID
 
+    @XmlElement(name = "RNUM")
+    private String rNum;
+    //API 제공 번호
+
     @Builder
     public BusRouteInfoDto(String brtId, String brtNo, String brtName, String direction, String company, String brtType, String busClass, String stopStId, String stopEdId) {
         this.brtId = brtId;

@@ -54,7 +54,7 @@ public class BusInfoSaveController {
     @GetMapping("/routeinfo/save")
     public void saveBusRouteInfo(){
         String pageNo = "1";
-        String totalCount = "500";
+        String totalCount = "1000";
 
         busInfoSaveService.saveBusRouteInfo(pageNo,totalCount);
     }
@@ -68,12 +68,15 @@ public class BusInfoSaveController {
      **/
     @GetMapping("/stoprouteinfo/save")
     public void saveBusStopRouteInfo(){
-        //TODO: 25-02-28 기준 노선 3개 추가됌. (UPDATE 필요)
-        int busStopTotalCnt = 488;
+        //TODO: 25-01-28 기준 노선 3개 추가됌. (UPDATE 필요)
+        List<BusRouteInfoDto> busRouteInfoDtoList = busInfoApiService.requestBusRouteInfo("1", "1000");
+        //버스 노선 개수를 가져오기 위한 호출
+
+        int busRouteTotalCnt = Integer.parseInt(busRouteInfoDtoList.get(busRouteInfoDtoList.size() - 1).getRNum());
         String pageNo = "1";
         String totalCount = "100";
 
-        for (int i = 1; i <=busStopTotalCnt; i++) {
+        for (int i = 1; i <=busRouteTotalCnt; i++) {
             BusRouteInfoDto busRouteInfoDto = busInfoSearchService.searchBusRouteInfo((long) i);
             String routeId = busRouteInfoDto.getBrtId();
 
@@ -84,5 +87,7 @@ public class BusInfoSaveController {
             }
         }
     }
+
+
 
 }
