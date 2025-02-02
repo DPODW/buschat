@@ -2,8 +2,10 @@ package com.dpod.buschat.businfo.repo.bus.impl;
 
 import com.dpod.buschat.businfo.dto.BusRouteRoadInfoDto;
 import com.dpod.buschat.businfo.dto.BusStopRouteInfoDto;
+import com.dpod.buschat.businfo.entity.BusStopInfo;
 import com.dpod.buschat.businfo.entity.QBusRouteInfo;
 import com.dpod.buschat.businfo.entity.QBusStopInfo;
+import com.dpod.buschat.businfo.repo.bus.BusStopInfoRepo;
 import com.dpod.buschat.businfo.repo.bus.BusStopRouteRepo;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
@@ -41,9 +43,32 @@ public class BusStopRouteRepoImpl implements BusStopRouteRepo {
                                 .when(qBusStopInfo.busStopRouteIdList.isNull())
                                 .then(busRouteRoadInfoDto.getRouteId())
                                 .otherwise(qBusStopInfo.busStopRouteIdList.concat("|" + busRouteRoadInfoDto.getRouteId()))
-                        //busStopRouteIdList 에 getStopId 가 있으면 건너뛰는 조건 추가 필요 ( | 기호로 이어져있는 형식이기 때문에 LIKE 처리 예상 )
                 )
                 .execute();
+    }
+
+    @Override
+    public void updateBusStopRoute(BusRouteRoadInfoDto busRouteRoadInfoDto) {
+        QBusStopInfo qBusStopInfo = QBusStopInfo.busStopInfo;
+
+        String busStopRouteIdList = queryFactory.select(qBusStopInfo.busStopRouteIdList)
+                .from(qBusStopInfo)
+                .where(qBusStopInfo.busStopId.eq(busRouteRoadInfoDto.getStopId()))
+                .fetchOne();
+
+        if(!busStopRouteIdList.contains(busRouteRoadInfoDto.getRouteId())) {
+            //정류장 노선 정보에 없는 노선만 UPDATE 쿼리 실행
+            queryFactory.update(qBusStopInfo)
+                    .where(qBusStopInfo.busStopId.eq(busRouteRoadInfoDto.getStopId()))
+                    .set(
+                            qBusStopInfo.busStopRouteIdList,
+                            new CaseBuilder()
+                                    .when(qBusStopInfo.busStopRouteIdList.isNull())
+                                    .then(busRouteRoadInfoDto.getRouteId())
+                                    .otherwise(qBusStopInfo.busStopRouteIdList.concat("|" + busRouteRoadInfoDto.getRouteId()))
+                    )
+                    .execute();
+        }
     }
 
 

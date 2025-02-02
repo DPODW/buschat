@@ -7,6 +7,7 @@ import com.dpod.buschat.businfo.service.BusInfoSaveService;
 import com.dpod.buschat.businfo.service.BusInfoSearchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,7 +37,7 @@ public class BusInfoSaveController {
      * 추후 데이터 유무를 기준으로 UPDATE 처리 기능 추가할 예정
      * 현재 실행시 동일한 데이터가 중복 저장되니 요청 주의 필요
      **/
-    @GetMapping("/stopinfo/save")
+    @PostMapping("/stopinfo/save")
     public void saveBusStopInfo(){
         String pageNo = "1";
         String totalCount = "3542";
@@ -51,7 +52,7 @@ public class BusInfoSaveController {
      * 추후 데이터 유무를 기준으로 UPDATE 처리 기능 추가할 예정
      * 현재 실행시 동일한 데이터가 중복 저장되니 요청 주의 필요
      **/
-    @GetMapping("/routeinfo/save")
+    @PostMapping("/routeinfo/save")
     public void saveBusRouteInfo(){
         String pageNo = "1";
         String totalCount = "1000";
@@ -66,9 +67,8 @@ public class BusInfoSaveController {
      * 추후 데이터 유무를 기준으로 UPDATE 처리 기능 추가할 예정
      * 현재 실행시 동일한 데이터가 중복 저장되니 요청 주의 필요
      **/
-    @GetMapping("/stoprouteinfo/save")
+    @PostMapping("/stoprouteinfo/save")
     public void saveBusStopRouteInfo(){
-        //TODO: 25-01-28 기준 노선 3개 추가됌. (UPDATE 필요)
         List<BusRouteInfoDto> busRouteInfoDtoList = busInfoApiService.requestBusRouteInfo("1", "1000");
         //버스 노선 개수를 가져오기 위한 호출
 
@@ -87,6 +87,15 @@ public class BusInfoSaveController {
             }
         }
     }
+
+
+    @PostMapping("/stoprouteinfo/update")
+    public void updateBusRouteInfo(){
+
+
+    }
+
+
 
 
 

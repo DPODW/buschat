@@ -1,5 +1,7 @@
 package com.dpod.buschat.bus;
 
+import com.dpod.buschat.businfo.entity.BusStopInfo;
+import com.dpod.buschat.businfo.repo.bus.BusStopInfoRepo;
 import com.dpod.buschat.businfo.repo.bus.BusStopRouteRepo;
 import com.dpod.buschat.businfo.service.BusInfoSaveService;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +19,16 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 @Slf4j
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class BusRouteInfoTest {
+
+    private final BusStopInfoRepo busStopInfoRepo;
+
+    @Autowired
+    public BusRouteInfoTest(BusStopInfoRepo busStopInfoRepo) {
+        this.busStopInfoRepo = busStopInfoRepo;
+    }
 
     @Test
     @DisplayName("| 기준으로 노선 ID 를 자르는 테스트")
@@ -34,12 +45,14 @@ public class BusRouteInfoTest {
 
 
     @Test
-    @DisplayName("String -> int 변환 테스트")
-    void castStringToInt(){
-        String testString = "123";
-        int testInt = 123;
+    @DisplayName("JPA findAllByBusStopRouteIdListLike 메소드 테스트")
+    void findAllByBusStopRouteIdListLikeTest() {
+        String testBusRouteId = "%11111111%";
 
-        assertThat(Integer.parseInt(testString)).isEqualTo(testInt);
+        List<BusStopInfo> allByBusStopRouteIdListLike = busStopInfoRepo.findAllByBusStopRouteIdListLike(testBusRouteId);
+
+        assertThat(allByBusStopRouteIdListLike.size()).isEqualTo(1);
     }
+
 
 }

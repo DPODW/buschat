@@ -12,8 +12,9 @@ public interface BusStopRouteRepo {
 
     void saveBusStopRoute(BusRouteRoadInfoDto busRouteRoadInfoDto);
 
-    List<BusStopRouteInfoDto> searchBusRouteDetail(List<String> busStopRouteIdSplit);
+    void updateBusStopRoute(BusRouteRoadInfoDto busRouteRoadInfoDto);
 
+    List<BusStopRouteInfoDto> searchBusRouteDetail(List<String> busStopRouteIdSplit);
 
 
 }
