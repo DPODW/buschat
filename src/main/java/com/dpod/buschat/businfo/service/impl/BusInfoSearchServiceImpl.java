@@ -45,4 +45,9 @@ public class BusInfoSearchServiceImpl implements BusInfoSearchService{
         BusRouteInfo busRouteInfosBySequence = busRouteInfoRepo.findBusRouteInfosBySequence(sequence);
         return toDtoConvert.busRouteInfoEntityToDto(busRouteInfosBySequence);
     }
+
+    @Override
+    public int searchBusStopRouteCount() {
+        return busStopInfoRepo.countByBusStopRouteIdListIsNotNull();
+    }
 }

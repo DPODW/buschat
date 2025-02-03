@@ -1,6 +1,7 @@
 package com.dpod.buschat.bus;
 
 import com.dpod.buschat.businfo.entity.BusStopInfo;
+import com.dpod.buschat.businfo.repo.bus.BusRouteInfoRepo;
 import com.dpod.buschat.businfo.repo.bus.BusStopInfoRepo;
 import com.dpod.buschat.businfo.repo.bus.BusStopRouteRepo;
 import com.dpod.buschat.businfo.service.BusInfoSaveService;
@@ -25,9 +26,12 @@ public class BusRouteInfoTest {
 
     private final BusStopInfoRepo busStopInfoRepo;
 
+    private final BusRouteInfoRepo busRouteInfoRepo;
+
     @Autowired
-    public BusRouteInfoTest(BusStopInfoRepo busStopInfoRepo) {
+    public BusRouteInfoTest(BusStopInfoRepo busStopInfoRepo, BusRouteInfoRepo busRouteInfoRepo) {
         this.busStopInfoRepo = busStopInfoRepo;
+        this.busRouteInfoRepo = busRouteInfoRepo;
     }
 
     @Test
@@ -54,5 +58,21 @@ public class BusRouteInfoTest {
         assertThat(allByBusStopRouteIdListLike.size()).isEqualTo(1);
     }
 
+
+    @Test
+    @DisplayName("JPA BusRouteInfoRepo 의 CountAll 메소드 테스트")
+    void countBusRouteInfo() {
+        int busRouteInfoTotalCnt = busRouteInfoRepo.countAllBy();
+
+        assertThat(busRouteInfoTotalCnt).isEqualTo(490);
+    }
+
+    @Test
+    @DisplayName("JPA BusStopInfoRepo 의 countByBusStopRouteIdListIsNotNull 메소드 테스트")
+    void countByBusStopRouteIdListIsNotNull() {
+        int cnt = busStopInfoRepo.countByBusStopRouteIdListIsNotNull();
+
+        assertThat(cnt).isEqualTo(0);
+    }
 
 }

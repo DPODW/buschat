@@ -12,4 +12,6 @@ public interface BusInfoSaveService {
 
     void saveBusStopRoute(BusRouteRoadInfoDto busRouteRoadInfoDto);
 
+    void updateBusStopRoute(BusRouteRoadInfoDto busRouteRoadInfoDto);
+
 }

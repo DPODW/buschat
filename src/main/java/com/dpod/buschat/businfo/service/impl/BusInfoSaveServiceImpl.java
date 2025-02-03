@@ -72,4 +72,9 @@ public class BusInfoSaveServiceImpl implements BusInfoSaveService {
     public void saveBusStopRoute(BusRouteRoadInfoDto busRouteRoadInfoDto) {
         busStopRouteRepo.saveBusStopRoute(busRouteRoadInfoDto);
     }
+
+    @Override
+    public void updateBusStopRoute(BusRouteRoadInfoDto busRouteRoadInfoDto) {
+        busStopRouteRepo.updateBusStopRoute(busRouteRoadInfoDto);
+    }
 }

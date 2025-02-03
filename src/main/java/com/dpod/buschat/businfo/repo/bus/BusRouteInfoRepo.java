@@ -9,4 +9,6 @@ public interface BusRouteInfoRepo extends JpaRepository<BusRouteInfo,Long> {
 
     BusRouteInfo findBusRouteInfosBySequence(Long sequence);
 
+    int countAllBy();
+
 }

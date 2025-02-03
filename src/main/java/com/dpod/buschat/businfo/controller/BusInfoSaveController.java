@@ -5,6 +5,7 @@ import com.dpod.buschat.businfo.dto.BusRouteRoadInfoDto;
 import com.dpod.buschat.businfo.service.BusInfoApiService;
 import com.dpod.buschat.businfo.service.BusInfoSaveService;
 import com.dpod.buschat.businfo.service.BusInfoSearchService;
+import com.dpod.buschat.businfo.service.BusRouteInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,11 +25,14 @@ public class BusInfoSaveController {
     
     private final BusInfoApiService busInfoApiService;
 
+    private final BusRouteInfoService busRouteInfoService;
 
-    public BusInfoSaveController(BusInfoSaveService busInfoSaveService, BusInfoSearchService busInfoSearchService, BusInfoApiService busInfoApiService) {
+
+    public BusInfoSaveController(BusInfoSaveService busInfoSaveService, BusInfoSearchService busInfoSearchService, BusInfoApiService busInfoApiService, BusRouteInfoService busRouteInfoService) {
         this.busInfoSaveService = busInfoSaveService;
         this.busInfoSearchService = busInfoSearchService;
         this.busInfoApiService = busInfoApiService;
+        this.busRouteInfoService = busRouteInfoService;
     }
 
     /**
@@ -69,34 +73,47 @@ public class BusInfoSaveController {
      **/
     @PostMapping("/stoprouteinfo/save")
     public void saveBusStopRouteInfo(){
-        List<BusRouteInfoDto> busRouteInfoDtoList = busInfoApiService.requestBusRouteInfo("1", "1000");
-        //버스 노선 개수를 가져오기 위한 호출
-
-        int busRouteTotalCnt = Integer.parseInt(busRouteInfoDtoList.get(busRouteInfoDtoList.size() - 1).getRNum());
         String pageNo = "1";
         String totalCount = "100";
 
-        for (int i = 1; i <=busRouteTotalCnt; i++) {
-            BusRouteInfoDto busRouteInfoDto = busInfoSearchService.searchBusRouteInfo((long) i);
-            String routeId = busRouteInfoDto.getBrtId();
+        List<BusRouteInfoDto> busRouteInfoDtoList = busInfoApiService.requestBusRouteInfo("1", "1000");
+        int busRouteTotalApi = Integer.parseInt(busRouteInfoDtoList.get(busRouteInfoDtoList.size() - 1).getRNum());
+        //API 에서 버스 노선 개수를 가져오기 위한 호출
 
-            List<BusRouteRoadInfoDto> busRouteRoadInfoDtoList = busInfoApiService.requestBusStopRouteInfo(routeId,pageNo,totalCount);
+        int busRouteTotalDB = busRouteInfoService.countBusRouteInfo();
+        //DB 에서 버스 노선 개수를 가져오기 위한 호출
 
-            for(BusRouteRoadInfoDto busRouteRoadInfoDto : busRouteRoadInfoDtoList){
-                busInfoSaveService.saveBusStopRoute(busRouteRoadInfoDto);
-            }
+        if(busRouteTotalApi!=busRouteTotalDB) {
+            log.error("----------API 제공 노선 개수와 DB에 저장된 노선 개수가 다릅니다----------");
+
+            //추후 커스텀 예외로 개선 필요
+            throw new RuntimeException("API 제공 노선 개수와 DB에 저장된 노선 개수가 다릅니다");
         }
+
+        //TODO: BusStopRoute 가 전부 비어있으면 일반 저장
+        if(busInfoSearchService.searchBusStopRouteCount()==0){
+            for (int i = 1; i <=busRouteTotalApi; i++) {
+                BusRouteInfoDto busRouteInfoDto = busInfoSearchService.searchBusRouteInfo((long) i);
+                String routeId = busRouteInfoDto.getBrtId();
+
+                List<BusRouteRoadInfoDto> busRouteRoadInfoDtoList = busInfoApiService.requestBusStopRouteInfo(routeId,pageNo,totalCount);
+
+                for(BusRouteRoadInfoDto busRouteRoadInfoDto : busRouteRoadInfoDtoList){
+                    busInfoSaveService.saveBusStopRoute(busRouteRoadInfoDto);
+                }
+            }
+        }else
+            //TODO: BusStopRoute 가 비어있지 않으면 업데이트
+            for (int i = 1; i <=busRouteTotalApi; i++) {
+                BusRouteInfoDto busRouteInfoDto = busInfoSearchService.searchBusRouteInfo((long) i);
+                String routeId = busRouteInfoDto.getBrtId();
+
+                List<BusRouteRoadInfoDto> busRouteRoadInfoDtoList = busInfoApiService.requestBusStopRouteInfo(routeId,pageNo,totalCount);
+
+                for(BusRouteRoadInfoDto busRouteRoadInfoDto : busRouteRoadInfoDtoList){
+                    busInfoSaveService.updateBusStopRoute(busRouteRoadInfoDto);
+                }
+            }
     }
-
-
-    @PostMapping("/stoprouteinfo/update")
-    public void updateBusRouteInfo(){
-
-
-    }
-
-
-
-
 
 }
