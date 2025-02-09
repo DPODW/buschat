@@ -44,7 +44,7 @@ public class BusInfoSaveController {
     @PostMapping("/stopinfo/save")
     public void saveBusStopInfo(){
         String pageNo = "1";
-        String totalCount = "3542";
+        String totalCount = "5000";
 
         busInfoSaveService.saveBusStopInfo(pageNo,totalCount);
     }
@@ -65,12 +65,9 @@ public class BusInfoSaveController {
     }
 
 
-    /**
-     * ---- 사용 주의 ----
-     * 정류장 도착 노선 데이터를 받아와서 전부 DB 에 저장하는 컨트롤러
-     * 추후 데이터 유무를 기준으로 UPDATE 처리 기능 추가할 예정
-     * 현재 실행시 동일한 데이터가 중복 저장되니 요청 주의 필요
-     **/
+
+
+
     @PostMapping("/stoprouteinfo/save")
     public void saveBusStopRouteInfo(){
         String pageNo = "1";
@@ -89,31 +86,31 @@ public class BusInfoSaveController {
             //추후 커스텀 예외로 개선 필요
             throw new RuntimeException("API 제공 노선 개수와 DB에 저장된 노선 개수가 다릅니다");
         }
-
-        //TODO: BusStopRoute 가 전부 비어있으면 일반 저장
         if(busInfoSearchService.searchBusStopRouteCount()==0){
+            log.info("----------정류장 정차 노선 정보 저장 시작----------");
             for (int i = 1; i <=busRouteTotalApi; i++) {
-                BusRouteInfoDto busRouteInfoDto = busInfoSearchService.searchBusRouteInfo((long) i);
-                String routeId = busRouteInfoDto.getBrtId();
-
-                List<BusRouteRoadInfoDto> busRouteRoadInfoDtoList = busInfoApiService.requestBusStopRouteInfo(routeId,pageNo,totalCount);
+                List<BusRouteRoadInfoDto> busRouteRoadInfoDtoList = getBusRouteRoadInfoList(i, pageNo, totalCount);
 
                 for(BusRouteRoadInfoDto busRouteRoadInfoDto : busRouteRoadInfoDtoList){
                     busInfoSaveService.saveBusStopRoute(busRouteRoadInfoDto);
                 }
             }
-        }else
-            //TODO: BusStopRoute 가 비어있지 않으면 업데이트
+        }else{
+            log.info("----------정류장 정차 노선 정보 업데이트 시작----------");
             for (int i = 1; i <=busRouteTotalApi; i++) {
-                BusRouteInfoDto busRouteInfoDto = busInfoSearchService.searchBusRouteInfo((long) i);
-                String routeId = busRouteInfoDto.getBrtId();
-
-                List<BusRouteRoadInfoDto> busRouteRoadInfoDtoList = busInfoApiService.requestBusStopRouteInfo(routeId,pageNo,totalCount);
-
+                List<BusRouteRoadInfoDto> busRouteRoadInfoDtoList = getBusRouteRoadInfoList(i, pageNo, totalCount);
                 for(BusRouteRoadInfoDto busRouteRoadInfoDto : busRouteRoadInfoDtoList){
                     busInfoSaveService.updateBusStopRoute(busRouteRoadInfoDto);
                 }
             }
+        }
+    }
+
+    private List<BusRouteRoadInfoDto> getBusRouteRoadInfoList(long i, String pageNo, String totalCount) {
+        BusRouteInfoDto busRouteInfoDto = busInfoSearchService.searchBusRouteInfo(i);
+        String routeId = busRouteInfoDto.getBrtId();
+
+        return busInfoApiService.requestBusStopRouteInfo(routeId, pageNo, totalCount);
     }
 
 }

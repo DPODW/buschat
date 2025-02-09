@@ -2,7 +2,9 @@ package com.dpod.buschat.businfo.service.impl;
 
 import com.dpod.buschat.businfo.repo.bus.BusRouteInfoRepo;
 import com.dpod.buschat.businfo.service.BusRouteInfoService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class BusRouteInfoServiceImpl implements BusRouteInfoService {
 
     private final BusRouteInfoRepo busRouteInfoRepo;
