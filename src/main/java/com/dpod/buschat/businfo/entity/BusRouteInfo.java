@@ -16,15 +16,15 @@ public class BusRouteInfo {
     private Long sequence;
     //컬럼 순서
 
-    @Column(name = "BRTID")
+    @Column(name = "BRT_ID")
     private String brtId;
     //노선 ID
 
-    @Column(name = "BRTNO")
+    @Column(name = "BRT_NO")
     private String brtNo;
     //노선 번호
 
-    @Column(name = "BRTNAME")
+    @Column(name = "BRT_NAME")
     private String brtName;
     //노선명
 
@@ -36,7 +36,7 @@ public class BusRouteInfo {
     private String company;
     //회사명
 
-    @Column(name = "BRTTYPE")
+    @Column(name = "BRT_TYPE")
     private String brtType;
     //노선타입
 
@@ -44,11 +44,11 @@ public class BusRouteInfo {
     private String busClass;
     //노선 구분
 
-    @Column(name = "STOPSTID")
+    @Column(name = "STOPST_ID")
     private String stopStId;
     //기점 정류장 ID
 
-    @Column(name = "STOPEDID")
+    @Column(name = "STOPED_ID")
     private String stopEdId;
     //종점 정류장 ID
 

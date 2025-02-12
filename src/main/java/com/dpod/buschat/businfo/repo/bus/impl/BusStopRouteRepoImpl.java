@@ -56,12 +56,6 @@ public class BusStopRouteRepoImpl implements BusStopRouteRepo {
                 .from(qBusStopInfo)
                 .where(qBusStopInfo.busStopId.eq(busRouteRoadInfoDto.getStopId()))
                 .fetchOne();
-        /*todo: 노선이 하나도 없는 정류장이 존재 (이름 : 시외버스정류장) => NPE 발생. . . 처리 필요
-        * */
-
-        if(busStopRouteIdList == null){
-            log.info("!>!>!>!>!>!{}",busRouteRoadInfoDto);
-        }
 
         if(!busStopRouteIdList.contains(busRouteRoadInfoDto.getRouteId())) {
             //정류장 노선 정보에 없는 노선만 UPDATE 쿼리 실행

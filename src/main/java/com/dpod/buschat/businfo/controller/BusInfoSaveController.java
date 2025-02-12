@@ -2,6 +2,8 @@ package com.dpod.buschat.businfo.controller;
 
 import com.dpod.buschat.businfo.dto.BusRouteInfoDto;
 import com.dpod.buschat.businfo.dto.BusRouteRoadInfoDto;
+import com.dpod.buschat.businfo.exception.bus.BusInfoException;
+import com.dpod.buschat.businfo.exception.bus.ErrorCode;
 import com.dpod.buschat.businfo.service.BusInfoApiService;
 import com.dpod.buschat.businfo.service.BusInfoSaveService;
 import com.dpod.buschat.businfo.service.BusInfoSearchService;
@@ -65,9 +67,6 @@ public class BusInfoSaveController {
     }
 
 
-
-
-
     @PostMapping("/stoprouteinfo/save")
     public void saveBusStopRouteInfo(){
         String pageNo = "1";
@@ -81,11 +80,9 @@ public class BusInfoSaveController {
         //DB 에서 버스 노선 개수를 가져오기 위한 호출
 
         if(busRouteTotalApi!=busRouteTotalDB) {
-            log.error("----------API 제공 노선 개수와 DB에 저장된 노선 개수가 다릅니다----------");
-
-            //추후 커스텀 예외로 개선 필요
-            throw new RuntimeException("API 제공 노선 개수와 DB에 저장된 노선 개수가 다릅니다");
+            throw new BusInfoException(ErrorCode.ROUTE_COUNT_MISMATCH);
         }
+
         if(busInfoSearchService.searchBusStopRouteCount()==0){
             log.info("----------정류장 정차 노선 정보 저장 시작----------");
             for (int i = 1; i <=busRouteTotalApi; i++) {
@@ -106,10 +103,10 @@ public class BusInfoSaveController {
         }
     }
 
+
     private List<BusRouteRoadInfoDto> getBusRouteRoadInfoList(long i, String pageNo, String totalCount) {
         BusRouteInfoDto busRouteInfoDto = busInfoSearchService.searchBusRouteInfo(i);
         String routeId = busRouteInfoDto.getBrtId();
-
         return busInfoApiService.requestBusStopRouteInfo(routeId, pageNo, totalCount);
     }
 
