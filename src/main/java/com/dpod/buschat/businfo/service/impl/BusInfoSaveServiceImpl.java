@@ -29,10 +29,10 @@ public class BusInfoSaveServiceImpl implements BusInfoSaveService {
     private final ToEntityConvert toEntityConvert;
 
 
-    public BusInfoSaveServiceImpl(BusInfoApiService busInfoApiService, BusStopInfoRepo busStopInfoRepo, BusRouteInfoRepo busRouteInfoRepo1, BusStopRouteRepo busStopRouteRepo, ToEntityConvert toEntityConvert) {
+    public BusInfoSaveServiceImpl(BusInfoApiService busInfoApiService, BusStopInfoRepo busStopInfoRepo, BusRouteInfoRepo busRouteInfoRepo, BusStopRouteRepo busStopRouteRepo, ToEntityConvert toEntityConvert) {
         this.busInfoApiService = busInfoApiService;
         this.busStopInfoRepo = busStopInfoRepo;
-        this.busRouteInfoRepo = busRouteInfoRepo1;
+        this.busRouteInfoRepo = busRouteInfoRepo;
         this.busStopRouteRepo = busStopRouteRepo;
         this.toEntityConvert = toEntityConvert;
     }
@@ -50,21 +50,6 @@ public class BusInfoSaveServiceImpl implements BusInfoSaveService {
                     busStopInfoList.add(busStopInfo);
                 });
         busStopInfoRepo.saveAll(busStopInfoList);
-    }
-
-
-    @Override
-    public void saveBusRouteInfo(String pageNo, String totalCount) {
-        List<BusRouteInfoDto> busRouteInfoDtoList = busInfoApiService.requestBusRouteInfo(pageNo, totalCount);
-
-        List<BusRouteInfo> busRouteInfoList = new ArrayList<>();
-
-        busRouteInfoDtoList.forEach(
-                busRouteInfoDto -> {
-                    BusRouteInfo busRouteInfo = toEntityConvert.busRouteDtoToEntity(busRouteInfoDto);
-                    busRouteInfoList.add(busRouteInfo);
-                });
-        busRouteInfoRepo.saveAll(busRouteInfoList);
     }
 
 

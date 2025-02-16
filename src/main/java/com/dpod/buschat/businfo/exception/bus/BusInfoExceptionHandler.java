@@ -12,7 +12,6 @@ public class BusInfoExceptionHandler {
 
     @ExceptionHandler(BusInfoException.class)
     protected ResponseEntity<BusInfoErrorRep> handleCustomException(BusInfoException exception){
-        log.error("------API 제공 노선 개수와 DB에 저장된 노선 개수가 다릅니다------");
         return BusInfoErrorRep.ErrorResponseEntity(exception.getErrorCode());
     }
 

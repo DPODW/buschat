@@ -8,8 +8,6 @@ public interface BusInfoSaveService {
 
     void saveBusStopInfo(String pageNo, String totalCount);
 
-    void saveBusRouteInfo(String pageNo,String totalCount);
-
     void saveBusStopRoute(BusRouteRoadInfoDto busRouteRoadInfoDto);
 
     void updateBusStopRoute(BusRouteRoadInfoDto busRouteRoadInfoDto);

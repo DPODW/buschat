@@ -47,6 +47,11 @@ public class BusInfoSearchServiceImpl implements BusInfoSearchService{
     }
 
     @Override
+    public int searchBusStopInfoCount() {
+        return busStopInfoRepo.countAllBy();
+    }
+
+    @Override
     public int searchBusStopRouteCount() {
         return busStopInfoRepo.countByBusStopRouteIdListIsNotNull();
     }

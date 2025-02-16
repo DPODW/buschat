@@ -35,6 +35,10 @@ public class BusStopInfoDto {
     private String busStopMark;
     //정류장 비고 ( 방면 정보 )
 
+    @XmlElement(name = "RNUM")
+    private String rNum;
+    //API 제공 번호
+
     private List<BusStopRouteInfoDto> busStopRouteInfoList;
     //정류장마다 멈추는 노선 아이디 LIST
 

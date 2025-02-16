@@ -23,7 +23,6 @@ public class ToDtoConvert {
 
     protected BusStopInfoDto busStopEntityToDto(BusStopInfo busStopInfo){
         List<String> busStopRouteIdSplit = List.of(busStopInfo.getBusStopRouteIdList().split("\\|"));
-        log.info(">>{}", busStopRouteIdSplit);
 
         List<BusStopRouteInfoDto> busStopRouteInfoDtoList = busStopRouteRepo.searchBusRouteDetail(busStopRouteIdSplit);
 

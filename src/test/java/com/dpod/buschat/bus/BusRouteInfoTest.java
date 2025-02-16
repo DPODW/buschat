@@ -75,4 +75,12 @@ public class BusRouteInfoTest {
         assertThat(cnt).isEqualTo(0);
     }
 
+    @Test
+    @DisplayName("JPA BusStopInfoRepo 의 CountAll 메소드 테스트")
+    void countBusStopInfo(){
+        int i = busStopInfoRepo.countAllBy();
+
+        assertThat(i).isEqualTo(3543);
+    }
+
 }
