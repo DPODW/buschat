@@ -32,16 +32,16 @@ public class BusRouteInfoServiceImpl implements BusRouteInfoService {
 
     @Override
     public void updateBusRouteInfo(String pageNo, String totalCount) {
-        //노선 개수 데이터는 500개 정도라, 일일히 SELECT 해서 UPDATE 하는것보다, 전체 삭제 -> 재 저장이 효율적
         busRouteInfoRepo.deleteAllInBatch();
+        busRouteInfoRepo.resetBusRouteInfoSequence();
         busRouteInfoRepo.saveAll(createBusRouteInfoEntity(pageNo, totalCount));
+        //데이터가 있으면 AUTO_INCREMENT 를 초기화할 수 없기 때문에 삭제 후 초기화
     }
+
 
     @Override
     public List<BusRouteInfo> createBusRouteInfoEntity(String pageNo, String totalCount) {
-        //API 에서 받은 버스 노선 정보를 entity 로 만들어주는 메소드
         List<BusRouteInfoDto> busRouteInfoDtoList = busInfoApiService.requestBusRouteInfo(pageNo, totalCount);
-
         List<BusRouteInfo> busRouteInfoList = new ArrayList<>();
 
         busRouteInfoDtoList.forEach(
@@ -51,6 +51,7 @@ public class BusRouteInfoServiceImpl implements BusRouteInfoService {
                 });
         return busRouteInfoList;
     }
+
 
     @Override
     public int countBusRouteInfo() {

@@ -13,9 +13,4 @@ public interface BusInfoSearchService {
 
     BusRouteInfoDto searchBusRouteInfo(Long sequence);
 
-    int searchBusStopInfoCount();
-
-    int searchBusStopRouteCount();
-
-
 }
