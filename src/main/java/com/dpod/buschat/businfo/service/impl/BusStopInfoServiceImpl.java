@@ -34,7 +34,18 @@ public class BusStopInfoServiceImpl implements BusStopInfoService {
 
     @Override
     public void saveBusStopInfo(String pageNo, String totalCount) {
-        //todo: entity 추출 필요
+        busStopInfoRepo.saveAll(createBusStopInfoEntity(pageNo, totalCount));
+    }
+
+    @Override
+    public void updateBusStopInfo(String pageNo, String totalCount) {
+        busStopInfoRepo.deleteAllInBatch();
+        busStopInfoRepo.resetBusStopInfoSequence();
+        busStopInfoRepo.saveAll(createBusStopInfoEntity(pageNo, totalCount));
+    }
+
+    @Override
+    public List<BusStopInfo> createBusStopInfoEntity(String pageNo, String totalCount) {
         List<BusStopInfoDto> busStopInfoDtoList = busInfoApiService.requestBusStopInfo(pageNo, totalCount);
 
         List<BusStopInfo> busStopInfoList = new ArrayList<>();
@@ -44,14 +55,7 @@ public class BusStopInfoServiceImpl implements BusStopInfoService {
                     BusStopInfo busStopInfo = toEntityConvert.busStopDtoToEntity(busStopInfoDto);
                     busStopInfoList.add(busStopInfo);
                 });
-        busStopInfoRepo.saveAll(busStopInfoList);
-    }
-
-    @Override
-    public void updateBusStopInfo(String pageNo, String totalCount) {
-        busStopInfoRepo.deleteAllInBatch();
-        busStopInfoRepo.resetBusStopInfoSequence();
-        //todo:saveAll 필요
+        return busStopInfoList;
     }
 
 

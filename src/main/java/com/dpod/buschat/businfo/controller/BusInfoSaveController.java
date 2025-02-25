@@ -41,24 +41,19 @@ public class BusInfoSaveController {
         this.busRouteInfoService = busRouteInfoService;
     }
 
-    /**
-     * ---- 사용 주의 ----
-     * 버스 정보 API 데이터를 받아와서 전부 DB 에 저장하는 컨트롤러
-     * 추후 데이터 유무를 기준으로 UPDATE 처리 기능 추가할 예정
-     * 현재 실행시 동일한 데이터가 중복 저장되니 요청 주의 필요
-     **/
-    @PostMapping("/stopinfo/save")
+    @PostMapping("/stopinfo")
     public void saveBusStopInfo(){
         if(busStopInfoService.countBusStopInfo()==0){
             log.info("----------정류장 정보 저장 시작----------");
             busStopInfoService.saveBusStopInfo(PAGE_NO,TOTAL_COUNT);   
         }else{
-            //TODO: UPDATE 로직 필요
+            log.info("----------정류장 정보 업데이트 시작 (업데이트 후 정차 노선 저장 API 호출 필요)----------");
+            busStopInfoService.updateBusStopInfo(PAGE_NO,TOTAL_COUNT);
         }
     }
 
 
-    @PostMapping("/routeinfo/save")
+    @PostMapping("/routeinfo")
     public void saveBusRouteInfo(){
         if(busRouteInfoService.countBusRouteInfo()==0){
             log.info("----------노선 정보 저장 시작----------");
@@ -69,7 +64,7 @@ public class BusInfoSaveController {
         }
     }
 
-    @PostMapping("/stoprouteinfo/save")
+    @PostMapping("/stoprouteinfo")
     public void saveBusStopRouteInfo(){
         List<BusStopInfoDto> busStopInfoDtoList = busInfoApiService.requestBusStopInfo(PAGE_NO, TOTAL_COUNT);
         int busStopTotalApi = Integer.parseInt(busStopInfoDtoList.get(busStopInfoDtoList.size() - 1).getRNum())+1;

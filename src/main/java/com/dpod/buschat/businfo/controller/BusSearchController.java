@@ -3,15 +3,10 @@ package com.dpod.buschat.businfo.controller;
 
 import com.dpod.buschat.businfo.dto.BusArrivalInfoDto;
 import com.dpod.buschat.businfo.dto.BusStopInfoDto;
-import com.dpod.buschat.businfo.dto.xml.BusArrivalInfoXml;
 import com.dpod.buschat.businfo.service.BusInfoApiService;
 import com.dpod.buschat.businfo.service.BusInfoSearchService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
-import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestClient;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,6 +24,13 @@ public class BusSearchController {
         this.busInfoSearchService = busInfoSearchService;
         this.busInfoApiService = busInfoApiService;
     }
+
+    /*
+    * TODO: RESTFUL 한 개발을 위해선
+    *  1. POST -> GET 변경 필요
+    *  2. RequestBody -> RequestParam 으로 변경 필요 (GET 요청은 RequestBody 사용 불가)
+    *  3. URL 동사 불필요
+    * */
 
     @PostMapping("/stopinfo/search")
     @ResponseBody
