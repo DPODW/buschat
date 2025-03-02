@@ -9,7 +9,9 @@ import java.util.List;
 @Service
 public interface BusInfoSearchService {
 
-    List<BusStopInfoDto> searchBusStopInfo(String busStopName);
+    List<BusStopInfoDto> searchBusStopInfoToHgl(String busStopName);
+
+    BusStopInfoDto searchBusStopInfoToId(String busStopId);
 
     BusRouteInfoDto searchBusRouteInfo(Long sequence);
 

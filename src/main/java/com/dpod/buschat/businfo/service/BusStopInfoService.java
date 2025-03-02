@@ -1,6 +1,7 @@
 package com.dpod.buschat.businfo.service;
 
 import com.dpod.buschat.businfo.dto.BusRouteRoadInfoDto;
+import com.dpod.buschat.businfo.dto.BusStopInfoDto;
 import com.dpod.buschat.businfo.entity.BusStopInfo;
 import org.springframework.stereotype.Service;
 

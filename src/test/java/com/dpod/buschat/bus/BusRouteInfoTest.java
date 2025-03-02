@@ -3,6 +3,7 @@ package com.dpod.buschat.bus;
 import com.dpod.buschat.businfo.entity.BusStopInfo;
 import com.dpod.buschat.businfo.repo.bus.BusRouteInfoRepo;
 import com.dpod.buschat.businfo.repo.bus.BusStopInfoRepo;
+import com.dpod.buschat.businfo.service.impl.ToDtoConvert;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -76,6 +77,14 @@ public class BusRouteInfoTest {
         int i = busStopInfoRepo.countAllBy();
 
         assertThat(i).isEqualTo(3543);
+    }
+
+    @Test
+    @DisplayName("JPA BusStopInfoRepo 의 findAllByBusStopId 메소드 테스트")
+    void findAllByBusStopId() {
+        BusStopInfo testResult = busStopInfoRepo.findAllByBusStopId("192011433");
+        log.info("BusStopInfoRepo: {}",testResult);
+        log.info("BusStopInfoRepo Route List : {}",testResult.getBusStopRouteIdList());
     }
 
 }

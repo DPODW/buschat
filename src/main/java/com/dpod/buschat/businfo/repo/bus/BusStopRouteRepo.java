@@ -9,7 +9,6 @@ import java.util.List;
 @Repository
 public interface BusStopRouteRepo {
 
-
     void saveBusStopRoute(BusRouteRoadInfoDto busRouteRoadInfoDto);
 
     void updateBusStopRoute(BusRouteRoadInfoDto busRouteRoadInfoDto);

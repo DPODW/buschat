@@ -30,7 +30,9 @@ public class BusInfoSearchServiceImpl implements BusInfoSearchService{
 
 
     @Override
-    public List<BusStopInfoDto> searchBusStopInfo(String busStopName) {
+    public List<BusStopInfoDto> searchBusStopInfoToHgl(String busStopName) {
+        //정류장 한글 이름으로 검색
+
         List<BusStopInfo> allInfoByBusStopName = busStopInfoRepo.findAllByBusStopNameLike("%"+busStopName+"%");
 
         return allInfoByBusStopName.stream()
@@ -38,6 +40,13 @@ public class BusInfoSearchServiceImpl implements BusInfoSearchService{
                             return toDtoConvert.busStopEntityToDto(busStopInfo);
                         }
                 ).toList();
+    }
+
+    @Override
+    public BusStopInfoDto searchBusStopInfoToId(String busStopId) {
+        //정류장 버스 정류장 아이디로 검색
+
+        return toDtoConvert.busStopEntityToDto(busStopInfoRepo.findAllByBusStopId(busStopId));
     }
 
     @Override

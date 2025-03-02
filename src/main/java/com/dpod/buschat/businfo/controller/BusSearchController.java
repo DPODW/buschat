@@ -3,17 +3,23 @@ package com.dpod.buschat.businfo.controller;
 
 import com.dpod.buschat.businfo.dto.BusArrivalInfoDto;
 import com.dpod.buschat.businfo.dto.BusStopInfoDto;
+import com.dpod.buschat.businfo.dto.BusStopRouteInfoDto;
 import com.dpod.buschat.businfo.service.BusInfoApiService;
 import com.dpod.buschat.businfo.service.BusInfoSearchService;
+import com.dpod.buschat.businfo.service.BusStopInfoService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.concurrent.DefaultManagedAwareThreadFactory;
 import org.springframework.web.bind.annotation.*;
-import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
 @RestController
 @RequestMapping("/bus")
 public class BusSearchController {
+
+    private static final String TOTAL_COUNT = "50";
+
+    private static final String PAGE_NO = "1";
 
     private final BusInfoSearchService busInfoSearchService;
 
@@ -25,32 +31,22 @@ public class BusSearchController {
         this.busInfoApiService = busInfoApiService;
     }
 
-    /*
-    * TODO: RESTFUL 한 개발을 위해선
-    *  1. POST -> GET 변경 필요
-    *  2. RequestBody -> RequestParam 으로 변경 필요 (GET 요청은 RequestBody 사용 불가)
-    *  3. URL 동사 불필요
-    * */
 
-    @PostMapping("/stopinfo/search")
-    @ResponseBody
-    public List<BusStopInfoDto> searchBusStopInfo(@RequestBody HashMap<String, Object> busStopNameMap){
-        String busStopName = busStopNameMap.get("busStopName").toString();
-
-        return busInfoSearchService.searchBusStopInfo(busStopName);
+    @GetMapping("/stopinfo/{busStopName}")
+    public List<BusStopInfoDto> searchBusStopInfo(@PathVariable("busStopName") String busStopName) {
+        return busInfoSearchService.searchBusStopInfoToHgl(busStopName);
     }
 
 
-    @PostMapping("/stopinfo/arrival")
-    @ResponseBody
-    public List<BusArrivalInfoDto> searchBusArrivalInfo(@RequestBody HashMap<String,Object> busStopIdMap){
-        String busStopId = busStopIdMap.get("busStopId").toString();
-
-        String pageNo = "1";
-        String numOfRows = "10";
-
-        return busInfoApiService.requestBusArrivalInfo(busStopId, pageNo, numOfRows);
+    @GetMapping("/stopinfo/arrival/{busStopId}")
+    public List<BusArrivalInfoDto> searchBusArrivalInfo(@PathVariable("busStopId") String busStopId){
+        List<BusArrivalInfoDto> busArrivalInfoDtoList = busInfoApiService.requestBusArrivalInfo(busStopId, PAGE_NO, TOTAL_COUNT);
+        List<BusStopRouteInfoDto> busStopRouteInfoList = busInfoSearchService.searchBusStopInfoToId(busStopId).getBusStopRouteInfoList();
+        
+        //todo: 반복문 생성해서 처리 필요
+        
+        //busArrivalInfoDtoList.forEach();
+        return null;
     }
-
     
 }

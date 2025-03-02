@@ -21,7 +21,7 @@ public class ToDtoConvert {
         this.busStopRouteRepo = busStopRouteRepo;
     }
 
-    protected BusStopInfoDto busStopEntityToDto(BusStopInfo busStopInfo){
+    public BusStopInfoDto busStopEntityToDto(BusStopInfo busStopInfo){
         List<String> busStopRouteIdSplit = List.of(busStopInfo.getBusStopRouteIdList().split("\\|"));
 
         List<BusStopRouteInfoDto> busStopRouteInfoDtoList = busStopRouteRepo.searchBusRouteDetail(busStopRouteIdSplit);
@@ -37,7 +37,7 @@ public class ToDtoConvert {
     }
 
 
-    protected BusRouteInfoDto busRouteInfoEntityToDto(BusRouteInfo busRouteInfo){
+    public BusRouteInfoDto busRouteInfoEntityToDto(BusRouteInfo busRouteInfo){
         return BusRouteInfoDto.builder()
                 .brtId(busRouteInfo.getBrtId())
                 .brtNo(busRouteInfo.getBrtNo())

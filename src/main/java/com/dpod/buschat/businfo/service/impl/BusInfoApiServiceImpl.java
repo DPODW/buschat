@@ -72,13 +72,13 @@ public class BusInfoApiServiceImpl implements BusInfoApiService {
 
 
     @Override
-    public List<BusArrivalInfoDto> requestBusArrivalInfo(String busStopId,String pageNo, String numOfRows) {
+    public List<BusArrivalInfoDto> requestBusArrivalInfo(String busStopId,String pageNo, String totalCount) {
         RestClient restClient = getRestClient();
 
         BusArrivalInfoXml busArrivalInfoXml = restClient.get()
                 .uri("http://openapi.its.ulsan.kr/UlsanAPI/getBusArrivalInfo.xo?stopid={stopid}&" +
                                 "pageNo={pageNo}&numOfRows={numOfRows}&serviceKey={serviceKey}",
-                        busStopId,pageNo,numOfRows,secretkey)
+                        busStopId,pageNo,totalCount,secretkey)
                 .retrieve()
                 .body(BusArrivalInfoXml.class);
 

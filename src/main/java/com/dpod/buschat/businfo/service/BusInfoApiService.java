@@ -17,7 +17,7 @@ public interface BusInfoApiService {
 
     List<BusRouteRoadInfoDto> requestBusStopRouteInfo(String routeId, String pageNo, String totalCount);
 
-    List<BusArrivalInfoDto> requestBusArrivalInfo(String busStopId,String pageNo, String numOfRows);
+    List<BusArrivalInfoDto> requestBusArrivalInfo(String busStopId,String pageNo, String totalCount);
 
 
 }

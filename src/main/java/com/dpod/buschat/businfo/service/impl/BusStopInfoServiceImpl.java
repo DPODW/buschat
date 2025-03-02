@@ -7,11 +7,13 @@ import com.dpod.buschat.businfo.repo.bus.BusStopInfoRepo;
 import com.dpod.buschat.businfo.repo.bus.BusStopRouteRepo;
 import com.dpod.buschat.businfo.service.BusInfoApiService;
 import com.dpod.buschat.businfo.service.BusStopInfoService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class BusStopInfoServiceImpl implements BusStopInfoService {
 

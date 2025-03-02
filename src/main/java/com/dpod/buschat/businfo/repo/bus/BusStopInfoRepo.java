@@ -16,6 +16,8 @@ public interface BusStopInfoRepo extends JpaRepository<BusStopInfo,Long> {
 
     List<BusStopInfo> findAllByBusStopRouteIdListLike(String busStopRouteId);
 
+    BusStopInfo findAllByBusStopId(String busStopId);
+
     int countAllBy();
 
     int countByBusStopRouteIdListIsNotNull();
