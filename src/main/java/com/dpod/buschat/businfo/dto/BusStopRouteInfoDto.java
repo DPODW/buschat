@@ -14,6 +14,9 @@ public class BusStopRouteInfoDto {
     private String brtName;
     //노선 이름 (노선 번호 + 방면 정보)
 
+    private String brtId;
+    //노선 ID
+
     private String busStopStId;
     //노선 기점 정류장 ID
 
@@ -28,8 +31,9 @@ public class BusStopRouteInfoDto {
 
 
     @Builder
-    public BusStopRouteInfoDto(String brtName, String busStopStId, String busStopEdId, String busStopStName, String busStopEdName) {
+    public BusStopRouteInfoDto(String brtName,String brtId, String busStopStId, String busStopEdId, String busStopStName, String busStopEdName) {
         this.brtName = brtName;
+        this.brtId = brtId;
         this.busStopStId = busStopStId;
         this.busStopEdId = busStopEdId;
         this.busStopStName = busStopStName;

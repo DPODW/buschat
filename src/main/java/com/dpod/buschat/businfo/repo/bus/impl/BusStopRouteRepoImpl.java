@@ -80,7 +80,7 @@ public class BusStopRouteRepoImpl implements BusStopRouteRepo {
         QBusStopInfo qEdBusStopInfo = new QBusStopInfo("qEdBusStopInfo");
 
         return queryFactory.select(Projections.fields(BusStopRouteInfoDto.class,
-                        qBusRouteInfo.brtName, qBusRouteInfo.stopStId.as("busStopStId"), qStBusStopInfo.busStopName.as("busStopStName"),
+                        qBusRouteInfo.brtId, qBusRouteInfo.brtName, qBusRouteInfo.stopStId.as("busStopStId"), qStBusStopInfo.busStopName.as("busStopStName"),
                         qBusRouteInfo.stopEdId.as("busStopEdId"), qEdBusStopInfo.busStopName.as("busStopEdName")))
                 .from(qBusRouteInfo)
                 .join(qStBusStopInfo)

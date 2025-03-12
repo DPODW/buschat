@@ -1,7 +1,9 @@
 package com.dpod.buschat.businfo.service.impl;
 
+import com.dpod.buschat.businfo.dto.BusArrivalInfoDto;
 import com.dpod.buschat.businfo.dto.BusStopInfoDto;
 import com.dpod.buschat.businfo.dto.BusRouteRoadInfoDto;
+import com.dpod.buschat.businfo.dto.BusStopRouteInfoDto;
 import com.dpod.buschat.businfo.entity.BusStopInfo;
 import com.dpod.buschat.businfo.repo.bus.BusStopInfoRepo;
 import com.dpod.buschat.businfo.repo.bus.BusStopRouteRepo;
@@ -13,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
+
 @Service
 public class BusStopInfoServiceImpl implements BusStopInfoService {
 
@@ -58,6 +60,31 @@ public class BusStopInfoServiceImpl implements BusStopInfoService {
                     busStopInfoList.add(busStopInfo);
                 });
         return busStopInfoList;
+    }
+
+    @Override
+    public List<BusArrivalInfoDto> createBusAllArrivalList(List<BusArrivalInfoDto> busArrivalInfoDtoList, List<BusStopRouteInfoDto> busStopRouteInfoList) {
+        List<String> busStopRouteIdList = new ArrayList<>();
+        List<BusArrivalInfoDto> busArrivalAllList = new ArrayList<>();
+
+        for (BusArrivalInfoDto busArrivalInfoDtoList1 : busArrivalInfoDtoList) {
+            busStopRouteIdList.add(busArrivalInfoDtoList1.getBusRouteId());
+        }
+
+        for (BusStopRouteInfoDto busStopRouteInfoDto : busStopRouteInfoList) {
+            if (busStopRouteIdList.contains(busStopRouteInfoDto.getBrtId())) {
+                continue;
+            } else {
+                BusArrivalInfoDto busInfo = BusArrivalInfoDto.builder()
+                        .busStopName(busStopRouteInfoDto.getBrtName())
+                        .busRouteId(busStopRouteInfoDto.getBrtId())
+                        .build();
+
+                busArrivalAllList.add(busInfo);
+            }
+        }
+        busArrivalInfoDtoList.addAll(busArrivalAllList);
+        return busArrivalInfoDtoList;
     }
 
 

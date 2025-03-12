@@ -1,7 +1,9 @@
 package com.dpod.buschat.businfo.service;
 
+import com.dpod.buschat.businfo.dto.BusArrivalInfoDto;
 import com.dpod.buschat.businfo.dto.BusRouteRoadInfoDto;
 import com.dpod.buschat.businfo.dto.BusStopInfoDto;
+import com.dpod.buschat.businfo.dto.BusStopRouteInfoDto;
 import com.dpod.buschat.businfo.entity.BusStopInfo;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,8 @@ public interface BusStopInfoService {
     void updateBusStopInfo(String pageNo, String totalCount);
 
     List<BusStopInfo> createBusStopInfoEntity(String pageNo,String totalCount);
+
+    List<BusArrivalInfoDto> createBusAllArrivalList(List<BusArrivalInfoDto> busArrivalInfoDtoList,List<BusStopRouteInfoDto> busStopRouteInfoList);
 
     void saveBusStopRoute(BusRouteRoadInfoDto busRouteRoadInfoDto);
 

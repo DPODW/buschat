@@ -23,6 +23,9 @@ public class BusArrivalInfoDto {
     private int busArrivalTime;
     //도착 시간
 
+    @XmlElement(name = "ROUTEID")
+    private String busRouteId;
+
     @XmlElement(name = "STOPID")
     private String busStopId;
     //정류장 ID
@@ -41,9 +44,10 @@ public class BusArrivalInfoDto {
     
 
     @Builder
-    public BusArrivalInfoDto(String busPrevStopCnt, int busArrivalTime, String busStopId, String busStopName, String nowBusStopName, String busRouteNm) {
+    public BusArrivalInfoDto(String busPrevStopCnt, int busArrivalTime,String busRouteId, String busStopId, String busStopName, String nowBusStopName, String busRouteNm) {
         this.busPrevStopCnt = busPrevStopCnt;
         this.busArrivalTime = busArrivalTime;
+        this.busRouteId = busRouteId;
         this.busStopId = busStopId;
         this.busStopName = busStopName;
         this.nowBusStopName = nowBusStopName;
