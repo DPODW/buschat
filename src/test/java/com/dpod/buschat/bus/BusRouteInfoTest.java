@@ -87,4 +87,12 @@ public class BusRouteInfoTest {
         log.info("BusStopInfoRepo Route List : {}",testResult.getBusStopRouteIdList());
     }
 
+    @Test
+    @DisplayName("숫자가 아닌 문자열 제거")
+    void replaceNotNumber(){
+        String input = "773(테스트방면)";
+        String result = input.replaceAll("\\D", "");
+        assertThat(result).isEqualTo("773");
+    }
+
 }

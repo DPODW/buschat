@@ -4,15 +4,12 @@ package com.dpod.buschat.businfo.dto;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
+@Setter
 @Getter
 @XmlAccessorType(XmlAccessType.NONE)
 @NoArgsConstructor
-@ToString
 public class BusArrivalInfoDto {
 
     @XmlElement(name = "PREVSTOPCNT")
@@ -25,6 +22,7 @@ public class BusArrivalInfoDto {
 
     @XmlElement(name = "ROUTEID")
     private String busRouteId;
+    //노선 ID
 
     @XmlElement(name = "STOPID")
     private String busStopId;
@@ -41,10 +39,15 @@ public class BusArrivalInfoDto {
     @XmlElement(name = "ROUTENM")
     private String busRouteNm;
     //노선 번호
-    
+
+    private String busStartTime;
+    //버스 출발 시간 (현재 운행중이 아닌 노선 한정 제공)
+
+    private String busStopStName;
+    //버스 출발 정류장 (현재 운행중이 아닌 노선 한정 제공)
 
     @Builder
-    public BusArrivalInfoDto(String busPrevStopCnt, int busArrivalTime,String busRouteId, String busStopId, String busStopName, String nowBusStopName, String busRouteNm) {
+    public BusArrivalInfoDto(String busPrevStopCnt, int busArrivalTime,String busRouteId, String busStopId, String busStopName, String nowBusStopName, String busRouteNm,String busStartTime,String busStopStName) {
         this.busPrevStopCnt = busPrevStopCnt;
         this.busArrivalTime = busArrivalTime;
         this.busRouteId = busRouteId;
@@ -52,6 +55,8 @@ public class BusArrivalInfoDto {
         this.busStopName = busStopName;
         this.nowBusStopName = nowBusStopName;
         this.busRouteNm = busRouteNm;
+        this.busStartTime = busStartTime;
+        this.busStopStName = busStopStName;
     }
     
 }

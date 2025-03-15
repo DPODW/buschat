@@ -1,13 +1,7 @@
 package com.dpod.buschat.businfo.service.impl;
 
-import com.dpod.buschat.businfo.dto.BusArrivalInfoDto;
-import com.dpod.buschat.businfo.dto.BusRouteInfoDto;
-import com.dpod.buschat.businfo.dto.BusStopInfoDto;
-import com.dpod.buschat.businfo.dto.BusRouteRoadInfoDto;
-import com.dpod.buschat.businfo.dto.xml.BusArrivalInfoXml;
-import com.dpod.buschat.businfo.dto.xml.BusRouteInfoXml;
-import com.dpod.buschat.businfo.dto.xml.BusStopInfoXml;
-import com.dpod.buschat.businfo.dto.xml.BusStopRouteInfoXml;
+import com.dpod.buschat.businfo.dto.*;
+import com.dpod.buschat.businfo.dto.xml.*;
 import com.dpod.buschat.businfo.service.BusInfoApiService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
@@ -81,7 +75,25 @@ public class BusInfoApiServiceImpl implements BusInfoApiService {
                         busStopId,pageNo,totalCount,secretkey)
                 .retrieve()
                 .body(BusArrivalInfoXml.class);
+        //운행중인 버스 정보가 없으시, 해당 정류장 정보를 리턴함
 
         return busArrivalInfoXml.getBusArrivalInfoXmlList().getBusArrivalInfoDtoList();
+    }
+
+    @Override
+    public List<BusTimeTableInfoDto> requestBusTimeTableInfo(String busRouteName) {
+        String busRouteNumber = busRouteName.replaceAll("\\D", "");
+        //방면 정보 제거 (방면 정보가 없는 순수 노선 번호 [ex)773] 으로 요청을 해야 정상 응답)
+
+        //TODO: 검색이 안되는 노선 정보 존재 EX)2100(노포동역 방면) 처리 필요
+        RestClient restClient = getRestClient();
+        BusTimeTableInfoXml busTimeTableInfoXml = restClient.get()
+                .uri("http://openapi.its.ulsan.kr/UlsanAPI/BusTimetable.xo?routeNo={routeNo}&" +
+                                "dayOfWeek={dayOfWeek}&numOfRows={numOfRows}&serviceKey={serviceKey}",
+                        busRouteNumber, "0", 100, secretkey)
+                .retrieve()
+                .body(BusTimeTableInfoXml.class);
+
+        return busTimeTableInfoXml.getBusTimeTableInfoList().getBusTimeTableInfoList();
     }
 }

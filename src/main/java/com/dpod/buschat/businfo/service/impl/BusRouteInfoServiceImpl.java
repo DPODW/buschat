@@ -1,5 +1,6 @@
 package com.dpod.buschat.businfo.service.impl;
 
+import com.dpod.buschat.businfo.dto.BusArrivalInfoDto;
 import com.dpod.buschat.businfo.dto.BusRouteInfoDto;
 import com.dpod.buschat.businfo.entity.BusRouteInfo;
 import com.dpod.buschat.businfo.repo.bus.BusRouteInfoRepo;
@@ -50,6 +51,21 @@ public class BusRouteInfoServiceImpl implements BusRouteInfoService {
                     busRouteInfoList.add(busRouteInfo);
                 });
         return busRouteInfoList;
+    }
+
+
+    @Override
+    public List<BusArrivalInfoDto> plusInfoToBusRouteNm(List<BusArrivalInfoDto> busArrivalInfoDtoList) {
+        //API 에서 제공받은 busRouteNm 값은 방면 정보가 없음 -> 방면 정보를 추가해주는 로직
+
+        busArrivalInfoDtoList.forEach(
+                busArrivalInfoDto -> {
+                    BusRouteInfo busRouteInfosByBrtId = busRouteInfoRepo.findBusRouteInfosByBrtId(busArrivalInfoDto.getBusRouteId());
+                    busArrivalInfoDto.setBusRouteNm(busRouteInfosByBrtId.getBrtName());
+                    //busArrivalInfoDto 의 유일한 setter 사용 구간
+                }
+        );
+        return busArrivalInfoDtoList;
     }
 
 
