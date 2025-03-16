@@ -41,8 +41,8 @@ public class StringEditTest {
     @Test
     @DisplayName("숫자가 아닌 문자열 제거")
     void replaceNotNumber(){
-        String input = "773(테스트방면)";
+        String input = "219(신정2동행정복지센터입구 방면)";
         String result = input.replaceAll("\\D", "");
-        assertThat(result).isEqualTo("773");
+        assertThat(result).isEqualTo("219");
     }
 }

@@ -18,6 +18,8 @@ public interface BusInfoApiService {
 
     List<BusTimeTableInfoDto> requestBusTimeTableInfo(String busRouteName);
 
+    void checkOtherRouteName();
+
 
 
 }

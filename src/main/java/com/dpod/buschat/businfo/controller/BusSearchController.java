@@ -26,15 +26,12 @@ public class BusSearchController {
 
     private final BusRouteInfoService busRouteInfoService;
 
-    private final BusTimeTableService busTimeTableService;
 
-
-    public BusSearchController(BusInfoSearchService busInfoSearchService, BusStopInfoService busStopInfoService, BusInfoApiService busInfoApiService, BusRouteInfoService busRouteInfoService, BusTimeTableService busTimeTableService) {
+    public BusSearchController(BusInfoSearchService busInfoSearchService, BusStopInfoService busStopInfoService, BusInfoApiService busInfoApiService, BusRouteInfoService busRouteInfoService) {
         this.busInfoSearchService = busInfoSearchService;
         this.busStopInfoService = busStopInfoService;
         this.busInfoApiService = busInfoApiService;
         this.busRouteInfoService = busRouteInfoService;
-        this.busTimeTableService = busTimeTableService;
     }
 
 
@@ -51,11 +48,9 @@ public class BusSearchController {
         return busStopInfoService.createBusAllArrivalList(busArrivalInfoDtoList, busStopRouteInfoList);
     }
 
-    /// 테스트용 컨트롤러
-    ///  버스 방면 정보 붙은채로 API 에 요청
-    @GetMapping("/stopinfo/timetable/{busRouteName}")
-    public List<BusTimeTableInfoDto> searchBusTimeTableInfo(@PathVariable("busRouteName") String busRouteName) {
-        List<BusTimeTableInfoDto> busTimeTableInfoDtoList = busInfoApiService.requestBusTimeTableInfo(busRouteName);
-        return busTimeTableService.deleteAnotherDir(busTimeTableInfoDtoList, busRouteName);
+    /// 버스 시간표 테스트용 컨트롤러
+    @GetMapping("/stopinfo/timetable/test")
+    public void searchBusTimeTableInfo() {
+        busInfoApiService.checkOtherRouteName();
     }
 }
