@@ -10,11 +10,11 @@ import java.util.List;
 @Service
 public interface BusRouteInfoService {
 
-    void saveBusRouteInfo(String pageNo,String totalCount);
+    void saveBusRouteInfo();
 
-    void updateBusRouteInfo(String pageNo,String totalCount);
+    void updateBusRouteInfo();
 
-    List<BusRouteInfo> createBusRouteInfoEntity(String pageNo,String totalCount);
+    List<BusRouteInfo> createBusRouteInfoEntity();
 
     List<BusArrivalInfoDto> plusInfoToBusRouteNm(List<BusArrivalInfoDto> busArrivalInfoDtoList);
 

@@ -27,22 +27,22 @@ public class BusRouteInfoServiceImpl implements BusRouteInfoService {
     }
 
     @Override
-    public void saveBusRouteInfo(String pageNo, String totalCount) {
-        busRouteInfoRepo.saveAll(createBusRouteInfoEntity(pageNo, totalCount));
+    public void saveBusRouteInfo() {
+        busRouteInfoRepo.saveAll(createBusRouteInfoEntity());
     }
 
     @Override
-    public void updateBusRouteInfo(String pageNo, String totalCount) {
+    public void updateBusRouteInfo() {
         busRouteInfoRepo.deleteAllInBatch();
         busRouteInfoRepo.resetBusRouteInfoSequence();
-        busRouteInfoRepo.saveAll(createBusRouteInfoEntity(pageNo, totalCount));
+        busRouteInfoRepo.saveAll(createBusRouteInfoEntity());
         //데이터가 있으면 AUTO_INCREMENT 를 초기화할 수 없기 때문에 삭제 후 초기화
     }
 
 
     @Override
-    public List<BusRouteInfo> createBusRouteInfoEntity(String pageNo, String totalCount) {
-        List<BusRouteInfoDto> busRouteInfoDtoList = busInfoApiService.requestBusRouteInfo(pageNo, totalCount);
+    public List<BusRouteInfo> createBusRouteInfoEntity() {
+        List<BusRouteInfoDto> busRouteInfoDtoList = busInfoApiService.requestBusRouteInfo();
         List<BusRouteInfo> busRouteInfoList = new ArrayList<>();
 
         busRouteInfoDtoList.forEach(

@@ -2,6 +2,7 @@ package com.dpod.buschat.businfo.service.impl;
 
 import com.dpod.buschat.businfo.dto.*;
 import com.dpod.buschat.businfo.dto.xml.*;
+import com.dpod.buschat.businfo.service.ApiReqParam;
 import com.dpod.buschat.businfo.service.BusInfoApiService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
@@ -23,13 +24,13 @@ public class BusInfoApiServiceImpl implements BusInfoApiService {
     }
 
     @Override
-    public List<BusStopInfoDto> requestBusStopInfo(String pageNo, String totalCount) {
+    public List<BusStopInfoDto> requestBusStopInfo() {
         RestClient restClient = getRestClient();
 
         BusStopInfoXml busStopInfoAllXml = restClient.get()
                 .uri("http://openapi.its.ulsan.kr/UlsanAPI/BusStopInfo.xo?pageNo=" +
                                 "{pageNo}&numOfRows={numOfRows}&serviceKey={serviceKey}",
-                        pageNo,totalCount,secretkey)
+                        ApiReqParam.BUS_INFO_PAGE_NO,ApiReqParam.BUS_INFO_TOTAL_COUNT,secretkey)
                 .retrieve()
                 .body(BusStopInfoXml.class);
         return busStopInfoAllXml.getBusStopInfoXmlList().getBusStopInfoDtoList();
@@ -37,12 +38,13 @@ public class BusInfoApiServiceImpl implements BusInfoApiService {
 
 
     @Override
-    public List<BusRouteInfoDto> requestBusRouteInfo(String pageNo, String totalCount) {
+    public List<BusRouteInfoDto> requestBusRouteInfo() {
         RestClient restClient = getRestClient();
 
         BusRouteInfoXml busRouteInfoXml = restClient.get()
                 .uri("http://openapi.its.ulsan.kr/UlsanAPI/RouteInfo.xo?" +
-                        "pageNo={pageNo}&numOfRows={totalCount}&serviceKey={secretkey}",pageNo,totalCount,secretkey)
+                        "pageNo={pageNo}&numOfRows={totalCount}&serviceKey={secretkey}"
+                        ,ApiReqParam.BUS_INFO_PAGE_NO,ApiReqParam.BUS_INFO_TOTAL_COUNT,secretkey)
                 .retrieve()
                 .body(BusRouteInfoXml.class);
 
@@ -51,13 +53,13 @@ public class BusInfoApiServiceImpl implements BusInfoApiService {
 
 
     @Override
-    public List<BusRouteRoadInfoDto> requestBusStopRouteInfo(String routeId, String pageNo, String totalCount) {
+    public List<BusRouteRoadInfoDto> requestBusStopRouteInfo(String routeId) {
         RestClient restClient = getRestClient();
 
         BusStopRouteInfoXml busStopRouteInfoXml = restClient.get()
                 .uri("http://openapi.its.ulsan.kr/UlsanAPI/AllRouteDetailInfo.xo?" +
                                 "routeid={routeId}&pageNo={pageNo}&numOfRows={totalCount}&serviceKey={secretkey}",
-                        routeId,pageNo,totalCount,secretkey)
+                        routeId,ApiReqParam.BUS_INFO_PAGE_NO,ApiReqParam.BUS_INFO_TOTAL_COUNT,secretkey)
                 .retrieve()
                 .body(BusStopRouteInfoXml.class);
 
@@ -66,13 +68,13 @@ public class BusInfoApiServiceImpl implements BusInfoApiService {
 
 
     @Override
-    public List<BusArrivalInfoDto> requestBusArrivalInfo(String busStopId,String pageNo, String totalCount) {
+    public List<BusArrivalInfoDto> requestBusArrivalInfo(String busStopId) {
         RestClient restClient = getRestClient();
 
         BusArrivalInfoXml busArrivalInfoXml = restClient.get()
                 .uri("http://openapi.its.ulsan.kr/UlsanAPI/getBusArrivalInfo.xo?stopid={stopid}&" +
                                 "pageNo={pageNo}&numOfRows={numOfRows}&serviceKey={serviceKey}",
-                        busStopId,pageNo,totalCount,secretkey)
+                        busStopId,ApiReqParam.BUS_INFO_PAGE_NO,ApiReqParam.BUS_INFO_TOTAL_COUNT,secretkey)
                 .retrieve()
                 .body(BusArrivalInfoXml.class);
         //운행중인 버스 정보가 없으시, 해당 정류장 정보를 리턴함
@@ -89,8 +91,8 @@ public class BusInfoApiServiceImpl implements BusInfoApiService {
         RestClient restClient = getRestClient();
         BusTimeTableInfoXml busTimeTableInfoXml = restClient.get()
                 .uri("http://openapi.its.ulsan.kr/UlsanAPI/BusTimetable.xo?routeNo={routeNo}&" +
-                                "dayOfWeek={dayOfWeek}&numOfRows={numOfRows}&serviceKey={serviceKey}",
-                        busRouteNumber, "0", 100, secretkey)
+                                "dayOfWeek={dayOfWeek}&pageNo={pageNo}&numOfRows={numOfRows}&serviceKey={serviceKey}",
+                        busRouteNumber, "0", ApiReqParam.BUS_INFO_PAGE_NO,ApiReqParam.BUS_INFO_TOTAL_COUNT, secretkey)
                 .retrieve()
                 .body(BusTimeTableInfoXml.class);
 

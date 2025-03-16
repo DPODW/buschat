@@ -18,10 +18,6 @@ import java.util.List;
 @RequestMapping("/bus")
 public class BusSearchController {
 
-    private static final String TOTAL_COUNT = "50";
-
-    private static final String PAGE_NO = "1";
-
     private final BusInfoSearchService busInfoSearchService;
 
     private final BusStopInfoService busStopInfoService;
@@ -50,15 +46,15 @@ public class BusSearchController {
 
     @GetMapping("/stopinfo/arrival/{busStopId}")
     public List<BusArrivalInfoDto> searchBusArrivalInfo(@PathVariable("busStopId") String busStopId){
-        List<BusArrivalInfoDto> busArrivalInfoDtoList = busRouteInfoService.plusInfoToBusRouteNm(busInfoApiService.requestBusArrivalInfo(busStopId, PAGE_NO, TOTAL_COUNT));
+        List<BusArrivalInfoDto> busArrivalInfoDtoList = busRouteInfoService.plusInfoToBusRouteNm(busInfoApiService.requestBusArrivalInfo(busStopId));
         List<BusStopRouteInfoDto> busStopRouteInfoList = busInfoSearchService.searchBusStopInfoToId(busStopId).getBusStopRouteInfoList();
         return busStopInfoService.createBusAllArrivalList(busArrivalInfoDtoList, busStopRouteInfoList);
     }
 
+    /// 테스트용 컨트롤러
+    ///  버스 방면 정보 붙은채로 API 에 요청
     @GetMapping("/stopinfo/timetable/{busRouteName}")
     public List<BusTimeTableInfoDto> searchBusTimeTableInfo(@PathVariable("busRouteName") String busRouteName) {
-        /// 테스트용 컨트롤러
-        ///  버스 방면 정보 붙은채로 API 에 요청
         List<BusTimeTableInfoDto> busTimeTableInfoDtoList = busInfoApiService.requestBusTimeTableInfo(busRouteName);
         return busTimeTableService.deleteAnotherDir(busTimeTableInfoDtoList, busRouteName);
     }

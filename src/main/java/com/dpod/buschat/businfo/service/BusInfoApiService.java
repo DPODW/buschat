@@ -8,13 +8,13 @@ import java.util.List;
 @Service
 public interface BusInfoApiService {
 
-    List<BusStopInfoDto> requestBusStopInfo(String pageNo, String totalCount);
+    List<BusStopInfoDto> requestBusStopInfo();
 
-    List<BusRouteInfoDto> requestBusRouteInfo(String pageNo, String totalCount);
+    List<BusRouteInfoDto> requestBusRouteInfo();
 
-    List<BusRouteRoadInfoDto> requestBusStopRouteInfo(String routeId, String pageNo, String totalCount);
+    List<BusRouteRoadInfoDto> requestBusStopRouteInfo(String routeId);
 
-    List<BusArrivalInfoDto> requestBusArrivalInfo(String busStopId,String pageNo, String totalCount);
+    List<BusArrivalInfoDto> requestBusArrivalInfo(String busStopId);
 
     List<BusTimeTableInfoDto> requestBusTimeTableInfo(String busRouteName);
 

@@ -12,11 +12,13 @@ import java.util.List;
 @Service
 public interface BusStopInfoService {
 
-    void saveBusStopInfo(String pageNo, String totalCount);
+    void saveBusStopInfo();
 
-    void updateBusStopInfo(String pageNo, String totalCount);
+    void updateBusStopInfo();
 
-    List<BusStopInfo> createBusStopInfoEntity(String pageNo,String totalCount);
+    void saveBusStopRouteInfo();
+
+    List<BusStopInfo> createBusStopInfoEntity();
 
     List<BusArrivalInfoDto> createBusAllArrivalList(List<BusArrivalInfoDto> busArrivalInfoDtoList,List<BusStopRouteInfoDto> busStopRouteInfoList);
 
