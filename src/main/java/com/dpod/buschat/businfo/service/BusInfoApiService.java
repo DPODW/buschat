@@ -17,9 +17,4 @@ public interface BusInfoApiService {
     List<BusArrivalInfoDto> requestBusArrivalInfo(String busStopId);
 
     List<BusTimeTableInfoDto> requestBusTimeTableInfo(String busRouteName);
-
-    void checkOtherRouteName();
-
-
-
 }

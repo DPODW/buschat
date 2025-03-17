@@ -42,7 +42,24 @@ public class StringEditTest {
     @DisplayName("숫자가 아닌 문자열 제거")
     void replaceNotNumber(){
         String input = "219(신정2동행정복지센터입구 방면)";
-        String result = input.replaceAll("\\D", "");
-        assertThat(result).isEqualTo("219");
+
+        int idx = input.indexOf("(");
+        String substring = input.substring(0, idx);
+
+        assertThat(substring).isEqualTo("219");
+    }
+
+
+    @Test
+    @DisplayName("첫 글자가 숫자인지 판별")
+    void checkFirstWord(){
+        String firstNumber = "219(신정2동행정복지센터입구 방면)";
+        boolean numberMatches = firstNumber.matches("^[0-9].*");
+
+        String firstStr = "울주21";
+        boolean stringMatches = firstStr.matches("^[0-9].*");
+
+        assertThat(numberMatches).isTrue();
+        assertThat(stringMatches).isFalse();
     }
 }

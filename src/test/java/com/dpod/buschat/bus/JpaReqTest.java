@@ -1,5 +1,6 @@
 package com.dpod.buschat.bus;
 
+import com.dpod.buschat.businfo.entity.BusRouteInfo;
 import com.dpod.buschat.businfo.entity.BusStopInfo;
 import com.dpod.buschat.businfo.repo.bus.BusRouteInfoRepo;
 import com.dpod.buschat.businfo.repo.bus.BusStopInfoRepo;
@@ -71,6 +72,15 @@ public class JpaReqTest {
         BusStopInfo testResult = busStopInfoRepo.findAllByBusStopId("192011433");
         log.info("BusStopInfoRepo: {}",testResult);
         log.info("BusStopInfoRepo Route List : {}",testResult.getBusStopRouteIdList());
+    }
+
+
+    @Test
+    @DisplayName("JPA BusRouteInfo 의 findBusRouteInfoByBrtName 메소드 테스트")
+    void findBusRouteInfoByBrtName() {
+        BusRouteInfo busRouteInfoByBrtName = busRouteInfoRepo.findBusRouteInfoByBrtName("순환21(명촌차고지(기점) 순환)");
+
+        assertThat(busRouteInfoByBrtName.getBrtNo()).isEqualTo("6621");
     }
 
 }

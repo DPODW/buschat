@@ -14,6 +14,8 @@ public interface BusRouteInfoRepo extends JpaRepository<BusRouteInfo,Long> {
 
     BusRouteInfo findBusRouteInfosByBrtId(String busRouteId);
 
+    BusRouteInfo findBusRouteInfoByBrtName(String busRouteName);
+
     int countAllBy();
 
     @Transactional

@@ -26,12 +26,15 @@ public class BusSearchController {
 
     private final BusRouteInfoService busRouteInfoService;
 
+    private final BusTimeTableService busTimeTableService;
 
-    public BusSearchController(BusInfoSearchService busInfoSearchService, BusStopInfoService busStopInfoService, BusInfoApiService busInfoApiService, BusRouteInfoService busRouteInfoService) {
+
+    public BusSearchController(BusInfoSearchService busInfoSearchService, BusStopInfoService busStopInfoService, BusInfoApiService busInfoApiService, BusRouteInfoService busRouteInfoService, BusTimeTableService busTimeTableService) {
         this.busInfoSearchService = busInfoSearchService;
         this.busStopInfoService = busStopInfoService;
         this.busInfoApiService = busInfoApiService;
         this.busRouteInfoService = busRouteInfoService;
+        this.busTimeTableService = busTimeTableService;
     }
 
 
@@ -51,6 +54,6 @@ public class BusSearchController {
     /// 버스 시간표 테스트용 컨트롤러
     @GetMapping("/stopinfo/timetable/test")
     public void searchBusTimeTableInfo() {
-        busInfoApiService.checkOtherRouteName();
+        busTimeTableService.checkOtherRouteName();
     }
 }
