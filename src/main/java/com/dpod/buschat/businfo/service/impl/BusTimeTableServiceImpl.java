@@ -39,6 +39,18 @@ public class BusTimeTableServiceImpl implements BusTimeTableService {
         return deleteAnotherDirList;
     }
 
+    @Override
+    public List<BusTimeTableInfoDto> deleteAnotherClass(List<BusTimeTableInfoDto> busTimeTableInfoDtoList, String busRouteClass) {
+        List<BusTimeTableInfoDto> deleteAnotherClassList = new ArrayList<>();
+
+        for(BusTimeTableInfoDto busTimeTableInfoDto : busTimeTableInfoDtoList){
+            if(busTimeTableInfoDto.getBusRouteClass().equals(busRouteClass)){
+                deleteAnotherClassList.add(busTimeTableInfoDto);
+            }
+        }
+        return deleteAnotherClassList;
+    }
+
 
     @Override
     public List<BusTimeTableInfoDto> deleteBeforeTimeTable(List<BusTimeTableInfoDto> busTimeTableInfoDtoList) {
@@ -67,6 +79,17 @@ public class BusTimeTableServiceImpl implements BusTimeTableService {
             return deleteBeforeTimeTableList;
     }
 
+    @Override
+    public List<BusTimeTableInfoDto> getBusTimeTableInfo(String busRouteId) {
+            BusRouteInfo busRouteInfoByBrtId = busRouteInfoRepo.findBusRouteInfosByBrtId(busRouteId);
+            List<BusTimeTableInfoDto> busTimeTableInfoDtoList = busInfoApiService.requestBusTimeTableInfo(busRouteInfoByBrtId.getBrtNo());
+            //List<BusTimeTableInfoDto> deleteAnotherDirList = deleteAnotherDir(busTimeTableInfoDtoList, busRouteInfoByBrtId.getBrtName());
+            //List<BusTimeTableInfoDto> deleteAnotherClassList = deleteAnotherClass(busTimeTableInfoDtoList, busRouteInfoByBrtId.getBusClass());
+            //List<BusTimeTableInfoDto> deleteBeforeTimeTableList = deleteBeforeTimeTable(deleteAnotherClassList);
+
+        return busTimeTableInfoDtoList;
+    }
+
 
     @Override
     public String formatRouteNmForApi(String busRouteName) {
@@ -75,22 +98,22 @@ public class BusTimeTableServiceImpl implements BusTimeTableService {
     }
 
 
-    @Override
-    public List<BusTimeTableInfoDto> getBusTimeTableInfo(String busRouteName) {
-        /// 테스트를 위해 일시적으로 deleteAnotherDirList , deleteAnotherDirList 메소드 주석 처리
-        if(!busRouteName.matches("^[0-9].*")){
-            BusRouteInfo villageBusRouteInfo = busRouteInfoRepo.findBusRouteInfoByBrtName(busRouteName);
-            List<BusTimeTableInfoDto> villageBusTimeTableList = busInfoApiService.requestBusTimeTableInfo(villageBusRouteInfo.getBrtNo());
-//            List<BusTimeTableInfoDto> deleteAnotherDirList = deleteAnotherDir(villageBusTimeTableList, busRouteName);
-//            return deleteBeforeTimeTable(deleteAnotherDirList);
-            return villageBusTimeTableList;
-        }else{
-            List<BusTimeTableInfoDto> reqBusTimeTableList = busInfoApiService.requestBusTimeTableInfo(formatRouteNmForApi(busRouteName));
-//            List<BusTimeTableInfoDto> deleteAnotherDirList = deleteAnotherDir(reqBusTimeTableList,busRouteName);
-//            return deleteBeforeTimeTable(deleteAnotherDirList);
-            return reqBusTimeTableList;
-        }
-    }
+//    @Override
+//    public List<BusTimeTableInfoDto> getBusTimeTableInfo(String busRouteName) {
+//        /// 테스트를 위해 일시적으로 deleteAnotherDirList , deleteAnotherDirList 메소드 주석 처리
+//        if(!busRouteName.matches("^[0-9].*")){
+//            BusRouteInfo villageBusRouteInfo = busRouteInfoRepo.findBusRouteInfoByBrtName(busRouteName);
+//            List<BusTimeTableInfoDto> villageBusTimeTableList = busInfoApiService.requestBusTimeTableInfo(villageBusRouteInfo.getBrtNo());
+////            List<BusTimeTableInfoDto> deleteAnotherDirList = deleteAnotherDir(villageBusTimeTableList, busRouteName);
+////            return deleteBeforeTimeTable(deleteAnotherDirList);
+//            return villageBusTimeTableList;
+//        }else{
+//            List<BusTimeTableInfoDto> reqBusTimeTableList = busInfoApiService.requestBusTimeTableInfo(formatRouteNmForApi(busRouteName));
+////            List<BusTimeTableInfoDto> deleteAnotherDirList = deleteAnotherDir(reqBusTimeTableList,busRouteName);
+////            return deleteBeforeTimeTable(deleteAnotherDirList);
+//            return reqBusTimeTableList;
+//        }
+//    }
 
     @Override
     public void checkOtherRouteName() {
@@ -98,17 +121,20 @@ public class BusTimeTableServiceImpl implements BusTimeTableService {
             BusRouteInfo busRouteInfoBySequence = busRouteInfoRepo.findBusRouteInfosBySequence((long)i);
             //List<BusTimeTableInfoDto> busTimeTableInfoDtoList = requestBusTimeTableInfo(busRouteInfoBySequence.getBrtName());
 
-            List<BusTimeTableInfoDto> busTimeTableInfoDtoList = getBusTimeTableInfo(busRouteInfoBySequence.getBrtName());
+            List<BusTimeTableInfoDto> busTimeTableInfoDtoList = getBusTimeTableInfo(busRouteInfoBySequence.getBrtId());
 
             if(busTimeTableInfoDtoList==null){
                 log.info("getBrtName : {}",busRouteInfoBySequence.getBrtName());
                 log.info("반복횟수 {}",i);
             }
+
+            if(busTimeTableInfoDtoList!=null && deleteAnotherClass(busTimeTableInfoDtoList,busRouteInfoBySequence.getBusClass()).isEmpty()){
+                log.info("시간표에 없는 클래스 정보 : {}",busRouteInfoBySequence.getBrtName());
+            }
+
             if(busTimeTableInfoDtoList!= null && deleteAnotherDir(busTimeTableInfoDtoList, busRouteInfoBySequence.getBrtName()).isEmpty()){
                 log.info("시간표에 없는 방면 정보 : {}",busRouteInfoBySequence.getBrtName());
             }
         }
     }
-
-
 }

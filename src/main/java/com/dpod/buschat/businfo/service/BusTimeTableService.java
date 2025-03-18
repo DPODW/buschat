@@ -11,6 +11,8 @@ public interface BusTimeTableService {
 
     List<BusTimeTableInfoDto> deleteAnotherDir(List<BusTimeTableInfoDto> busTimeTableInfoDtoList,String busRouteName);
 
+    List<BusTimeTableInfoDto> deleteAnotherClass(List<BusTimeTableInfoDto> busTimeTableInfoDtoList,String busRouteClass);
+
     List<BusTimeTableInfoDto> deleteBeforeTimeTable(List<BusTimeTableInfoDto> busTimeTableInfoDtoList);
 
     List<BusTimeTableInfoDto> getBusTimeTableInfo(String busRouteName);
