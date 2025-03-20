@@ -25,6 +25,8 @@ public class QBusRouteInfo extends EntityPathBase<BusRouteInfo> {
 
     public final StringPath brtNo = createString("brtNo");
 
+    public final StringPath brtTimeTable = createString("brtTimeTable");
+
     public final StringPath brtType = createString("brtType");
 
     public final StringPath busClass = createString("busClass");

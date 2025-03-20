@@ -19,6 +19,8 @@ public interface BusTimeTableService {
 
     String formatRouteNmForApi(String busRouteName);
 
+    void saveTimeTableInfo();
+
     void checkOtherRouteName();
 
 

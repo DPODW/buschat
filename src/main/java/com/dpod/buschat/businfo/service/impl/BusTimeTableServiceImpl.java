@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -95,6 +96,24 @@ public class BusTimeTableServiceImpl implements BusTimeTableService {
     public String formatRouteNmForApi(String busRouteName) {
         int stringIdx = busRouteName.indexOf("(");
         return busRouteName.substring(0, stringIdx);
+    }
+
+    @Override
+    public void saveTimeTableInfo() {
+        for(int i=1; i<=busRouteInfoRepo.countAllBy(); i++){
+            List<String> timeTableList = new ArrayList<>();
+
+            BusRouteInfo busRouteInfoBySequence = busRouteInfoRepo.findBusRouteInfosBySequence((long)i);
+            List<BusTimeTableInfoDto> busTimeTableInfoDtoList = busInfoApiService.requestBusTimeTableInfo(busRouteInfoBySequence.getBrtNo());
+
+            Optional.ofNullable(busTimeTableInfoDtoList)
+                    .map(busTimeTableList -> deleteAnotherDir(busTimeTableList, busRouteInfoBySequence.getBrtName()))
+                    .map(deleteAnotherDirList -> deleteAnotherClass(deleteAnotherDirList, busRouteInfoBySequence.getBusClass()))
+                    .ifPresent(deleteAnotherClassList ->
+                            deleteAnotherClassList.forEach(deleteAnotherClass -> timeTableList.add(deleteAnotherClass.getBusStTime()))
+                    );
+            log.info("시간표 {}",timeTableList);
+        }
     }
 
 

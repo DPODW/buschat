@@ -52,8 +52,12 @@ public class BusRouteInfo {
     private String stopEdId;
     //종점 정류장 ID
 
+    @Column(name = "BRT_TIMETABLE")
+    private String brtTimeTable;
+    //노선별 시간표
+
     @Builder
-    public BusRouteInfo(Long sequence, String brtId, String brtNo, String brtName, String direction, String company, String brtType, String busClass, String stopStId, String stopEdId) {
+    public BusRouteInfo(Long sequence, String brtId, String brtNo, String brtName, String direction, String company, String brtType, String busClass, String stopStId, String stopEdId,String brtTimeTable) {
         this.sequence = sequence;
         this.brtId = brtId;
         this.brtNo = brtNo;
@@ -64,5 +68,6 @@ public class BusRouteInfo {
         this.busClass = busClass;
         this.stopStId = stopStId;
         this.stopEdId = stopEdId;
+        this.brtTimeTable = brtTimeTable;
     }
 }
