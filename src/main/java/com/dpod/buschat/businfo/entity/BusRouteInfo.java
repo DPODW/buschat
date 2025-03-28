@@ -70,4 +70,8 @@ public class BusRouteInfo {
         this.stopEdId = stopEdId;
         this.brtTimeTable = brtTimeTable;
     }
+
+    public void updateTimeTable(String brtTimeTable){
+        this.brtTimeTable = brtTimeTable;
+    }
 }

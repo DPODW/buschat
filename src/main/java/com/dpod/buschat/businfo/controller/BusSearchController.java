@@ -54,6 +54,6 @@ public class BusSearchController {
     /// 버스 시간표 테스트용 컨트롤러
     @GetMapping("/stopinfo/timetable/test")
     public void searchBusTimeTableInfo() {
-        busTimeTableService.saveTimeTableInfo();
+        busTimeTableService.updateTimeTableInfo();
     }
 }

@@ -120,6 +120,7 @@ public class BusStopInfoServiceImpl implements BusStopInfoService {
                 continue;
             } else {
                 List<BusTimeTableInfoDto> busTimeTableInfoDtoList = busTimeTableService.deleteAnotherDir(busInfoApiService.requestBusTimeTableInfo(busStopRouteInfoDto.getBrtName()), busStopRouteInfoDto.getBrtName());
+                //TODO: DB에 저장된 시간표를 가져오도록 변경 필요
 
                 BusArrivalInfoDto busInfo = BusArrivalInfoDto.builder()
                         .busRouteNm(busStopRouteInfoDto.getBrtName())

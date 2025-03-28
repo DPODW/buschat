@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -62,4 +63,16 @@ public class StringEditTest {
         assertThat(numberMatches).isTrue();
         assertThat(stringMatches).isFalse();
     }
+
+
+    @Test
+    @DisplayName("배열을 문자열로 변환")
+    void arrayToString(){
+        int[] arr = {1, 2, 3, 4, 5};
+        String result = Arrays.toString(arr).replace("[", "").replace("]", "");
+
+        log.info(result);
+        assertThat(result).isEqualTo("1, 2, 3, 4, 5");
+    }
+
 }
