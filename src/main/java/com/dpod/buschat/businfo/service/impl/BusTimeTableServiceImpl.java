@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,10 +53,20 @@ public class BusTimeTableServiceImpl implements BusTimeTableService {
         return deleteAnotherClassList;
     }
 
+    @Override
+    public List<String> getAvailableTimeTable(String busRouteId) {
+        BusRouteInfo busRouteInfosByBrtId = busRouteInfoRepo.findBusRouteInfosByBrtId(busRouteId);
+        List<String> busTimeTalbeList = Arrays.asList(busRouteInfosByBrtId.getBrtTimeTable().split(","));
+
+
+
+        return List.of();
+    }
+
 
     @Transactional
     @Override
-    public void updateTimeTableInfo() {
+    public void saveTimeTableInfo() {
         for(int i=1; i<=busRouteInfoRepo.countAllBy(); i++){
             List<String> timeTableList = new ArrayList<>();
 
@@ -68,9 +79,7 @@ public class BusTimeTableServiceImpl implements BusTimeTableService {
                     .ifPresent(deleteAnotherClassList ->
                             deleteAnotherClassList.forEach(deleteAnotherClass -> timeTableList.add(deleteAnotherClass.getBusStTime()))
                     );
-
             String timeTableListToStr = timeTableList.toString().replace("[", "").replace("]", "");
-            log.info("{} 버스 시간표 str : {}",busRouteInfoBySequence.getBrtName(), timeTableListToStr);
             busRouteInfoBySequence.updateTimeTable(timeTableListToStr);
         }
     }

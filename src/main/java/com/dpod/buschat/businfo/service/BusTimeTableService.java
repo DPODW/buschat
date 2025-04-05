@@ -13,6 +13,8 @@ public interface BusTimeTableService {
 
     List<BusTimeTableInfoDto> deleteAnotherClass(List<BusTimeTableInfoDto> busTimeTableInfoDtoList,String busRouteClass);
 
-    void updateTimeTableInfo();
+    List<String> getAvailableTimeTable(String busRouteId);
+
+    void saveTimeTableInfo();
 
 }

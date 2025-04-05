@@ -5,6 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -75,4 +77,39 @@ public class StringEditTest {
         assertThat(result).isEqualTo("1, 2, 3, 4, 5");
     }
 
+
+    @Test
+    @DisplayName("문자열을 list 로 변환")
+    void StringToArray(){
+       String input = "0500, 0515, 0530, 0550, 0610, 0630, 2030, 2100, 2140, 2240";
+       List<String> list = Arrays.asList(input.split(",\\s*")); //이스케이프 처리 (공백이 1개 이상 일때도 처리[ * ] )
+
+       assertThat(list.get(3)).isEqualTo("0515");
+    }
+
+
+    @Test
+    @DisplayName("현재 시간 이후의 시간표 가져오기")
+    void getAfterTimeTable(){
+        String input = "0500, 0515, 0530, 0550, 0610, 0630, 2030, 2100, 2140, 2240";
+        List<String> list = Arrays.asList(input.split(",\\s*"));
+
+        LocalTime now = LocalTime.now();
+        List<LocalTime> localTimeTypeList = new ArrayList<>();
+
+        for (String time : list) {
+            localTimeTypeList.add(LocalTime.parse(time, DateTimeFormatter.ofPattern("HHmm")));
+        }
+
+        for (LocalTime localTime : localTimeTypeList) {
+            if (localTime.isAfter(now)) {
+                log.info("현재 기준 다음 출발 시간 => {}", localTime);
+
+            } else if(localTimeTypeList.get(localTimeTypeList.size() - 1).isBefore(now)) {
+                log.info("이후 시간 없음(다음날 첫차 정보) => {}", localTimeTypeList.get(0));
+
+            }
+        }
+
+    }
 }

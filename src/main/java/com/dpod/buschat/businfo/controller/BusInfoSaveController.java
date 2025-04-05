@@ -5,11 +5,9 @@ import com.dpod.buschat.businfo.dto.BusRouteRoadInfoDto;
 import com.dpod.buschat.businfo.dto.BusStopInfoDto;
 import com.dpod.buschat.businfo.exception.bus.BusInfoException;
 import com.dpod.buschat.businfo.exception.bus.ErrorCode;
-import com.dpod.buschat.businfo.service.BusInfoApiService;
-import com.dpod.buschat.businfo.service.BusStopInfoService;
-import com.dpod.buschat.businfo.service.BusInfoSearchService;
-import com.dpod.buschat.businfo.service.BusRouteInfoService;
+import com.dpod.buschat.businfo.service.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,10 +23,12 @@ public class BusInfoSaveController {
 
     private final BusRouteInfoService busRouteInfoService;
 
+    private final BusTimeTableService busTimeTableService;
 
-    public BusInfoSaveController(BusStopInfoService busStopInfoService, BusRouteInfoService busRouteInfoService) {
+    public BusInfoSaveController(BusStopInfoService busStopInfoService, BusRouteInfoService busRouteInfoService, BusTimeTableService busTimeTableService) {
         this.busStopInfoService = busStopInfoService;
         this.busRouteInfoService = busRouteInfoService;
+        this.busTimeTableService = busTimeTableService;
     }
 
     @PostMapping("/stopinfo")
@@ -57,6 +57,12 @@ public class BusInfoSaveController {
     @PostMapping("/stoprouteinfo")
     public void saveBusStopRoute(){
         busStopInfoService.saveBusStopRouteInfo();
+    }
+
+
+    @PostMapping("/timetable")
+    public void saveBusTimeTableInfo() {
+        busTimeTableService.saveTimeTableInfo();
     }
 
 }

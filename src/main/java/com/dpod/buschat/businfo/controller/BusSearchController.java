@@ -26,15 +26,12 @@ public class BusSearchController {
 
     private final BusRouteInfoService busRouteInfoService;
 
-    private final BusTimeTableService busTimeTableService;
 
-
-    public BusSearchController(BusInfoSearchService busInfoSearchService, BusStopInfoService busStopInfoService, BusInfoApiService busInfoApiService, BusRouteInfoService busRouteInfoService, BusTimeTableService busTimeTableService) {
+    public BusSearchController(BusInfoSearchService busInfoSearchService, BusStopInfoService busStopInfoService, BusInfoApiService busInfoApiService, BusRouteInfoService busRouteInfoService) {
         this.busInfoSearchService = busInfoSearchService;
         this.busStopInfoService = busStopInfoService;
         this.busInfoApiService = busInfoApiService;
         this.busRouteInfoService = busRouteInfoService;
-        this.busTimeTableService = busTimeTableService;
     }
 
 
@@ -49,11 +46,5 @@ public class BusSearchController {
         List<BusArrivalInfoDto> busArrivalInfoDtoList = busRouteInfoService.plusInfoToBusRouteNm(busInfoApiService.requestBusArrivalInfo(busStopId));
         List<BusStopRouteInfoDto> busStopRouteInfoList = busInfoSearchService.searchBusStopInfoToId(busStopId).getBusStopRouteInfoList();
         return busStopInfoService.createBusAllArrivalList(busArrivalInfoDtoList, busStopRouteInfoList);
-    }
-
-    /// 버스 시간표 테스트용 컨트롤러
-    @GetMapping("/stopinfo/timetable/test")
-    public void searchBusTimeTableInfo() {
-        busTimeTableService.updateTimeTableInfo();
     }
 }
