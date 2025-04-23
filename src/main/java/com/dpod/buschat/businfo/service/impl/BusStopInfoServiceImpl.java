@@ -119,13 +119,12 @@ public class BusStopInfoServiceImpl implements BusStopInfoService {
             if (busStopRouteIdList.contains(busStopRouteInfoDto.getBrtId())) {
                 continue;
             } else {
-                List<BusTimeTableInfoDto> busTimeTableInfoDtoList = busTimeTableService.deleteAnotherDir(busInfoApiService.requestBusTimeTableInfo(busStopRouteInfoDto.getBrtName()), busStopRouteInfoDto.getBrtName());
-                //TODO: DB에 저장된 시간표를 가져오도록 변경 필요
-
                 BusArrivalInfoDto busInfo = BusArrivalInfoDto.builder()
                         .busRouteNm(busStopRouteInfoDto.getBrtName())
                         .busRouteId(busStopRouteInfoDto.getBrtId())
-                        .busStartTime(busTimeTableInfoDtoList.get(0).getBusStTime()+" 출발 예정")
+                        .busStartTime(
+                                busTimeTableService.getUpcomingTimeTable(busTimeTableService.getAvailableTimeTable(busStopRouteInfoDto.getBrtId()))
+                        )
                         .busStopStName(busStopRouteInfoDto.getBusStopStName())
                         .build();
 

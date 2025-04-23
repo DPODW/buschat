@@ -8,6 +8,9 @@ import com.dpod.buschat.businfo.service.BusTimeTableService;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -56,17 +59,33 @@ public class BusTimeTableServiceImpl implements BusTimeTableService {
     @Override
     public List<String> getAvailableTimeTable(String busRouteId) {
         BusRouteInfo busRouteInfosByBrtId = busRouteInfoRepo.findBusRouteInfosByBrtId(busRouteId);
-        List<String> busTimeTalbeList = Arrays.asList(busRouteInfosByBrtId.getBrtTimeTable().split(","));
+        return Arrays.asList(busRouteInfosByBrtId.getBrtTimeTable().split(","));
+    }
 
+    @Override
+    public String getUpcomingTimeTable(List<String> busTimeTableList) {
+        LocalTime now = LocalTime.now();
+        List<LocalTime> localTimeTypeList = new ArrayList<>();
+        for (String time : busTimeTableList) {
+            localTimeTypeList.add(LocalTime.parse(time, DateTimeFormatter.ofPattern("HHmm")));
+        }
 
+        for (LocalTime localTime : localTimeTypeList) {
+            if (localTime.isAfter(now)) {
+                return localTime.toString();
 
-        return List.of();
+            } else if(localTimeTypeList.get(localTimeTypeList.size() - 1).isBefore(now)) {
+                return localTime.toString();
+            }
+        }
+        return "운행 정보 없음";
     }
 
 
     @Transactional
     @Override
     public void saveTimeTableInfo() {
+        log.info("버스 시간표 저장 시작");
         for(int i=1; i<=busRouteInfoRepo.countAllBy(); i++){
             List<String> timeTableList = new ArrayList<>();
 
@@ -79,7 +98,7 @@ public class BusTimeTableServiceImpl implements BusTimeTableService {
                     .ifPresent(deleteAnotherClassList ->
                             deleteAnotherClassList.forEach(deleteAnotherClass -> timeTableList.add(deleteAnotherClass.getBusStTime()))
                     );
-            String timeTableListToStr = timeTableList.toString().replace("[", "").replace("]", "");
+            String timeTableListToStr = timeTableList.toString().replace("[", "").replace("]", "").replaceAll(" ", "");
             busRouteInfoBySequence.updateTimeTable(timeTableListToStr);
         }
     }

@@ -91,7 +91,7 @@ public class StringEditTest {
     @Test
     @DisplayName("현재 시간 이후의 시간표 가져오기")
     void getAfterTimeTable(){
-        String input = "0500, 0515, 0530, 0550, 0610, 0630, 2030, 2100, 2140, 2240";
+        String input = "0500, 0515, 0530, 0550, 0610, 0630, 2030, 2100, 2140";
         List<String> list = Arrays.asList(input.split(",\\s*"));
 
         LocalTime now = LocalTime.now();

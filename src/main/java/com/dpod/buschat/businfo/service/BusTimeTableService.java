@@ -15,6 +15,8 @@ public interface BusTimeTableService {
 
     List<String> getAvailableTimeTable(String busRouteId);
 
+    String getUpcomingTimeTable(List<String> busTimeTableList);
+
     void saveTimeTableInfo();
 
 }
