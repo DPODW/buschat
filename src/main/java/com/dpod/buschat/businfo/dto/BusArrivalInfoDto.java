@@ -8,6 +8,7 @@ import lombok.*;
 
 @Setter
 @Getter
+@ToString
 @XmlAccessorType(XmlAccessType.NONE)
 @NoArgsConstructor
 public class BusArrivalInfoDto {

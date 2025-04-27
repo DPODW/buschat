@@ -63,6 +63,7 @@ public class BusInfoSaveController {
     @PostMapping("/timetable")
     public void saveBusTimeTableInfo() {
         busTimeTableService.saveTimeTableInfo();
+        //이미 시간표가 있으면 -> 전체 삭제 후 재 저장?
     }
 
 }

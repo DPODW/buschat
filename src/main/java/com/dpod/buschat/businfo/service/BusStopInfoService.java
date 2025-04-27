@@ -22,6 +22,8 @@ public interface BusStopInfoService {
 
     List<BusArrivalInfoDto> createBusAllArrivalList(List<BusArrivalInfoDto> busArrivalInfoDtoList,List<BusStopRouteInfoDto> busStopRouteInfoList);
 
+    List<BusArrivalInfoDto> createInactiveBusList(List<BusStopRouteInfoDto> busStopRouteInfoList);
+
     void saveBusStopRoute(BusRouteRoadInfoDto busRouteRoadInfoDto);
 
     void updateBusStopRoute(BusRouteRoadInfoDto busRouteRoadInfoDto);

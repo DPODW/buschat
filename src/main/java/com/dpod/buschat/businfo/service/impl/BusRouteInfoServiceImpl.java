@@ -6,11 +6,13 @@ import com.dpod.buschat.businfo.entity.BusRouteInfo;
 import com.dpod.buschat.businfo.repo.bus.BusRouteInfoRepo;
 import com.dpod.buschat.businfo.service.BusInfoApiService;
 import com.dpod.buschat.businfo.service.BusRouteInfoService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class BusRouteInfoServiceImpl implements BusRouteInfoService {
 
@@ -57,7 +59,6 @@ public class BusRouteInfoServiceImpl implements BusRouteInfoService {
     @Override
     public List<BusArrivalInfoDto> plusInfoToBusRouteNm(List<BusArrivalInfoDto> busArrivalInfoDtoList) {
         //API 에서 제공받은 busRouteNm 값은 방면 정보가 없음 -> 방면 정보를 추가해주는 로직
-
         busArrivalInfoDtoList.forEach(
                 busArrivalInfoDto -> {
                     BusRouteInfo busRouteInfosByBrtId = busRouteInfoRepo.findBusRouteInfosByBrtId(busArrivalInfoDto.getBusRouteId());

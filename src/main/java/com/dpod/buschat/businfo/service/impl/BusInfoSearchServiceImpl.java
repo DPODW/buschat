@@ -45,7 +45,6 @@ public class BusInfoSearchServiceImpl implements BusInfoSearchService{
     @Override
     public BusStopInfoDto searchBusStopInfoToId(String busStopId) {
         //정류장 버스 정류장 아이디로 검색
-
         return toDtoConvert.busStopEntityToDto(busStopInfoRepo.findAllByBusStopId(busStopId));
     }
 

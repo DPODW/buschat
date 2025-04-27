@@ -43,8 +43,14 @@ public class BusSearchController {
 
     @GetMapping("/stopinfo/arrival/{busStopId}")
     public List<BusArrivalInfoDto> searchBusArrivalInfo(@PathVariable("busStopId") String busStopId){
-        List<BusArrivalInfoDto> busArrivalInfoDtoList = busRouteInfoService.plusInfoToBusRouteNm(busInfoApiService.requestBusArrivalInfo(busStopId));
+        List<BusArrivalInfoDto> apiReqArrivalInfo = busInfoApiService.requestBusArrivalInfo(busStopId);
         List<BusStopRouteInfoDto> busStopRouteInfoList = busInfoSearchService.searchBusStopInfoToId(busStopId).getBusStopRouteInfoList();
+
+        if(apiReqArrivalInfo.get(0).getBusRouteId()==null){
+            return busStopInfoService.createInactiveBusList(busStopRouteInfoList);
+        }
+
+        List<BusArrivalInfoDto> busArrivalInfoDtoList = busRouteInfoService.plusInfoToBusRouteNm(busInfoApiService.requestBusArrivalInfo(busStopId));
         return busStopInfoService.createBusAllArrivalList(busArrivalInfoDtoList, busStopRouteInfoList);
     }
 }

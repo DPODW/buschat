@@ -119,20 +119,32 @@ public class BusStopInfoServiceImpl implements BusStopInfoService {
             if (busStopRouteIdList.contains(busStopRouteInfoDto.getBrtId())) {
                 continue;
             } else {
-                BusArrivalInfoDto busInfo = BusArrivalInfoDto.builder()
-                        .busRouteNm(busStopRouteInfoDto.getBrtName())
-                        .busRouteId(busStopRouteInfoDto.getBrtId())
-                        .busStartTime(
-                                busTimeTableService.getUpcomingTimeTable(busTimeTableService.getAvailableTimeTable(busStopRouteInfoDto.getBrtId()))
-                        )
-                        .busStopStName(busStopRouteInfoDto.getBusStopStName())
-                        .build();
-
-                busArrivalAllList.add(busInfo);
+                busArrivalAllList.add(getInactiveBusInfo(busStopRouteInfoDto));
             }
         }
         busArrivalInfoDtoList.addAll(busArrivalAllList);
         return busArrivalInfoDtoList;
+    }
+
+    private BusArrivalInfoDto getInactiveBusInfo(BusStopRouteInfoDto busStopRouteInfoDto) {
+        return BusArrivalInfoDto.builder()
+                .busRouteNm(busStopRouteInfoDto.getBrtName())
+                .busRouteId(busStopRouteInfoDto.getBrtId())
+                .busStartTime(
+                        busTimeTableService.getUpcomingTimeTable(busTimeTableService.getAvailableTimeTable(busStopRouteInfoDto.getBrtId()))
+                )
+                .busStopStName(busStopRouteInfoDto.getBusStopStName())
+                .build();
+    }
+
+    @Override
+    public List<BusArrivalInfoDto> createInactiveBusList(List<BusStopRouteInfoDto> busStopRouteInfoList) {
+        ArrayList<BusArrivalInfoDto> busInactiveList = new ArrayList<>();
+        log.info("{}",busStopRouteInfoList);
+        for(BusStopRouteInfoDto busStopRouteInfoDto : busStopRouteInfoList){
+            busInactiveList.add(getInactiveBusInfo(busStopRouteInfoDto));
+        }
+        return busInactiveList;
     }
 
 

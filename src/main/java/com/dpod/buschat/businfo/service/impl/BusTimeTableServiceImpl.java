@@ -58,8 +58,10 @@ public class BusTimeTableServiceImpl implements BusTimeTableService {
 
     @Override
     public List<String> getAvailableTimeTable(String busRouteId) {
+        log.info("getAvailableTimeTable busRouteId = " + busRouteId);
         BusRouteInfo busRouteInfosByBrtId = busRouteInfoRepo.findBusRouteInfosByBrtId(busRouteId);
         return Arrays.asList(busRouteInfosByBrtId.getBrtTimeTable().split(","));
+        //TODO: 여기서 또 NULL 잡아야 됌 (도착정보 없는 정류장 한정)
     }
 
     @Override
