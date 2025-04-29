@@ -24,6 +24,10 @@ public class BusTimeTableServiceImpl implements BusTimeTableService {
 
     private final BusRouteInfoRepo busRouteInfoRepo;
 
+    private final static String NO_BUS_INFO = "운행 정보 없음";
+
+    private final static String NO_TIMETABLE_INFO = "시간표 정보 없음";
+
     public BusTimeTableServiceImpl(BusInfoApiService busInfoApiService, BusRouteInfoRepo busRouteInfoRepo) {
         this.busInfoApiService = busInfoApiService;
         this.busRouteInfoRepo = busRouteInfoRepo;
@@ -58,14 +62,19 @@ public class BusTimeTableServiceImpl implements BusTimeTableService {
 
     @Override
     public List<String> getAvailableTimeTable(String busRouteId) {
-        log.info("getAvailableTimeTable busRouteId = " + busRouteId);
         BusRouteInfo busRouteInfosByBrtId = busRouteInfoRepo.findBusRouteInfosByBrtId(busRouteId);
-        return Arrays.asList(busRouteInfosByBrtId.getBrtTimeTable().split(","));
-        //TODO: 여기서 또 NULL 잡아야 됌 (도착정보 없는 정류장 한정)
+        if(busRouteInfosByBrtId.getBrtTimeTable()==null){
+            return List.of(NO_TIMETABLE_INFO);
+        } else
+            return Arrays.asList(busRouteInfosByBrtId.getBrtTimeTable().split(","));
     }
 
     @Override
     public String getUpcomingTimeTable(List<String> busTimeTableList) {
+        if(busTimeTableList.get(0).equals(NO_TIMETABLE_INFO)){
+            return NO_BUS_INFO;
+        }
+
         LocalTime now = LocalTime.now();
         List<LocalTime> localTimeTypeList = new ArrayList<>();
         for (String time : busTimeTableList) {
@@ -80,7 +89,7 @@ public class BusTimeTableServiceImpl implements BusTimeTableService {
                 return localTime.toString();
             }
         }
-        return "운행 정보 없음";
+        return NO_BUS_INFO;
     }
 
 

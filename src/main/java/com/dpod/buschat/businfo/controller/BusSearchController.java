@@ -48,6 +48,7 @@ public class BusSearchController {
 
         if(apiReqArrivalInfo.get(0).getBusRouteId()==null){
             return busStopInfoService.createInactiveBusList(busStopRouteInfoList);
+            //API 요청 결과 : 0번째 요소 없을 시 해당 정류장 도착 정보 없음으로 판단 -> 모든 버스 출발 예정시간 만듬
         }
 
         List<BusArrivalInfoDto> busArrivalInfoDtoList = busRouteInfoService.plusInfoToBusRouteNm(busInfoApiService.requestBusArrivalInfo(busStopId));

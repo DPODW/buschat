@@ -140,7 +140,6 @@ public class BusStopInfoServiceImpl implements BusStopInfoService {
     @Override
     public List<BusArrivalInfoDto> createInactiveBusList(List<BusStopRouteInfoDto> busStopRouteInfoList) {
         ArrayList<BusArrivalInfoDto> busInactiveList = new ArrayList<>();
-        log.info("{}",busStopRouteInfoList);
         for(BusStopRouteInfoDto busStopRouteInfoDto : busStopRouteInfoList){
             busInactiveList.add(getInactiveBusInfo(busStopRouteInfoDto));
         }

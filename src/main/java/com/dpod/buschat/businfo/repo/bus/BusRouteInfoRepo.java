@@ -1,6 +1,7 @@
 package com.dpod.buschat.businfo.repo.bus;
 
 import com.dpod.buschat.businfo.entity.BusRouteInfo;
+import jakarta.annotation.Nullable;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
