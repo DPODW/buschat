@@ -4,6 +4,8 @@ import com.dpod.buschat.businfo.dto.BusRouteInfoDto;
 import com.dpod.buschat.businfo.dto.BusStopInfoDto;
 import com.dpod.buschat.businfo.entity.BusRouteInfo;
 import com.dpod.buschat.businfo.entity.BusStopInfo;
+import com.dpod.buschat.businfo.exception.bus.BusInfoException;
+import com.dpod.buschat.businfo.exception.bus.ErrorCode;
 import com.dpod.buschat.businfo.repo.bus.BusStopInfoRepo;
 import com.dpod.buschat.businfo.repo.bus.BusRouteInfoRepo;
 import com.dpod.buschat.businfo.service.BusInfoSearchService;
@@ -32,7 +34,6 @@ public class BusInfoSearchServiceImpl implements BusInfoSearchService{
     @Override
     public List<BusStopInfoDto> searchBusStopInfoToHgl(String busStopName) {
         //정류장 한글 이름으로 검색
-
         List<BusStopInfo> allInfoByBusStopName = busStopInfoRepo.findAllByBusStopNameLike("%"+busStopName+"%");
 
         return allInfoByBusStopName.stream()
@@ -45,7 +46,11 @@ public class BusInfoSearchServiceImpl implements BusInfoSearchService{
     @Override
     public BusStopInfoDto searchBusStopInfoToId(String busStopId) {
         //정류장 버스 정류장 아이디로 검색
-        return toDtoConvert.busStopEntityToDto(busStopInfoRepo.findAllByBusStopId(busStopId));
+        if(busStopInfoRepo.findAllByBusStopId(busStopId)==null){
+            log.error("해당 ID와 일치하는 정류장 정보가 없습니다.");
+            throw new BusInfoException(ErrorCode.BUSSTOP_ID_NOT_FOUND);
+        } else
+            return toDtoConvert.busStopEntityToDto(busStopInfoRepo.findAllByBusStopId(busStopId));
     }
 
     @Override
