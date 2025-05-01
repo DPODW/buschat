@@ -14,8 +14,6 @@ public interface BusStopInfoService {
 
     void saveBusStopInfo();
 
-    void updateBusStopInfo();
-
     void saveBusStopRouteInfo();
 
     List<BusStopInfo> createBusStopInfoEntity();
@@ -23,13 +21,5 @@ public interface BusStopInfoService {
     List<BusArrivalInfoDto> createBusAllArrivalList(List<BusArrivalInfoDto> busArrivalInfoDtoList,List<BusStopRouteInfoDto> busStopRouteInfoList);
 
     List<BusArrivalInfoDto> createInactiveBusList(List<BusStopRouteInfoDto> busStopRouteInfoList);
-
-    void saveBusStopRoute(BusRouteRoadInfoDto busRouteRoadInfoDto);
-
-    void updateBusStopRoute(BusRouteRoadInfoDto busRouteRoadInfoDto);
-
-    int countBusStopInfo();
-
-    int countBusStopRoute();
 
 }

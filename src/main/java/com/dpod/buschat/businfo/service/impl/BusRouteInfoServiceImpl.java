@@ -30,17 +30,16 @@ public class BusRouteInfoServiceImpl implements BusRouteInfoService {
 
     @Override
     public void saveBusRouteInfo() {
-        busRouteInfoRepo.saveAll(createBusRouteInfoEntity());
+        if(busRouteInfoRepo.countAllBy()==0){
+            log.info("버스 노선 정보 저장 시작. . .");
+            busRouteInfoRepo.saveAll(createBusRouteInfoEntity());
+        }else{
+            log.info("버스 노선 정보 업데이트 시작. . .");
+            busRouteInfoRepo.deleteAllInBatch();
+            busRouteInfoRepo.resetBusRouteInfoSequence();
+            busRouteInfoRepo.saveAll(createBusRouteInfoEntity());
+        }
     }
-
-    @Override
-    public void updateBusRouteInfo() {
-        busRouteInfoRepo.deleteAllInBatch();
-        busRouteInfoRepo.resetBusRouteInfoSequence();
-        busRouteInfoRepo.saveAll(createBusRouteInfoEntity());
-        //데이터가 있으면 AUTO_INCREMENT 를 초기화할 수 없기 때문에 삭제 후 초기화
-    }
-
 
     @Override
     public List<BusRouteInfo> createBusRouteInfoEntity() {
@@ -67,11 +66,5 @@ public class BusRouteInfoServiceImpl implements BusRouteInfoService {
                 }
         );
         return busArrivalInfoDtoList;
-    }
-
-
-    @Override
-    public int countBusRouteInfo() {
-        return busRouteInfoRepo.countAllBy();
     }
 }

@@ -24,4 +24,9 @@ public interface BusRouteInfoRepo extends JpaRepository<BusRouteInfo,Long> {
     @Query(value = "ALTER TABLE BUSROUTE_INFO AUTO_INCREMENT = 1", nativeQuery = true)
     void resetBusRouteInfoSequence();
 
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE BUSROUTE_INFO SET BRT_TIMETABLE = NULL", nativeQuery = true)
+    void updateTimeTableNull();
+
 }

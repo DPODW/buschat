@@ -96,6 +96,11 @@ public class BusTimeTableServiceImpl implements BusTimeTableService {
     @Transactional
     @Override
     public void saveTimeTableInfo() {
+        if(busRouteInfoRepo.countAllBy()>=1){
+            log.info("기존 시간표 데이터 삭제");
+            busRouteInfoRepo.updateTimeTableNull();
+        }
+
         log.info("버스 시간표 저장 시작");
         for(int i=1; i<=busRouteInfoRepo.countAllBy(); i++){
             List<String> timeTableList = new ArrayList<>();

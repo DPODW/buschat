@@ -33,25 +33,13 @@ public class BusInfoSaveController {
 
     @PostMapping("/stopinfo")
     public void saveBusStop(){
-        if(busStopInfoService.countBusStopInfo()==0){
-            log.info("----------정류장 정보 저장 시작----------");
-            busStopInfoService.saveBusStopInfo();
-        }else{
-            log.info("----------정류장 정보 업데이트 시작 (업데이트 후 정차 노선 저장 API 호출 필요)----------");
-            busStopInfoService.updateBusStopInfo();
-        }
+        busStopInfoService.saveBusStopInfo();
     }
 
 
     @PostMapping("/routeinfo")
     public void saveBusRoute(){
-        if(busRouteInfoService.countBusRouteInfo()==0){
-            log.info("----------노선 정보 저장 시작----------");
-            busRouteInfoService.saveBusRouteInfo();
-        }else{
-            log.info("----------노선 정보 업데이트 시작----------");
-            busRouteInfoService.updateBusRouteInfo();
-        }
+         busRouteInfoService.saveBusRouteInfo();
     }
 
     @PostMapping("/stoprouteinfo")
@@ -63,7 +51,6 @@ public class BusInfoSaveController {
     @PostMapping("/timetable")
     public void saveBusTimeTableInfo() {
         busTimeTableService.saveTimeTableInfo();
-        //이미 시간표가 있으면 -> 전체 삭제 후 재 저장?
     }
 
 }

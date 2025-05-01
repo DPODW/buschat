@@ -12,12 +12,8 @@ public interface BusRouteInfoService {
 
     void saveBusRouteInfo();
 
-    void updateBusRouteInfo();
-
     List<BusRouteInfo> createBusRouteInfoEntity();
 
     List<BusArrivalInfoDto> plusInfoToBusRouteNm(List<BusArrivalInfoDto> busArrivalInfoDtoList);
-
-    int countBusRouteInfo();
 
 }

@@ -4,6 +4,7 @@ import com.dpod.buschat.businfo.dto.*;
 import com.dpod.buschat.businfo.entity.BusStopInfo;
 import com.dpod.buschat.businfo.exception.bus.BusInfoException;
 import com.dpod.buschat.businfo.exception.bus.ErrorCode;
+import com.dpod.buschat.businfo.repo.bus.BusRouteInfoRepo;
 import com.dpod.buschat.businfo.repo.bus.BusStopInfoRepo;
 import com.dpod.buschat.businfo.repo.bus.BusStopRouteRepo;
 import com.dpod.buschat.businfo.service.*;
@@ -20,36 +21,37 @@ public class BusStopInfoServiceImpl implements BusStopInfoService {
 
     private final BusTimeTableService busTimeTableService;
 
-    private final BusRouteInfoService busRouteInfoService;
-
     private final BusInfoSearchService busInfoSearchService;
 
     private final BusStopInfoRepo busStopInfoRepo;
 
     private final BusStopRouteRepo busStopRouteRepo;
 
+    private final BusRouteInfoRepo busRouteInfoRepo;
+
     private final ToEntityConvert toEntityConvert;
 
-    public BusStopInfoServiceImpl(BusInfoApiService busInfoApiService, BusRouteInfoService busRouteInfoService, BusInfoSearchService busInfoSearchService, BusStopInfoRepo busStopInfoRepo, BusStopRouteRepo busStopRouteRepo, BusTimeTableService busTimeTableService, ToEntityConvert toEntityConvert) {
+    public BusStopInfoServiceImpl(BusInfoApiService busInfoApiService, BusInfoSearchService busInfoSearchService, BusStopInfoRepo busStopInfoRepo, BusStopRouteRepo busStopRouteRepo, BusTimeTableService busTimeTableService, BusRouteInfoRepo busRouteInfoRepo, ToEntityConvert toEntityConvert) {
         this.busInfoApiService = busInfoApiService;
-        this.busRouteInfoService = busRouteInfoService;
         this.busInfoSearchService = busInfoSearchService;
         this.busStopInfoRepo = busStopInfoRepo;
         this.busStopRouteRepo = busStopRouteRepo;
         this.busTimeTableService = busTimeTableService;
+        this.busRouteInfoRepo = busRouteInfoRepo;
         this.toEntityConvert = toEntityConvert;
     }
 
     @Override
     public void saveBusStopInfo() {
-        busStopInfoRepo.saveAll(createBusStopInfoEntity());
-    }
-
-    @Override
-    public void updateBusStopInfo() {
-        busStopInfoRepo.deleteAllInBatch();
-        busStopInfoRepo.resetBusStopInfoSequence();
-        busStopInfoRepo.saveAll(createBusStopInfoEntity());
+        if(busStopInfoRepo.countAllBy()==0){
+            log.info("버스 정류장 정보 저장 시작. . .");
+            busStopInfoRepo.saveAll(createBusStopInfoEntity());
+        }else {
+            log.info("버스 정류장 정보 업데이트 시작. . .");
+            busStopInfoRepo.deleteAllInBatch();
+            busStopInfoRepo.resetBusStopInfoSequence();
+            busStopInfoRepo.saveAll(createBusStopInfoEntity());
+        }
     }
 
     @Override
@@ -60,10 +62,10 @@ public class BusStopInfoServiceImpl implements BusStopInfoService {
 
         List<BusRouteInfoDto> busRouteInfoDtoList = busInfoApiService.requestBusRouteInfo();
         int busRouteTotalApi = Integer.parseInt(busRouteInfoDtoList.get(busRouteInfoDtoList.size() - 1).getRNum());
-        int busRouteTotalDB = busRouteInfoService.countBusRouteInfo();
+        int busRouteTotalDB = busRouteInfoRepo.countAllBy();
 
-        if(busStopTotalApi!=countBusStopInfo()){
-            log.error("API 제공 정류장 개수와 DB에 저장된 정류장 개수가 다름. API 제공 정류장 개수= {} / DB 저장 정류장 개수 = {}", busStopTotalApi,countBusStopInfo());
+        if(busStopTotalApi!=busStopInfoRepo.countAllBy()){
+            log.error("API 제공 정류장 개수와 DB에 저장된 정류장 개수가 다름. API 제공 정류장 개수= {} / DB 저장 정류장 개수 = {}", busStopTotalApi,busStopInfoRepo.countAllBy());
             throw new BusInfoException(ErrorCode.BUSSTOP_COUNT_MISMATCH);
         }
 
@@ -72,20 +74,20 @@ public class BusStopInfoServiceImpl implements BusStopInfoService {
             throw new BusInfoException(ErrorCode.ROUTE_COUNT_MISMATCH);
         }
 
-        if(countBusStopRoute()==0){
-            log.info("----------정류장 정차 노선 정보 저장 시작----------");
+        if(busStopInfoRepo.countByBusStopRouteIdListIsNotNull()==0){
+            log.info("정류장 정차 노선 정보 저장 시작. . .");
             for (int i = 1; i <=busRouteTotalApi; i++) {
                 List<BusRouteRoadInfoDto> busRouteRoadInfoDtoList = getBusRouteRoadInfoList(i);
                 for(BusRouteRoadInfoDto busRouteRoadInfoDto : busRouteRoadInfoDtoList){
-                    saveBusStopRoute(busRouteRoadInfoDto);
+                    busStopRouteRepo.saveBusStopRoute(busRouteRoadInfoDto);
                 }
             }
         }else{
-            log.info("----------정류장 정차 노선 정보 업데이트 시작----------");
+            log.info("정류장 정차 노선 정보 업데이트 시작. . .");
             for (int i = 1; i <=busRouteTotalApi; i++) {
                 List<BusRouteRoadInfoDto> busRouteRoadInfoDtoList = getBusRouteRoadInfoList(i);
                 for(BusRouteRoadInfoDto busRouteRoadInfoDto : busRouteRoadInfoDtoList){
-                    updateBusStopRoute(busRouteRoadInfoDto);
+                    busStopRouteRepo.updateBusStopRoute(busRouteRoadInfoDto);
                 }
             }
         }
@@ -144,27 +146,6 @@ public class BusStopInfoServiceImpl implements BusStopInfoService {
             busInactiveList.add(getInactiveBusInfo(busStopRouteInfoDto));
         }
         return busInactiveList;
-    }
-
-
-    @Override
-    public void saveBusStopRoute(BusRouteRoadInfoDto busRouteRoadInfoDto) {
-        busStopRouteRepo.saveBusStopRoute(busRouteRoadInfoDto);
-    }
-
-    @Override
-    public void updateBusStopRoute(BusRouteRoadInfoDto busRouteRoadInfoDto) {
-        busStopRouteRepo.updateBusStopRoute(busRouteRoadInfoDto);
-    }
-
-    @Override
-    public int countBusStopInfo() {
-        return busStopInfoRepo.countAllBy();
-    }
-
-    @Override
-    public int countBusStopRoute() {
-        return busStopInfoRepo.countByBusStopRouteIdListIsNotNull();
     }
 
     private List<BusRouteRoadInfoDto> getBusRouteRoadInfoList(long i) {
