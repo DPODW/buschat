@@ -3,7 +3,7 @@ package com.dpod.buschat.businfo.service.impl;
 import com.dpod.buschat.businfo.dto.BusArrivalInfoDto;
 import com.dpod.buschat.businfo.dto.BusRouteInfoDto;
 import com.dpod.buschat.businfo.entity.BusRouteInfo;
-import com.dpod.buschat.businfo.repo.bus.BusRouteInfoRepo;
+import com.dpod.buschat.businfo.repo.BusRouteInfoRepo;
 import com.dpod.buschat.businfo.service.BusInfoApiService;
 import com.dpod.buschat.businfo.service.BusRouteInfoService;
 import lombok.extern.slf4j.Slf4j;

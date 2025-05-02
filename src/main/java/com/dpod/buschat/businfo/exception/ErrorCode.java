@@ -1,4 +1,4 @@
-package com.dpod.buschat.businfo.exception.bus;
+package com.dpod.buschat.businfo.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

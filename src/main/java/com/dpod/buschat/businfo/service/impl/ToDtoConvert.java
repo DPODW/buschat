@@ -5,7 +5,7 @@ import com.dpod.buschat.businfo.dto.BusStopInfoDto;
 import com.dpod.buschat.businfo.dto.BusStopRouteInfoDto;
 import com.dpod.buschat.businfo.entity.BusRouteInfo;
 import com.dpod.buschat.businfo.entity.BusStopInfo;
-import com.dpod.buschat.businfo.repo.bus.BusStopRouteRepo;
+import com.dpod.buschat.businfo.repo.BusStopRouteRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

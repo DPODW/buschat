@@ -1,9 +1,6 @@
-package com.dpod.buschat.businfo.exception.bus;
+package com.dpod.buschat.businfo.exception;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @Getter
 public class BusInfoException extends RuntimeException {

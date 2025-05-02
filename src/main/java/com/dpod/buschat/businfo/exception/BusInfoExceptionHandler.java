@@ -1,4 +1,4 @@
-package com.dpod.buschat.businfo.exception.bus;
+package com.dpod.buschat.businfo.exception;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

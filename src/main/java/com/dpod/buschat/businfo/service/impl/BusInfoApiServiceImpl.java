@@ -2,11 +2,8 @@ package com.dpod.buschat.businfo.service.impl;
 
 import com.dpod.buschat.businfo.dto.*;
 import com.dpod.buschat.businfo.dto.xml.*;
-import com.dpod.buschat.businfo.entity.BusRouteInfo;
-import com.dpod.buschat.businfo.repo.bus.BusRouteInfoRepo;
 import com.dpod.buschat.businfo.service.ApiReqParam;
 import com.dpod.buschat.businfo.service.BusInfoApiService;
-import com.dpod.buschat.businfo.service.BusTimeTableService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;

@@ -1,20 +1,14 @@
 package com.dpod.buschat.businfo.controller;
 
-import com.dpod.buschat.businfo.dto.BusRouteInfoDto;
-import com.dpod.buschat.businfo.dto.BusRouteRoadInfoDto;
-import com.dpod.buschat.businfo.dto.BusStopInfoDto;
-import com.dpod.buschat.businfo.exception.bus.BusInfoException;
-import com.dpod.buschat.businfo.exception.bus.ErrorCode;
+import com.dpod.buschat.businfo.response.BusInfoSaveRep;
+import com.dpod.buschat.businfo.response.RepCode;
 import com.dpod.buschat.businfo.service.*;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 
-@Slf4j
 @RestController
 @RequestMapping("/bus")
 public class BusInfoSaveController {
@@ -32,25 +26,28 @@ public class BusInfoSaveController {
     }
 
     @PostMapping("/stopinfo")
-    public void saveBusStop(){
+    public ResponseEntity<BusInfoSaveRep> saveBusStop(){
         busStopInfoService.saveBusStopInfo();
+        return BusInfoSaveRep.SuccessResponse(RepCode.BUSSTOP_INFO_SAVE);
     }
 
 
     @PostMapping("/routeinfo")
-    public void saveBusRoute(){
-         busRouteInfoService.saveBusRouteInfo();
+    public ResponseEntity<BusInfoSaveRep> saveBusRoute(){
+        busRouteInfoService.saveBusRouteInfo();
+        return BusInfoSaveRep.SuccessResponse(RepCode.BUSROUTE_INFO_SAVE);
     }
 
     @PostMapping("/stoprouteinfo")
-    public void saveBusStopRoute(){
+    public ResponseEntity<BusInfoSaveRep> saveBusStopRoute(){
         busStopInfoService.saveBusStopRouteInfo();
+        return BusInfoSaveRep.SuccessResponse(RepCode.BUSSTOP_ROUTE_INFO_SAVE);
     }
 
 
     @PostMapping("/timetable")
-    public void saveBusTimeTableInfo() {
+    public ResponseEntity<BusInfoSaveRep> saveBusTimeTableInfo() {
         busTimeTableService.saveTimeTableInfo();
+        return BusInfoSaveRep.SuccessResponse(RepCode.BUSSTOP_TIMETABLE_INFO_SAVE);
     }
-
 }

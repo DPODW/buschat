@@ -2,7 +2,7 @@ package com.dpod.buschat.businfo.service.impl;
 
 import com.dpod.buschat.businfo.dto.BusTimeTableInfoDto;
 import com.dpod.buschat.businfo.entity.BusRouteInfo;
-import com.dpod.buschat.businfo.repo.bus.BusRouteInfoRepo;
+import com.dpod.buschat.businfo.repo.BusRouteInfoRepo;
 import com.dpod.buschat.businfo.service.BusInfoApiService;
 import com.dpod.buschat.businfo.service.BusTimeTableService;
 import jakarta.transaction.Transactional;

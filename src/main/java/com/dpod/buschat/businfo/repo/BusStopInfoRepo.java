@@ -1,4 +1,4 @@
-package com.dpod.buschat.businfo.repo.bus;
+package com.dpod.buschat.businfo.repo;
 
 import com.dpod.buschat.businfo.entity.BusStopInfo;
 import jakarta.transaction.Transactional;

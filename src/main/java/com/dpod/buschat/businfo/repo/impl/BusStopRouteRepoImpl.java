@@ -1,13 +1,10 @@
-package com.dpod.buschat.businfo.repo.bus.impl;
+package com.dpod.buschat.businfo.repo.impl;
 
 import com.dpod.buschat.businfo.dto.BusRouteRoadInfoDto;
 import com.dpod.buschat.businfo.dto.BusStopRouteInfoDto;
-import com.dpod.buschat.businfo.entity.BusStopInfo;
 import com.dpod.buschat.businfo.entity.QBusRouteInfo;
 import com.dpod.buschat.businfo.entity.QBusStopInfo;
-import com.dpod.buschat.businfo.repo.bus.BusStopInfoRepo;
-import com.dpod.buschat.businfo.repo.bus.BusStopRouteRepo;
-import com.querydsl.core.Tuple;
+import com.dpod.buschat.businfo.repo.BusStopRouteRepo;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -15,7 +12,6 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
