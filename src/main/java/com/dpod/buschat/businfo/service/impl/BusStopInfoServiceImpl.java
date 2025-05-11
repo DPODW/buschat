@@ -52,6 +52,8 @@ public class BusStopInfoServiceImpl implements BusStopInfoService {
             busStopInfoRepo.resetBusStopInfoSequence();
             busStopInfoRepo.saveAll(createBusStopInfoEntity());
         }
+        busStopInfoRepo.save(toEntityConvert.busStopDtoToEntity(cityBusInfoDto()));
+        /// 시티버스 정류장 정보는 API 에서 제공하지 않기 때문에, 수동으로 저장.
     }
 
     @Override
@@ -151,5 +153,14 @@ public class BusStopInfoServiceImpl implements BusStopInfoService {
     private List<BusRouteRoadInfoDto> getBusRouteRoadInfoList(long i) {
         BusRouteInfoDto busRouteInfoDto = busInfoSearchService.searchBusRouteInfo(i);
         return busInfoApiService.requestBusStopRouteInfo(busRouteInfoDto.getBrtId());
+    }
+
+    private static BusStopInfoDto cityBusInfoDto() {
+        return BusStopInfoDto.builder()
+                .busStopId("999000020")
+                .busStopName("태화강역(시티버스 정류소)")
+                .busStopX("129.3529295")
+                .busStopY("35.5389133")
+                .busStopMark("울산 시티버스 정류장").build();
     }
 }

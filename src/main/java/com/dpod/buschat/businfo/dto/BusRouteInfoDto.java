@@ -12,7 +12,6 @@ import lombok.ToString;
 @Getter
 @XmlAccessorType(XmlAccessType.NONE)
 @NoArgsConstructor
-@ToString
 public class BusRouteInfoDto {
 
     @XmlElement(name = "BRTID")

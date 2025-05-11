@@ -38,7 +38,7 @@ public class BusStopRouteRepoImpl implements BusStopRouteRepo {
                         new CaseBuilder()
                                 .when(qBusStopInfo.busStopRouteIdList.isNull())
                                 .then(busRouteRoadInfoDto.getRouteId())
-                                .otherwise(qBusStopInfo.busStopRouteIdList.concat("|" + busRouteRoadInfoDto.getRouteId()))
+                                .otherwise(qBusStopInfo.busStopRouteIdList.concat("," + busRouteRoadInfoDto.getRouteId()))
                 )
                 .execute();
     }
