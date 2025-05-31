@@ -18,14 +18,14 @@ import static org.assertj.core.api.Assertions.*;
 @Slf4j
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class JpaReqTest {
+public class BusDBReqTest {
 
     private final BusStopInfoRepo busStopInfoRepo;
 
     private final BusRouteInfoRepo busRouteInfoRepo;
 
     @Autowired
-    public JpaReqTest(BusStopInfoRepo busStopInfoRepo, BusRouteInfoRepo busRouteInfoRepo) {
+    public BusDBReqTest(BusStopInfoRepo busStopInfoRepo, BusRouteInfoRepo busRouteInfoRepo) {
         this.busStopInfoRepo = busStopInfoRepo;
         this.busRouteInfoRepo = busRouteInfoRepo;
     }

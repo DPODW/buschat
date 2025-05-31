@@ -12,12 +12,12 @@ import java.util.List;
 
 @Slf4j
 @SpringBootTest
-public class ServiceLayerTest {
+public class BusInfoServiceLayerTest {
 
     private final BusTimeTableService busTimeTableService;
 
     @Autowired
-    public ServiceLayerTest(BusTimeTableService busTimeTableService) {
+    public BusInfoServiceLayerTest(BusTimeTableService busTimeTableService) {
         this.busTimeTableService = busTimeTableService;
     }
 

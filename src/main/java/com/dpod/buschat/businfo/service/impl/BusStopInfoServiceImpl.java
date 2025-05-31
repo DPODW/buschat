@@ -118,7 +118,6 @@ public class BusStopInfoServiceImpl implements BusStopInfoService {
         for (BusArrivalInfoDto busArrivalInfoDto : busArrivalInfoDtoList) {
             busStopRouteIdList.add(busArrivalInfoDto.getBusRouteId());
         }
-
         for (BusStopRouteInfoDto busStopRouteInfoDto : busStopRouteInfoList) {
             if (busStopRouteIdList.contains(busStopRouteInfoDto.getBrtId())) {
                 continue;
@@ -159,8 +158,8 @@ public class BusStopInfoServiceImpl implements BusStopInfoService {
         return BusStopInfoDto.builder()
                 .busStopId("999000020")
                 .busStopName("태화강역(시티버스 정류소)")
-                .busStopX("129.3529295")
-                .busStopY("35.5389133")
+                .busStopLon(129.3529295)
+                .busStopLat(35.5389133)
                 .busStopMark("울산 시티버스 정류장").build();
     }
 }

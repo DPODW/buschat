@@ -25,11 +25,11 @@ public class BusStopInfo{
     //정류장 이름
 
     @Column(name = "BUSSTOP_X")
-    private String busStopX;
+    private double busStopLon;
     //정류장 경도
 
     @Column(name = "BUSSTOP_Y")
-    private String busStopY;
+    private double busStopLat;
     //정류장 위도
 
     @Column(name = "BUSSTOP_MARK")
@@ -41,11 +41,11 @@ public class BusStopInfo{
     //정류장마다 멈추는 노선 아이디 ( | 로 구분되어있음 - 이스케이프 처리 필요)
 
     @Builder
-    public BusStopInfo(String busStopId,String busStopName, String busStopX, String busStopY, String busStopMark, String busStopRouteIdList) {
+    public BusStopInfo(String busStopId,String busStopName, double busStopLon, double busStopLat, String busStopMark, String busStopRouteIdList) {
      this.busStopId = busStopId;
      this.busStopName = busStopName;
-     this.busStopX = busStopX;
-     this.busStopY = busStopY;
+     this.busStopLon = busStopLon;
+     this.busStopLat = busStopLat;
      this.busStopMark = busStopMark;
      this.busStopRouteIdList = busStopRouteIdList;
     }

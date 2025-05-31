@@ -22,15 +22,15 @@ public class ToDtoConvert {
     }
 
     public BusStopInfoDto busStopEntityToDto(BusStopInfo busStopInfo){
-        List<String> busStopRouteIdSplit = List.of(busStopInfo.getBusStopRouteIdList().split("\\|"));
+        List<String> busStopRouteIdSplit = List.of(busStopInfo.getBusStopRouteIdList().split(","));
 
         List<BusStopRouteInfoDto> busStopRouteInfoDtoList = busStopRouteRepo.searchBusRouteDetail(busStopRouteIdSplit);
 
         return BusStopInfoDto.builder()
                 .busStopId(busStopInfo.getBusStopId())
                 .busStopName(busStopInfo.getBusStopName())
-                .busStopX(busStopInfo.getBusStopX())
-                .busStopY(busStopInfo.getBusStopY())
+                .busStopLon(busStopInfo.getBusStopLon())
+                .busStopLat(busStopInfo.getBusStopLat())
                 .busStopMark(busStopInfo.getBusStopMark())
                 .busStopRouteInfoList(busStopRouteInfoDtoList)
                 .build();

@@ -27,8 +27,8 @@ public class ToEntityConvert {
         return BusStopInfo.builder()
                 .busStopId(busStopInfoDto.getBusStopId())
                 .busStopName(busStopInfoDto.getBusStopName())
-                .busStopX(busStopInfoDto.getBusStopX())
-                .busStopY(busStopInfoDto.getBusStopY())
+                .busStopLon(busStopInfoDto.getBusStopLon())
+                .busStopLat(busStopInfoDto.getBusStopLat())
                 .busStopMark(busStopInfoDto.getBusStopMark())
                 .build();
     }

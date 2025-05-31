@@ -13,7 +13,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
-public class StringEditTest {
+public class BusInfoStringEditTest {
 
     @Test
     @DisplayName("| 기준으로 노선 ID 를 자르는 테스트")

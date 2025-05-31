@@ -24,11 +24,11 @@ public class BusStopInfoDto {
     //정류장 이름
 
     @XmlElement(name = "STOPX")
-    private String busStopX;
+    private double busStopLon;
     //정류장 경도
 
     @XmlElement(name = "STOPY")
-    private String busStopY;
+    private double busStopLat;
     //정류장 위도
 
     @XmlElement(name = "STOPREMARK")
@@ -43,11 +43,11 @@ public class BusStopInfoDto {
     //정류장마다 멈추는 노선 아이디 LIST
 
     @Builder
-    public BusStopInfoDto(String busStopId,String busStopName,String busStopX, String busStopY, String busStopMark,List<BusStopRouteInfoDto> busStopRouteInfoList) {
+    public BusStopInfoDto(String busStopId,String busStopName,double busStopLon, double busStopLat, String busStopMark,List<BusStopRouteInfoDto> busStopRouteInfoList) {
         this.busStopId = busStopId;
         this.busStopName = busStopName;
-        this.busStopX = busStopX;
-        this.busStopY = busStopY;
+        this.busStopLon = busStopLon;
+        this.busStopLat = busStopLat;
         this.busStopMark = busStopMark;
         this.busStopRouteInfoList = busStopRouteInfoList;
     }
