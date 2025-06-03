@@ -9,8 +9,10 @@ import lombok.NoArgsConstructor;
 public class LatLonDto {
 
     private double latitude;
+    //위도
 
     private double longitude;
+    //경도
 
     @Builder
     public LatLonDto(double latitude, double longitude) {

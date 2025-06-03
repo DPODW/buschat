@@ -24,11 +24,11 @@ public class BusStopInfo{
     private String busStopName;
     //정류장 이름
 
-    @Column(name = "BUSSTOP_X")
+    @Column(name = "BUSSTOP_LON")
     private double busStopLon;
     //정류장 경도
 
-    @Column(name = "BUSSTOP_Y")
+    @Column(name = "BUSSTOP_LAT")
     private double busStopLat;
     //정류장 위도
 

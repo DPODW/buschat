@@ -1,7 +1,13 @@
 package com.dpod.buschat.location.service;
 
 import com.dpod.buschat.businfo.dto.BusStopInfoDto;
+import com.dpod.buschat.businfo.entity.BusStopInfo;
+import com.dpod.buschat.businfo.repo.BusStopInfoRepo;
+import com.dpod.buschat.businfo.repo.BusStopLocationRepo;
+import com.dpod.buschat.businfo.service.impl.ToDtoConvert;
+import com.dpod.buschat.businfo.service.impl.ToEntityConvert;
 import com.dpod.buschat.location.dto.LatLonDto;
+import com.dpod.buschat.location.dto.RangeLatLonDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
@@ -15,9 +21,43 @@ public class LocationInfoServiceImpl implements LocationInfoService {
 
     private static final double EARTH_RADIUS = 6371000;
 
+    private final BusStopInfoRepo busStopInfoRepo;
+
+    private final BusStopLocationRepo busStopLocationRepo;
+
+    private final ToDtoConvert toDtoConvert;
+
+    public LocationInfoServiceImpl(BusStopInfoRepo busStopInfoRepo, BusStopLocationRepo busStopLocationRepo, ToDtoConvert toDtoConvert) {
+        this.busStopInfoRepo = busStopInfoRepo;
+        this.busStopLocationRepo = busStopLocationRepo;
+        this.toDtoConvert = toDtoConvert;
+    }
+
     @Override
-    public List<BusStopInfoDto> searchNearBusStopInfo(double latitude, double longitude) {
-        return List.of();
+    public List<BusStopInfoDto> calculate500mRangeWithLatLon(LatLonDto userLocation) {
+        /**
+         * 주어진 위도/경도 상 500m 범위 (500m에 대응하는 각도) 를 계산, 500m 안에 있는 정류장 LIST 반환
+         * **/
+        double lat500mValue = 500/111000.0; /// 위도상 500m
+        double lon500mValue = 500/(111000.0 * Math.cos(Math.toRadians(userLocation.getLatitude()))); ///경도상 500m
+
+        RangeLatLonDto rangeLatLonDto = RangeLatLonDto.builder()
+                .minLatitude(userLocation.getLatitude() - lat500mValue)
+                .maxLatitude(userLocation.getLatitude() + lat500mValue)
+                .minLongitude(userLocation.getLongitude() - lon500mValue)
+                .maxLongitude(userLocation.getLongitude() + lon500mValue)
+                .build();
+
+        List<BusStopInfo> range500mBusStopInfoList = busStopLocationRepo.searchNear500MBusStop(rangeLatLonDto);
+
+        List<BusStopInfoDto> range500mBusStopInfoDtoList = new ArrayList<>();
+
+        for(BusStopInfo range500mBusStopInfo : range500mBusStopInfoList) {
+            range500mBusStopInfoDtoList.add(toDtoConvert.busStopEntityToDto(range500mBusStopInfo));
+            log.info("위치로부터 500m 범위 안에 있는 정류장 정보 : *{}* , 방면 : *{}*", range500mBusStopInfo.getBusStopName(),range500mBusStopInfo.getBusStopMark());
+        }
+
+        return range500mBusStopInfoDtoList;
     }
 
 
@@ -26,6 +66,7 @@ public class LocationInfoServiceImpl implements LocationInfoService {
         /**
          * 위도/경도 좌표를 비교해서, 두 위치간 거리를 구하는 로직
          * 하버사인 공식이 적용되었으며, 해당 공식 사용을 위해 라디안 형식으로 변환
+         * 최종적으로 정류장 ID - 위치간 거리 차이 를 Pair 에 넣어서 LIST 로 반환
          * **/
         double userLatToRadians = Math.toRadians(userLocationDto.getLatitude());
         double userLonToRadians = Math.toRadians(userLocationDto.getLongitude());
@@ -52,8 +93,33 @@ public class LocationInfoServiceImpl implements LocationInfoService {
             Pair<String,Double> calcDistanceResult = Pair.of(busStopInfoDto.getBusStopId(), resultDistance); ///< 정류장 아이디 , 사용자 위치와 정류장 위치의 거리 차이> pair 구조로 저장
             calcDistanceList.add(calcDistanceResult);
 
-            log.info("사용자 위치와 정류장 위치의 거리 차이 {} , 정류장 이름 : {}", resultDistance,busStopInfoDto.getBusStopName());
         }
         return calcDistanceList;
     }
+
+    @Override
+    public BusStopInfoDto getShortDistanceBusStop(List<Pair<String, Double>> user500mRangeWithLatLon) {
+        /**
+         * 1. 500m 범위 안에 있는 정류장 중 에서 제일 가까운 정류장 검색
+         * 2. 해당 정류장이 50m 안에 있는지 검증
+         * 최종적으로 제일 가까운 거리의 정류장을 반환
+         * **/
+        Pair<String,Double> shortDistanceBusStop = null;
+        double minDistance = Double.MAX_VALUE;
+
+        for(int i = 0; i<user500mRangeWithLatLon.size(); i++) {
+            if(user500mRangeWithLatLon.get(i).getSecond() < minDistance) {
+                minDistance = user500mRangeWithLatLon.get(i).getSecond();
+                shortDistanceBusStop = user500mRangeWithLatLon.get(i);
+            }
+        }
+
+        if(minDistance <= 50.0){
+            BusStopInfo shortDistanceBusStopInfo = busStopInfoRepo.findAllByBusStopId(shortDistanceBusStop.getFirst());
+            return toDtoConvert.busStopEntityToDto(shortDistanceBusStopInfo);
+        }else
+            throw new RuntimeException();
+            /// 해당 부분 커스텀 예외로 대체 예정
+    }
+
 }

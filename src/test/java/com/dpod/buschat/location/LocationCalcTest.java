@@ -47,5 +47,16 @@ public class LocationCalcTest {
 
         /// pow : 거듭제곱 , sin : 사인 값 , cos : 코사인 값 , atan2 : 각도(기울기)를 방향까지 고려해서 정확하게 계산하는 함수 , sqrt : 제곱근
     }
+
+
+    @Test
+    @DisplayName("입력 좌표에서 500미터 차이 구하기")
+    void findBusStopNear500Meters() {
+        double latDiff  = 500/111000.0;
+        double lonDiff  = 500/(111000.0 * Math.cos(Math.toRadians(mainLat)));
+
+        log.info("{},{}",latDiff,lonDiff);
+    }
+
 }
 

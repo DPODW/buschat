@@ -3,8 +3,12 @@
 GET localhost:8080/bus/stopinfo/%EC%9A%B0%EB%AF%B8%EB%A6%B0
 
 ### 실시간 버스 도착정보 검색 API
-### URL : localhost:8080/stopinfo/arrival/{busStopId} | 정류장 ID : 196020421 (우미린1차)
+### URL : localhost:8080/bus/stopinfo/arrival/{busStopId} | 정류장 ID : 196020421 (우미린1차)
 GET localhost:8080/bus/stopinfo/arrival/196020421
+
+### 입력받은 위도/경도 정보로 제일 가까운 정류장 검색 API
+### URL : localhost:8080/bus/location/user/{latitude}/{longitude}
+GET localhost:8080/bus/location/user/35.575410/129.241024
 
 ### 버스 정류장 정보 저장 API
 POST localhost:8080/bus/stopinfo
