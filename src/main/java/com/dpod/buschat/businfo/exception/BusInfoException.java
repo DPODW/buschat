@@ -4,9 +4,10 @@ import lombok.Getter;
 
 @Getter
 public class BusInfoException extends RuntimeException {
-    ErrorCode errorCode;
+    BusInfoErrorCode busInfoErrorCode;
 
-    public BusInfoException(ErrorCode errorCode) {
-        this.errorCode = errorCode;
+    public BusInfoException(BusInfoErrorCode busInfoErrorCode) {
+        super(busInfoErrorCode.getMessage());
+        this.busInfoErrorCode = busInfoErrorCode;
     }
 }

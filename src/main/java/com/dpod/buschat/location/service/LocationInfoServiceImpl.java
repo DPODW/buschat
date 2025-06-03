@@ -8,6 +8,8 @@ import com.dpod.buschat.businfo.service.impl.ToDtoConvert;
 import com.dpod.buschat.businfo.service.impl.ToEntityConvert;
 import com.dpod.buschat.location.dto.LatLonDto;
 import com.dpod.buschat.location.dto.RangeLatLonDto;
+import com.dpod.buschat.location.exception.LocationErrorCode;
+import com.dpod.buschat.location.exception.LocationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
@@ -49,9 +51,11 @@ public class LocationInfoServiceImpl implements LocationInfoService {
                 .build();
 
         List<BusStopInfo> range500mBusStopInfoList = busStopLocationRepo.searchNear500MBusStop(rangeLatLonDto);
+        if(range500mBusStopInfoList.isEmpty()) {
+            throw new LocationException(LocationErrorCode.BUSSTOP_NOT_FOUND_500M_RANGE);
+        }
 
         List<BusStopInfoDto> range500mBusStopInfoDtoList = new ArrayList<>();
-
         for(BusStopInfo range500mBusStopInfo : range500mBusStopInfoList) {
             range500mBusStopInfoDtoList.add(toDtoConvert.busStopEntityToDto(range500mBusStopInfo));
             log.info("위치로부터 500m 범위 안에 있는 정류장 정보 : *{}* , 방면 : *{}*", range500mBusStopInfo.getBusStopName(),range500mBusStopInfo.getBusStopMark());
@@ -100,9 +104,8 @@ public class LocationInfoServiceImpl implements LocationInfoService {
     @Override
     public BusStopInfoDto getShortDistanceBusStop(List<Pair<String, Double>> user500mRangeWithLatLon) {
         /**
-         * 1. 500m 범위 안에 있는 정류장 중 에서 제일 가까운 정류장 검색
-         * 2. 해당 정류장이 50m 안에 있는지 검증
-         * 최종적으로 제일 가까운 거리의 정류장을 반환
+         * 받은 정류장 정보에서 제일 가까운 정류장을 가져오고, 50m 범위 안에 있는지 검증한다.
+         * 최종적으로 제일 가까움 + 50m 이내의 정류장을 반환한다.
          * **/
         Pair<String,Double> shortDistanceBusStop = null;
         double minDistance = Double.MAX_VALUE;
@@ -118,8 +121,7 @@ public class LocationInfoServiceImpl implements LocationInfoService {
             BusStopInfo shortDistanceBusStopInfo = busStopInfoRepo.findAllByBusStopId(shortDistanceBusStop.getFirst());
             return toDtoConvert.busStopEntityToDto(shortDistanceBusStopInfo);
         }else
-            throw new RuntimeException();
-            /// 해당 부분 커스텀 예외로 대체 예정
+           throw new LocationException(LocationErrorCode.BUSSTOP_NOT_FOUND_50M_RANGE);
     }
 
 }

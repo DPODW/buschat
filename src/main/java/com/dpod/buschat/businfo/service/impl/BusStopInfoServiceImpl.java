@@ -3,7 +3,7 @@ package com.dpod.buschat.businfo.service.impl;
 import com.dpod.buschat.businfo.dto.*;
 import com.dpod.buschat.businfo.entity.BusStopInfo;
 import com.dpod.buschat.businfo.exception.BusInfoException;
-import com.dpod.buschat.businfo.exception.ErrorCode;
+import com.dpod.buschat.businfo.exception.BusInfoErrorCode;
 import com.dpod.buschat.businfo.repo.BusRouteInfoRepo;
 import com.dpod.buschat.businfo.repo.BusStopInfoRepo;
 import com.dpod.buschat.businfo.repo.BusStopRouteRepo;
@@ -68,12 +68,12 @@ public class BusStopInfoServiceImpl implements BusStopInfoService {
 
         if(busStopTotalApi!=busStopInfoRepo.countAllBy()){
             log.error("API 제공 정류장 개수와 DB에 저장된 정류장 개수가 다름. API 제공 정류장 개수= {} / DB 저장 정류장 개수 = {}", busStopTotalApi,busStopInfoRepo.countAllBy());
-            throw new BusInfoException(ErrorCode.BUSSTOP_COUNT_MISMATCH);
+            throw new BusInfoException(BusInfoErrorCode.BUSSTOP_COUNT_MISMATCH);
         }
 
         if(busRouteTotalApi!=busRouteTotalDB) {
             log.error("API 제공 노선 개수와 DB에 저장된 노선 개수가 다릅니다 API 제공 노선 개수= {} / DB 저장 노선 개수 = {}", busRouteTotalApi,busRouteTotalDB);
-            throw new BusInfoException(ErrorCode.ROUTE_COUNT_MISMATCH);
+            throw new BusInfoException(BusInfoErrorCode.ROUTE_COUNT_MISMATCH);
         }
 
         if(busStopInfoRepo.countByBusStopRouteIdListIsNotNull()==0){

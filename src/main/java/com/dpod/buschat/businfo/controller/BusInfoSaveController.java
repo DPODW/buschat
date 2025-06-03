@@ -1,7 +1,5 @@
 package com.dpod.buschat.businfo.controller;
 
-import com.dpod.buschat.businfo.exception.BusInfoException;
-import com.dpod.buschat.businfo.exception.ErrorCode;
 import com.dpod.buschat.businfo.response.BusInfoSaveRep;
 import com.dpod.buschat.businfo.response.RepCode;
 import com.dpod.buschat.businfo.service.*;
