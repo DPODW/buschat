@@ -1,6 +1,6 @@
 ### 버스 정류장 검색 API
 ### URL : localhost:8080/bus/stopinfo/stopinfo/{busStopName} | 인코딩 된 문자열 : 우미린
-GET localhost:8080/bus/stopinfo/%EC%9A%B0%EB%AF%B8%EB%A6%B0
+GET localhost:8080/bus/stopinfo/adsf
 
 ### 실시간 버스 도착정보 검색 API
 ### URL : localhost:8080/bus/stopinfo/arrival/{busStopId} | 정류장 ID : 196020421 (우미린1차)

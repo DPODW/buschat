@@ -36,6 +36,10 @@ public class BusInfoSearchServiceImpl implements BusInfoSearchService{
         //정류장 한글 이름으로 검색
         List<BusStopInfo> allInfoByBusStopName = busStopInfoRepo.findAllByBusStopNameLike("%"+busStopName+"%");
 
+        if(allInfoByBusStopName.isEmpty()){
+            throw new BusInfoException(BusInfoErrorCode.BUSSTOP_NAME_NOT_FOUND);
+        }
+
         return allInfoByBusStopName.stream()
                 .map(busStopInfo -> {
                             return toDtoConvert.busStopEntityToDto(busStopInfo);
