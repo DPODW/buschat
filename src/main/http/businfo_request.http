@@ -8,7 +8,7 @@ GET localhost:8080/bus/stopinfo/arrival/196020421
 
 ### 입력받은 위도/경도 정보로 제일 가까운 정류장 검색 API
 ### URL : localhost:8080/bus/location/user/{latitude}/{longitude}
-GET localhost:8080/bus/location/user/35.576069/129.241947
+GET localhost:8080/bus/location/user/35.28333284/129.09497371
 
 ### 버스 정류장 정보 저장 API
 POST localhost:8080/bus/stopinfo

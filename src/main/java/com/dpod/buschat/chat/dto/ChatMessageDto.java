@@ -8,13 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ChatMessageDto {
 
-    private String roomId;
     private String sender;
     private String message;
 
     @Builder
-    public ChatMessageDto(String roomId, String sender, String message) {
-        this.roomId = roomId;
+    public ChatMessageDto(String sender, String message) {
         this.sender = sender;
         this.message = message;
     }
