@@ -26,14 +26,8 @@ public class LocationInfoController {
 
     @GetMapping("/location/user/{latitude}/{longitude}")
     public BusStopInfoDto searchUserNearBusStop(@PathVariable("latitude") double latitude, @PathVariable("longitude") double longitude) {
-        LatLonDto userLatLonDto = LatLonDto.builder()
-                .latitude(latitude)
-                .longitude(longitude).build();
-
-        List<BusStopInfoDto> range500mBusStopInfoList = locationInfoService.calculate500mRangeWithLatLon(userLatLonDto);
-        List<Pair<String, Double>> calcDistanceList = locationInfoService.calculateDistance(userLatLonDto, range500mBusStopInfoList);
-        BusStopInfoDto shortDistanceBusStop = locationInfoService.getShortDistanceBusStop(calcDistanceList);
-        log.info("입력된 좌표와 제일 가까운 정류장 : *{}* , 정류장 방면 정보 : *{}*",shortDistanceBusStop.getBusStopName(),shortDistanceBusStop.getBusStopMark());
-        return shortDistanceBusStop;
+        BusStopInfoDto userNearBusStopResult = locationInfoService.getUserNearBusStopResult(latitude, longitude);
+        log.info("입력된 좌표와 제일 가까운 정류장 : *{}* , 정류장 방면 정보 : *{}*",userNearBusStopResult.getBusStopName(),userNearBusStopResult.getBusStopMark());
+        return userNearBusStopResult;
     }
 }

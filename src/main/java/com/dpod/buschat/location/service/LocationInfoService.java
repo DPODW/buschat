@@ -12,6 +12,8 @@ import java.util.List;
 @Service
 public interface LocationInfoService {
 
+    BusStopInfoDto getUserNearBusStopResult(double userLatitude, double userLongitude);
+
     List<BusStopInfoDto> calculate500mRangeWithLatLon(LatLonDto userLocation);
 
     List<Pair<String,Double>> calculateDistance(LatLonDto busStopLocation, List<BusStopInfoDto> busStopInfoDto);

@@ -58,5 +58,15 @@ public class LocationCalcTest {
         log.info("{},{}",latDiff,lonDiff);
     }
 
+    @Test
+    @DisplayName("위도/경도 쿼리 스트링 파싱")
+    void splitLatAndLon() {
+        String testLatAndLon = "latitude=35.575796&longitude=129.240942";
+        String testLat = testLatAndLon.substring(testLatAndLon.indexOf("=")+1, testLatAndLon.indexOf("&"));
+        String testLon = testLatAndLon.substring(testLatAndLon.lastIndexOf("=")+1);
+        log.info("{}",testLat);
+        log.info("{}",testLon);
+    }
+
 }
 

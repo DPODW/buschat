@@ -36,6 +36,19 @@ public class LocationInfoServiceImpl implements LocationInfoService {
     }
 
     @Override
+    public BusStopInfoDto getUserNearBusStopResult(double userLatitude, double userLongitude) {
+        LatLonDto userLatLonDto = LatLonDto.builder()
+                .latitude(userLatitude)
+                .longitude(userLongitude).build();
+
+        List<BusStopInfoDto> range500mBusStopInfoList = calculate500mRangeWithLatLon(userLatLonDto);
+        List<Pair<String, Double>> calcDistanceList = calculateDistance(userLatLonDto, range500mBusStopInfoList);
+        BusStopInfoDto shortDistanceBusStop = getShortDistanceBusStop(calcDistanceList);
+        log.info("입력된 좌표와 제일 가까운 정류장 : *{}* , 정류장 방면 정보 : *{}*",shortDistanceBusStop.getBusStopName(),shortDistanceBusStop.getBusStopMark());
+        return shortDistanceBusStop;
+    }
+
+    @Override
     public List<BusStopInfoDto> calculate500mRangeWithLatLon(LatLonDto userLocation) {
         /**
          * 주어진 위도/경도 상 500m 범위 (500m에 대응하는 각도) 를 계산, 500m 안에 있는 정류장 LIST 반환
@@ -58,7 +71,7 @@ public class LocationInfoServiceImpl implements LocationInfoService {
         List<BusStopInfoDto> range500mBusStopInfoDtoList = new ArrayList<>();
         for(BusStopInfo range500mBusStopInfo : range500mBusStopInfoList) {
             range500mBusStopInfoDtoList.add(toDtoConvert.busStopEntityToDto(range500mBusStopInfo));
-            log.info("위치로부터 500m 범위 안에 있는 정류장 정보 : *{}* , 방면 : *{}*", range500mBusStopInfo.getBusStopName(),range500mBusStopInfo.getBusStopMark());
+//            log.info("위치로부터 500m 범위 안에 있는 정류장 정보 : *{}* , 방면 : *{}*", range500mBusStopInfo.getBusStopName(),range500mBusStopInfo.getBusStopMark());
         }
 
         return range500mBusStopInfoDtoList;
