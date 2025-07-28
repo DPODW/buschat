@@ -24,11 +24,13 @@ public class ChatConnectionManager {
         this.mapper = mapper;
     }
 
+    /// 새로운 세션(유저) 가 들어오면 해당하는 채팅방에 세션을 넣어주는 메소드 
     public void addSessionToChatRoom(WebSocketSession webSocketSession, BusStopInfoDto userNearBusStopResult, Map<String, Set<WebSocketSession>> chatRooms) {
         chatRooms.putIfAbsent(userNearBusStopResult.getBusStopId(), ConcurrentHashMap.newKeySet());
         chatRooms.get(userNearBusStopResult.getBusStopId()).add(webSocketSession);
     }
 
+    /// 현재 누적되어있는 세션 개수 카운트 메소드
     public int validateUserCount(BusStopInfoDto userNearBusStopResult, Map<String, Set<WebSocketSession>> chatRooms) {
         int userCount = chatRooms.get(userNearBusStopResult.getBusStopId()).size();
         if(userCount >= 50){
@@ -38,7 +40,8 @@ public class ChatConnectionManager {
         return userCount;
     }
 
-    public void updateChatRoomsInfo(WebSocketSession webSocketSession, BusStopInfoDto userNearBusStopResult,Map<String, Set<WebSocketSession>> chatRooms,int userCount) throws IOException {
+    /// 채팅방 정보를 모든 채팅방에 업데이트 해주는 메소드
+    public void updateChatRoomsInfo(BusStopInfoDto userNearBusStopResult,Map<String, Set<WebSocketSession>> chatRooms,int userCount) throws IOException {
         ChatInfoDto chatInfoDto = ChatInfoDto.builder()
                 .chatRoomName(userNearBusStopResult.getBusStopName()+"-"+userNearBusStopResult.getBusStopMark())
                 .userCount(userCount)
@@ -54,6 +57,7 @@ public class ChatConnectionManager {
     }
 
 
+    /// 메세지 전송 메소드
     public void sendChatMessage(TextMessage message, BusStopInfoDto userNearBusStopResult,Map<String, Set<WebSocketSession>> chatRooms) throws IOException {
         ChatMessageDto chatMessage = mapper.readValue(message.getPayload(), ChatMessageDto.class);
 

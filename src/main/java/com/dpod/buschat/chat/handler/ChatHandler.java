@@ -36,7 +36,7 @@ public class ChatHandler extends TextWebSocketHandler {
         BusStopInfoDto userNearBusStopResult = (BusStopInfoDto) webSocketSession.getAttributes().get("userNearBusStopResult");
         chatConnectionManager.addSessionToChatRoom(webSocketSession,userNearBusStopResult,chatRooms);
         int userCount = chatConnectionManager.validateUserCount(userNearBusStopResult, chatRooms);
-        chatConnectionManager.updateChatRoomsInfo(webSocketSession,userNearBusStopResult,chatRooms,userCount);
+        chatConnectionManager.updateChatRoomsInfo(userNearBusStopResult,chatRooms,userCount);
     }
 
     @Override
@@ -47,8 +47,12 @@ public class ChatHandler extends TextWebSocketHandler {
 
 
     @Override
-    public void afterConnectionClosed(WebSocketSession webSocketSession, CloseStatus status) {
-        // 연결 종료 시 모든 방에서 제거
-        chatRooms.values().forEach(sessions -> sessions.remove(webSocketSession));
+    public void afterConnectionClosed(WebSocketSession webSocketSession, CloseStatus status) throws IOException {
+        BusStopInfoDto userNearBusStopResult = (BusStopInfoDto) webSocketSession.getAttributes().get("userNearBusStopResult");
+        chatRooms.get(userNearBusStopResult.getBusStopId()).remove(webSocketSession);
+
+        int userCount = chatConnectionManager.validateUserCount(userNearBusStopResult, chatRooms);
+        chatConnectionManager.updateChatRoomsInfo(userNearBusStopResult,chatRooms,userCount);
+        //정류장 ID 를 조회, 해당 정류장 채팅방에서 세션을 제거.
     }
 }
