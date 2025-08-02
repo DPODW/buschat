@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LatLonDto {
 
+    private String locationCode;
+    /// WebSocket 통신 간 위도-경도 검증 메세지 json 파싱 용도로 사용됌 (그외 x)
+
     private double latitude;
     //위도
 

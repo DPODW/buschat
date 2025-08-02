@@ -18,6 +18,7 @@ public interface LocationInfoService {
 
     List<Pair<String,Double>> calculateDistance(LatLonDto busStopLocation, List<BusStopInfoDto> busStopInfoDto);
 
-    BusStopInfoDto getShortDistanceBusStop(List<Pair<String,Double>> user500mRangeWithLatLon);
+    Pair<String,Double> getShortDistanceBusStop(List<Pair<String,Double>> user500mRangeWithLatLon);
 
+    BusStopInfoDto get50mRangeBusStop(Pair<String,Double> shortDistanceBusStop);
 }

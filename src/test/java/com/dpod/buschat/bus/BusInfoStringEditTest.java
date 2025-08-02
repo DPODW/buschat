@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -110,6 +111,23 @@ public class BusInfoStringEditTest {
 
             }
         }
+    }
 
+
+    @Test
+    @DisplayName("현재 시간 밀리세컨으로 가져오기")
+    void getNowTimeMs(){
+        String sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(System.currentTimeMillis());
+        log.info("현재 시간 ms : {}",System.currentTimeMillis());
+        log.info("현재 시간 ms(format) : {}",sdf);
+    }
+
+
+    @Test
+    @DisplayName("문자열 확인")
+    void checkTextContain(){
+        String testText = "{\"location\":\"validate-001\",\"longitude\":129.236992,\"latitude\":35.5794944}";
+
+        assertThat(testText).contains("validate-001");
     }
 }

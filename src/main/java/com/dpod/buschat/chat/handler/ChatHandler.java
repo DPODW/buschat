@@ -42,7 +42,13 @@ public class ChatHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession webSocketSession, TextMessage message) throws Exception {
         BusStopInfoDto userNearBusStopResult = (BusStopInfoDto) webSocketSession.getAttributes().get("userNearBusStopResult");
-        chatConnectionManager.sendChatMessage(message,userNearBusStopResult,chatRooms);
+        if(message.getPayload().contains("validate-001")){
+            /// validate-001 : validate-001 이 포함된 json 데이터는 위치 검증 데이터로 판별
+            chatConnectionManager.receivedLocationValidate(message,userNearBusStopResult);
+        }else{
+            chatConnectionManager.sendChatMessage(message,userNearBusStopResult,chatRooms);
+            /// 메세지가 오면, 현재 시간을 ms 단위로 찍고, 그 다음 메세지가 ms 단위만 다르다면 (초까지 같다는거) 비정상 통신으로 간주, 예외 발생 or 강제 연결 종료
+        }
     }
 
 
@@ -50,7 +56,6 @@ public class ChatHandler extends TextWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession webSocketSession, CloseStatus status) throws IOException {
         BusStopInfoDto userNearBusStopResult = (BusStopInfoDto) webSocketSession.getAttributes().get("userNearBusStopResult");
         chatRooms.get(userNearBusStopResult.getBusStopId()).remove(webSocketSession);
-
         int userCount = chatConnectionManager.validateUserCount(userNearBusStopResult, chatRooms);
         chatConnectionManager.updateChatRoomsInfo(userNearBusStopResult,chatRooms,userCount);
         //정류장 ID 를 조회, 해당 정류장 채팅방에서 세션을 제거.

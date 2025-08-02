@@ -43,9 +43,10 @@ public class LocationInfoServiceImpl implements LocationInfoService {
 
         List<BusStopInfoDto> range500mBusStopInfoList = calculate500mRangeWithLatLon(userLatLonDto);
         List<Pair<String, Double>> calcDistanceList = calculateDistance(userLatLonDto, range500mBusStopInfoList);
-        BusStopInfoDto shortDistanceBusStop = getShortDistanceBusStop(calcDistanceList);
-        log.info("입력된 좌표와 제일 가까운 정류장 : *{}* , 정류장 방면 정보 : *{}*",shortDistanceBusStop.getBusStopName(),shortDistanceBusStop.getBusStopMark());
-        return shortDistanceBusStop;
+        Pair<String, Double> shortDistanceBusStop = getShortDistanceBusStop(calcDistanceList);
+        BusStopInfoDto range50mBusStopInfo = get50mRangeBusStop(shortDistanceBusStop);
+        log.info("입력된 좌표와 제일 가까운 정류장 : *{}* , 정류장 방면 정보 : *{}*",range50mBusStopInfo.getBusStopName(),range50mBusStopInfo.getBusStopMark());
+        return range50mBusStopInfo;
     }
 
     @Override
@@ -71,7 +72,7 @@ public class LocationInfoServiceImpl implements LocationInfoService {
         List<BusStopInfoDto> range500mBusStopInfoDtoList = new ArrayList<>();
         for(BusStopInfo range500mBusStopInfo : range500mBusStopInfoList) {
             range500mBusStopInfoDtoList.add(toDtoConvert.busStopEntityToDto(range500mBusStopInfo));
-//            log.info("위치로부터 500m 범위 안에 있는 정류장 정보 : *{}* , 방면 : *{}*", range500mBusStopInfo.getBusStopName(),range500mBusStopInfo.getBusStopMark());
+            log.info("위치로부터 500m 범위 안에 있는 정류장 정보 : *{}* , 방면 : *{}*", range500mBusStopInfo.getBusStopName(),range500mBusStopInfo.getBusStopMark());
         }
 
         return range500mBusStopInfoDtoList;
@@ -115,11 +116,8 @@ public class LocationInfoServiceImpl implements LocationInfoService {
     }
 
     @Override
-    public BusStopInfoDto getShortDistanceBusStop(List<Pair<String, Double>> user500mRangeWithLatLon) {
-        /**
-         * 받은 정류장 정보에서 제일 가까운 정류장을 가져오고, 50m 범위 안에 있는지 검증한다.
-         * 최종적으로 제일 가까움 + 50m 이내의 정류장을 반환한다.
-         * **/
+    public Pair<String,Double> getShortDistanceBusStop(List<Pair<String, Double>> user500mRangeWithLatLon) {
+        /// PAIR <버스 ID , 거리 차이> , 해당 List 에서 제일 거리 차이가 작은 PAIR 를 반환한다.
         Pair<String,Double> shortDistanceBusStop = null;
         double minDistance = Double.MAX_VALUE;
 
@@ -129,12 +127,17 @@ public class LocationInfoServiceImpl implements LocationInfoService {
                 shortDistanceBusStop = user500mRangeWithLatLon.get(i);
             }
         }
+       return shortDistanceBusStop;
+    }
 
-        if(minDistance <= 50.0){
+    @Override
+    public BusStopInfoDto get50mRangeBusStop(Pair<String,Double> shortDistanceBusStop ) {
+        /// 해당 정류장이 50미터 이내에 있는지 검증한다. (현재 테스트를 위해 400미터로 거리 확장)
+        if(shortDistanceBusStop.getSecond() <= 400.0){
             BusStopInfo shortDistanceBusStopInfo = busStopInfoRepo.findAllByBusStopId(shortDistanceBusStop.getFirst());
             return toDtoConvert.busStopEntityToDto(shortDistanceBusStopInfo);
         }else
-           throw new LocationException(LocationErrorCode.BUSSTOP_NOT_FOUND_50M_RANGE);
+            throw new LocationException(LocationErrorCode.BUSSTOP_NOT_FOUND_50M_RANGE);
     }
 
 }
