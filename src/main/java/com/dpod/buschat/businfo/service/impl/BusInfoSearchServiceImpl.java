@@ -49,7 +49,6 @@ public class BusInfoSearchServiceImpl implements BusInfoSearchService{
 
     @Override
     public BusStopInfoDto searchBusStopInfoToId(String busStopId) {
-        //정류장 버스 정류장 아이디로 검색
         if(busStopInfoRepo.findAllByBusStopId(busStopId)==null){
             log.error("해당 ID와 일치하는 정류장 정보가 없습니다.");
             throw new BusInfoException(BusInfoErrorCode.BUSSTOP_ID_NOT_FOUND);

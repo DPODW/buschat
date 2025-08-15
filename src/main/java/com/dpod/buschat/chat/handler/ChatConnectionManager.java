@@ -35,13 +35,13 @@ public class ChatConnectionManager {
         this.locationInfoService = locationInfoService;
     }
 
-    /// 새로운 세션(유저) 가 들어오면 해당하는 채팅방에 세션을 넣어주는 메소드 
+
     public void addSessionToChatRoom(WebSocketSession webSocketSession, BusStopInfoDto userNearBusStopResult, Map<String, Set<WebSocketSession>> chatRooms) {
         chatRooms.putIfAbsent(userNearBusStopResult.getBusStopId(), ConcurrentHashMap.newKeySet());
         chatRooms.get(userNearBusStopResult.getBusStopId()).add(webSocketSession);
     }
 
-    /// 현재 누적되어있는 세션 개수 카운트 메소드
+
     public int validateUserCount(BusStopInfoDto userNearBusStopResult, Map<String, Set<WebSocketSession>> chatRooms) {
         int userCount = chatRooms.get(userNearBusStopResult.getBusStopId()).size();
         if(userCount >= 50){
@@ -50,7 +50,7 @@ public class ChatConnectionManager {
         return userCount;
     }
 
-    /// 채팅방 정보를 모든 채팅방에 업데이트 해주는 메소드
+
     public void updateChatRoomsInfo(BusStopInfoDto userNearBusStopResult,Map<String, Set<WebSocketSession>> chatRooms,int userCount) throws IOException {
         ChatInfoDto chatInfoDto = ChatInfoDto.builder()
                 .chatRoomName(userNearBusStopResult.getBusStopName()+"-"+userNearBusStopResult.getBusStopMark())
@@ -67,7 +67,7 @@ public class ChatConnectionManager {
     }
 
 
-    /// 메세지 전송 메소드
+
     public void sendChatMessage(TextMessage message, BusStopInfoDto userNearBusStopResult,Map<String, Set<WebSocketSession>> chatRooms) throws IOException {
             ChatMessageDto chatMessage = mapper.readValue(message.getPayload(), ChatMessageDto.class);
             // 메시지 브로드캐스트
@@ -82,7 +82,7 @@ public class ChatConnectionManager {
     public void receivedLocationValidate(TextMessage message,BusStopInfoDto busStopInfoDto)throws IOException {
         /// 프론트에서 n분 마다 위치 정보를 보낼때, 해당 위치가 50m 안인지 검증하는 메소드.
         /// 위치가 특정되어서 오기 때문에 단건 확정. 고로 매개변수 타입을 맞춰주기 위한 list 이다. (실제론 단건)
-        /// 50m 바깥일시 예외 발생
+        /// 50m 바깥일시 get50mRangeBusStop 에서 예외 발생
         LatLonDto latLonDto = mapper.readValue(message.getPayload(), LatLonDto.class);
             List<BusStopInfoDto> busStopInfoDtoList = new ArrayList<>();
             busStopInfoDtoList.add(busStopInfoDto);

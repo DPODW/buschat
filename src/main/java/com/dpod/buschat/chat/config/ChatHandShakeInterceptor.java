@@ -23,7 +23,6 @@ public class ChatHandShakeInterceptor implements HandshakeInterceptor {
 
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
-        /// 핸드쉐이크 이전 (웹소켓 연결 전) 에 행동을 정의하는 곳
         String userLocation = request.getURI().getQuery();
         double userLocationLat = Double.parseDouble(userLocation.substring(userLocation.indexOf("=")+1, userLocation.indexOf("&")));
         double userLocationLon = Double.parseDouble(userLocation.substring(userLocation.lastIndexOf("=")+1));
@@ -37,6 +36,5 @@ public class ChatHandShakeInterceptor implements HandshakeInterceptor {
 
     @Override
     public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Exception exception) {
-        /// 핸드쉐이크 이후 (웹소켓 연결 후) 에 행동을 정의하는 곳
     }
 }

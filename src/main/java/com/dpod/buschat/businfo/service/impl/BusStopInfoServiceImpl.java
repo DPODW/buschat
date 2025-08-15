@@ -155,6 +155,7 @@ public class BusStopInfoServiceImpl implements BusStopInfoService {
     }
 
     private static BusStopInfoDto cityBusInfoDto() {
+        /// API 에서 제공하지 않는 시티버스 데이터
         return BusStopInfoDto.builder()
                 .busStopId("999000020")
                 .busStopName("태화강역(시티버스 정류소)")

@@ -38,7 +38,7 @@ public class BusStopInfo{
 
     @Column(name = "BUSSTOP_ROUTE_ID")
     private String busStopRouteIdList;
-    //정류장마다 멈추는 노선 아이디 ( | 로 구분되어있음 - 이스케이프 처리 필요)
+    //정류장마다 멈추는 노선 아이디 ( , 로 구분되어있음)
 
     @Builder
     public BusStopInfo(String busStopId,String busStopName, double busStopLon, double busStopLat, String busStopMark, String busStopRouteIdList) {

@@ -17,11 +17,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BusInfoStringEditTest {
 
     @Test
-    @DisplayName("| 기준으로 노선 ID 를 자르는 테스트")
+    @DisplayName(", 기준으로 노선 ID 를 자르는 테스트")
     void splitBusRouteIdTest() {
-        String testBusRouteIdList = "1231|4321|9876";
+        String testBusRouteIdList = "1231,4321,9876";
 
-        List<String> testBusRouteId = List.of(testBusRouteIdList.split("\\|"));
+        List<String> testBusRouteId = List.of(testBusRouteIdList.split(","));
         //이스케이프 처리
 
         assertThat(testBusRouteId.get(0)).isEqualTo("1231");

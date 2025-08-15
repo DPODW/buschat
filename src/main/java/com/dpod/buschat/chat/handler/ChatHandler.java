@@ -47,7 +47,6 @@ public class ChatHandler extends TextWebSocketHandler {
             chatConnectionManager.receivedLocationValidate(message,userNearBusStopResult);
         }else{
             chatConnectionManager.sendChatMessage(message,userNearBusStopResult,chatRooms);
-            /// 메세지가 오면, 현재 시간을 ms 단위로 찍고, 그 다음 메세지가 ms 단위만 다르다면 (초까지 같다는거) 비정상 통신으로 간주, 예외 발생 or 강제 연결 종료
         }
     }
 
@@ -58,6 +57,5 @@ public class ChatHandler extends TextWebSocketHandler {
         chatRooms.get(userNearBusStopResult.getBusStopId()).remove(webSocketSession);
         int userCount = chatConnectionManager.validateUserCount(userNearBusStopResult, chatRooms);
         chatConnectionManager.updateChatRoomsInfo(userNearBusStopResult,chatRooms,userCount);
-        //정류장 ID 를 조회, 해당 정류장 채팅방에서 세션을 제거.
     }
 }
