@@ -385,3 +385,96 @@ GET /bus/location/user/35.28333284/129.09497371
   "message": "사용자 위치 50M 반경에 정류장이 없습니다."
 }
 ```
+
+<br>
+
+## 6. 위치기반 익명 채팅 🖨
+* 정류장으로부터 50M 반경 안에 있는 유저들끼리의 채팅 시스템
+* WebSocket 을 사용하여 구현
+* 50명 제한 , 50M 반경 바깥으로 이동시 채팅방 연결 종료
+
+<br>
+
+#### WebSocket 핸들러
+- front-end 에서 호출할 back-end 웹소켓 정보
+  - URL : /bus/chat (WebSocket 핸들러 URL)
+
+
+
+#### FRONT-END -> BACK-END 
+* FRONT-END 에서 BACK-END (busChat - 현재 프로젝트) 로 채팅 데이터를 전송해주어야 합니다.
+* JSON 형식과 쿼리스트링으로 데이터를 받습니다.
+
+<br>
+
+* 새로운 연결 (첫 연결)
+  * 첫 연결시에는 사용자 현재 위치를 websocket url + 쿼리스트링(위치 정보) 로 전송해주어야 합니다. (첫 연결에만 쿼리스트링으로 위치 정보 전송)
+  * JS 기준 geolocation 기능을 사용하여 위치 정보를 얻어올 수 있습니다. (정확도는 떨어짐)
+  * 아래는 JS 예시 입니다.
+```javascript
+new WebSocket(`ws://localhost:8080/bus/chat?latitude=${currentLatitude}&longitude=${currentLongitude}`);
+```
+
+<br>
+
+
+* 입장 메세지 전송
+  * 연결 후, 입장 메세지와 유저의 이름 (휘발성 닉네임) 을 서버로 전송해주어야 합니다.
+  * 아래는 JS 예시 입니다.
+```javascript
+socket.onopen = () => { // 소켓 OPEN
+   const joinMsg = {
+      sender: sender, // 휘발성 닉네임
+      message: "입장했습니다." // 입장 메세지
+    };
+    socket.send(JSON.stringify(joinMsg)); //JSON 형식으로 전송
+```
+
+<br>
+
+* 일반 메세지 전송
+  * 일반적인 메세지 전송입니다.
+  * 아래는 JS 예시 입니다.
+```javascript
+ const chatMessage = {
+        sender: sender, // 휘발성 닉네임
+        message: message // 메세지 내용 
+    };
+    socket.send(JSON.stringify(chatMessage)); //JSON 형식으로 전송
+```
+
+<br>
+
+* 퇴장 처리
+  * 채팅방 퇴장 처리 입니다.
+  * 아래는 JS 예시 입니다.
+```javascript
+    const closeMsg = {
+        sender: sender,
+        message: "퇴장하였습니다."
+    }; // 퇴장 메세지
+    socket.send(JSON.stringify(closeMsg));
+
+    socket.close(); //소켓 닫음
+    socket.onclose = () => { // 소켓이 닫히면 알람 (불필요시 삭제 가능)
+        alert("바이바이");
+    };
+```
+
+<br>
+
+* 유저 현재 위치 갱신 메세지
+  * 유저가 현재도 정류장 50M 반경 안에 있는지 확인하기 위해, 10초마다 유저의 위치를 서버로 보내주어야 합니다.
+  * JSON 형식의 메세지로 전송하되, 일반 메세지와 구분하기 위한 구분코드(validate-001)를 필수적으로 같이 전송해주어야 합니다.
+  * 서버에서는 구분코드를 활용하여 일반 메세지 / 검증용 위치 정보를 구분하여 확인합니다. 구분코드 (validate-001)
+  * 아래는 JS 예시 입니다.
+```javascript
+   setInterval(() => {
+       const locationInfo = {
+            location: "validate-001", // 위치 메세지 구분 코드 (validate-001)
+            longitude: currentLongitude, // 경도
+            latitude: currentLatitude // 위도
+         };
+         socket.send(JSON.stringify(locationInfo));
+         }, 10000);
+```
