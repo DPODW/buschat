@@ -99,190 +99,173 @@
 
 
 ## 4. API 출처 📄
-* 울산광역시 BIS 정보 (공공 API)
-  * https://www.data.go.kr/data/15052669/openapi.do
+- 울산광역시 BIS 정보 (공공 API)  
+  [https://www.data.go.kr/data/15052669/openapi.do](https://www.data.go.kr/data/15052669/openapi.do)
 
-<br>
+---
 
 ## 5. API 설명 🖨
 
 ### [버스 정보 저장 API]
-* 조회 API 를 사용하려면 DB에 버스 정류장 , 노선 정보가 저장되어있어야 합니다.
-* 울산광역시 BIS 정보 (공공 API) 에서 제공받은 XML 형식의 정보를 파싱해서 DB 에 저장합니다.
+- 조회 API를 사용하려면 DB에 버스 정류장, 노선 정보가 저장되어 있어야 합니다.
+- 울산광역시 BIS 정보 (공공 API)에서 제공받은 XML 형식의 정보를 파싱해 DB에 저장합니다.
 
-<br>
+---
 
 #### 버스 정류장 정보 저장 API 💿
+- 요청
+  - URL : /bus/stopinfo
+  - Method : POST
+  - Parameters : X (필요 없음)
 
-* 요청
-  * URL : /bus/stopinfo
-  * Method : POST
-  * Parameters : X (필요없음)
-    
-  * 예시 요청
-    ```http
-    POST /bus/stopinfo
-    ```
-
-  * 응답 (200)
-    ```json
-    {
-      "httpStatus": 201,
-      "code": "BUS_STOP-SAVE-SUCCESS-01",
-      "message": "요청이 정상적으로 끝났습니다"
-    }
-    ```
-
-<br>
+- 예시 요청
+```http
+POST /bus/stopinfo
+```
+- 응답 (201)
+```json
+{
+  "httpStatus": 201,
+  "code": "BUS_STOP-SAVE-SUCCESS-01",
+  "message": "요청이 정상적으로 끝났습니다"
+}
+```
+---
 
 #### 버스 노선 정보 저장 API 💿
+- 요청
+  - URL : /bus/routeinfo
+  - Method : POST
+  - Parameters : X (필요 없음)
 
-* 요청
-  * URL : /bus/routeinfo
-  * Method : POST
-  * Parameters : X (필요없음)
-    
-  * 예시 요청
-    ```http
-    POST /bus/routeinfo
-    ```
-
-  * 응답 (200)
-    ```json
-    {
-      "httpStatus": 201,
-      "code": "BUS_ROUTE-SAVE-SUCCESS-01",
-      "message": "요청이 정상적으로 끝났습니다"
-    }
-    ```
-
-<br>
+- 예시 요청
+```http
+POST /bus/routeinfo
+```
+- 응답 (201)
+```json
+{
+  "httpStatus": 201,
+  "code": "BUS_ROUTE-SAVE-SUCCESS-01",
+  "message": "요청이 정상적으로 끝났습니다"
+}
+```
+---
 
 #### 버스 정류장별 노선 정보 저장 API 💿
+- 요청
+  - URL : /bus/stoprouteinfo
+  - Method : POST
+  - Parameters : X (필요 없음)
 
-* 요청
-  * URL : /bus/stoprouteinfo
-  * Method : POST
-  * Parameters : X (필요없음)
-    
-  * 예시 요청
-    ```http
-    POST /bus/stoprouteinfo
-    ```
+- 예시 요청
+```http
+POST /bus/stoprouteinfo
+```
+- 응답 (201)
+```json
+{
+  "httpStatus": 201,
+  "code": "BUS_STOP_ROUTE-SAVE-SUCCESS-01",
+  "message": "요청이 정상적으로 끝났습니다"
+}
+```
+- 조건 실패 (409)
+  - API 제공 정류장 개수와 DB 저장 개수가 다를 때
+```json
+{
+  "status": 409,
+  "name": "BUSSTOP_COUNT_MISMATCH",
+  "code": "BUS_STOP-ERROR-03",
+  "message": "API 제공 정류장 개수와 DB에 저장된 정류장 개수가 다릅니다"
+}
+```
+  - API 제공 노선 개수와 DB 저장 개수가 다를 때
+```json
+{
+  "status": 409,
+  "name": "ROUTE_COUNT_MISMATCH",
+  "code": "ROUTE-ERROR-01",
+  "message": "API 제공 정류장 개수와 DB에 저장된 정류장 개수가 다릅니다"
+}
+```
+- 주의사항
+  - 내부적으로 외부 API를 호출하기 때문에 시간 소요가 클 수 있습니다.
+  - 데이터가 이미 존재하면, 누락된 부분만 업데이트하므로 시간이 추가로 소요될 수 있습니다.
 
-  * 응답 (200)
-    ```json
-    {
-      "httpStatus": 201,
-      "code": "BUS_STOP_ROUTE-SAVE-SUCCESS-01",
-      "message": "요청이 정상적으로 끝났습니다"
-    }
-    ```
-
-  * 조건 실패 (500)
-    * API 제공 정류장 개수와 DB에 저장된 정류장 개수가 다를 때** (BUS_STOP-ERROR-02)
-    ```json
-    {
-      "status": 409,
-      "name": "BUSSTOP_COUNT_MISMATCH",
-      "code": "BUS_STOP-ERROR-03",
-      "message": "API 제공 정류장 개수와 DB에 저장된 정류장 개수가 다릅니다"
-    }
-    ```
-    
-    * API 제공 노선 개수와 DB에 저장된 노선 개수가 다를 때** (ROUTE-ERROR-01)
-    ```json
-    {
-      "status": 409,
-      "name": "ROUTE_COUNT_MISMATCH",
-      "code": "ROUTE-ERROR-01",
-      "message": "API 제공 정류장 개수와 DB에 저장된 정류장 개수가 다릅니다"
-    }
-    ```
-  * 해당 API 는, 내부에 외부 API 를 호출하는 로직이 있기 때문에 시간 소요가 클 수 있습니다.
-  * 해당 데이터가 저장되는 컬럼에 데이터가 있을 시, 일일히 탐색해가며 데이터가 없는 부분을 업데이트 하기 때문에 시간 소요가 클 수 있습니다.
-
-
-<br>
+---
 
 #### 버스 노선별 시간표 저장 API 💿
- 
-* 요청
-  * URL : /bus/timetable
-  * Method : POST
-  * Parameters : X (필요없음)
-    
-  * 예시 요청
-    ```http
-    POST /bus/timetable
-    ```
+- 요청
+  - URL : /bus/timetable
+  - Method : POST
+  - Parameters : X (필요 없음)
 
-  * 응답 (200)
-    ```json
-    {
-      "httpStatus": 201,
-      "code": "BUS_STOP_TIMETABLE-SAVE-SUCCESS-01",
-      "message": "요청이 정상적으로 끝났습니다"
-    }
-    ```
+- 예시 요청
+```http
+POST /bus/timetable
+```
+- 응답 (201)
+```json
+{
+  "httpStatus": 201,
+  "code": "BUS_STOP_TIMETABLE-SAVE-SUCCESS-01",
+  "message": "요청이 정상적으로 끝났습니다"
+}
+```
+---
 
-<br>
-<hr>
-<br>
+### [버스 정보 조회 API]
+- 버스 정보가 모두 저장되었다면 조회 API를 호출할 수 있습니다.
 
-
-### [버스 정보 조회 API] 
-* 버스 정보가 모두 저장되었다면, 조회 API 를 호출할 수 있습니다.
-
+---
 
 #### 버스 정류장 검색 API 💿
+- 요청
+  - URL : /bus/stopinfo/{busStopName}
+  - Method : GET
 
-* 요청
-  * URL :  /bus/stopinfo/{busStopName}
-  * Method : GET
-* Parameters:
+- Parameters
 
 | 파라미터     | 타입   | 필수 여부 | 설명               |
 |-------------|-------|-----------|------------------|
 | busStopName | String | O         | 검색할 정류장 이름 |
-    
-  * 예시 요청
-    ```http
-    GET /bus/stopinfo/우미
-    ```
 
-* 응답 (200)
-  * [ 우미 ] 가 포함된 정류장을 모두 검색합니다.
-  * 정류장 정보와, 정류장을 지나가는 노선 정보를 반환합니다.
+
+- 예시 요청
+```http
+GET /bus/stopinfo/우미
+```
+- 응답 (200)
 ```json
 {
-      "busStopId": "196020415",
-      "busStopName": "우미린2차 푸르지오2차",
-      "busStopX": "129.2419171",
-      "busStopY": "35.57314942",
-      "busStopMark": "범서파출소 방면",
-      "busStopRouteInfoList": [
-        {
-          "brtName": "318(안전보건공단 동서발전 방면)",
-          "brtId": "196900468",
-          "busStopStId": "196015417",
-          "busStopEdId": "192011415",
-          "busStopStName": "삼남신화",
-          "busStopEdName": "안전보건공단 동서발전"
-        },
-        {
-          "brtName": "5002(꽃바위 방면)",
-          "brtId": "196000457",
-          "busStopStId": "196015416",
-          "busStopEdId": "194019016",
-          "busStopStName": "울산역",
-          "busStopEdName": "꽃바위"
-        }
+  "busStopId": "196020415",
+  "busStopName": "우미린2차 푸르지오2차",
+  "busStopX": "129.2419171",
+  "busStopY": "35.57314942",
+  "busStopMark": "범서파출소 방면",
+  "busStopRouteInfoList": [
+    {
+      "brtName": "318(안전보건공단 동서발전 방면)",
+      "brtId": "196900468",
+      "busStopStId": "196015417",
+      "busStopEdId": "192011415",
+      "busStopStName": "삼남신화",
+      "busStopEdName": "안전보건공단 동서발전"
+    },
+    {
+      "brtName": "5002(꽃바위 방면)",
+      "brtId": "196000457",
+      "busStopStId": "196015416",
+      "busStopEdId": "194019016",
+      "busStopStName": "울산역",
+      "busStopEdName": "꽃바위"
+    }
   ]
-} 
+}
 ```
-    
-* 검색 결과 없음 (404)
+
+- 검색 결과 없음 (404)
 ```json
 {
   "status": 404,
@@ -291,58 +274,52 @@
   "message": "해당 정류장 이름과 일치하는 정류장 정보가 없습니다.(해당 글자가 포함되는 정류장도 없음)"
 }
 ```
-
-
-<br>
-
+---
 
 #### 실시간 버스 도착정보 검색 API 💿
+- 요청
+  - URL : /bus/stopinfo/arrival/{busStopId}
+  - Method : GET
 
-* 요청
-  * URL :  /bus/stopinfo/arrival/{busStopId}
-  * Method : GET
-* Parameters:
+- Parameters
 
 | 파라미터     | 타입   | 필수 여부 | 설명               |
 |-------------|-------|-----------|------------------|
 | busStopId | String | O         | 검색할 정류장 아이디 |
-    
-  * 예시 요청
-    ```http
-    GET  /bus/stopinfo/arrival/196020415
-    ```
 
-* 응답 (200)
-  * busPrevStopCnt : 남은 정류장 수 
-  * busArrivalTime : 도착 소요 시간 (초 단위)
-  * 운행중이지 않은 버스는 null , 0 으로 제공되며, 다음 버스 출발 시간이 대신 제공됩니다.
-```json
-{
-    {
-        "busPrevStopCnt": "6",
-        "busArrivalTime": 364,
-        "busRouteId": "196000441",
-        "busStopId": "196020415",
-        "busStopName": "우미린2차 푸르지오2차",
-        "nowBusStopName": "입암",
-        "busRouteNm": "543(덕하공영차고지(종점) 방면)",
-        "busStartTime": null,
-        "busStopStName": null
-    },
-     {
-        "busPrevStopCnt": null,
-        "busArrivalTime": 0,
-        "busRouteId": "196000457",
-        "busStopId": null,
-        "busStopName": null,
-        "nowBusStopName": null,
-        "busRouteNm": "5002(꽃바위 방면)",
-        "busStartTime": "23:30",
-        "busStopStName": "울산역"
-    },
-} 
+- 예시 요청
+```http
+GET /bus/stopinfo/arrival/196020415
 ```
-* 검색 결과 없음 (404)
+- 응답 (200)
+```json
+[
+  {
+    "busPrevStopCnt": "6",
+    "busArrivalTime": 364,
+    "busRouteId": "196000441",
+    "busStopId": "196020415",
+    "busStopName": "우미린2차 푸르지오2차",
+    "nowBusStopName": "입암",
+    "busRouteNm": "543(덕하공영차고지(종점) 방면)",
+    "busStartTime": null,
+    "busStopStName": null
+  },
+  {
+    "busPrevStopCnt": null,
+    "busArrivalTime": 0,
+    "busRouteId": "196000457",
+    "busStopId": null,
+    "busStopName": null,
+    "nowBusStopName": null,
+    "busRouteNm": "5002(꽃바위 방면)",
+    "busStartTime": "23:30",
+    "busStopStName": "울산역"
+  }
+]
+```
+
+- 검색 결과 없음 (404)
 ```json
 {
   "status": 404,
@@ -351,30 +328,25 @@
   "message": "해당 정류장 이름과 일치하는 정류장 정보가 없습니다.(해당 글자가 포함되는 정류장도 없음)"
 }
 ```
-
-
-
-<br>
+---
 
 #### 최대 근접 정류장 검색 API 💿
+- 요청
+  - URL : /bus/location/user/{latitude}/{longitude}
+  - Method : GET
 
-* 요청
-  * URL :  /bus/location/user/{latitude}/{longitude}
-  * Method : GET
-* Parameters:
+- Parameters
 
 | 파라미터     | 타입   | 필수 여부 | 설명               |
 |-------------|-------|-----------|------------------|
 | latitude | double | O         | 위도 |
 | longitude | double | O         | 경도 |
-    
-  * 예시 요청
-    ```http
-    GET /bus/location/user/35.28333284/129.09497371
-    ```
 
-* 응답 (200)
-  * 최대 근접 정류장 1개를 반환한다.
+- 예시 요청
+```http
+GET /bus/location/user/35.28333284/129.09497371
+```
+- 응답 (200)
 ```json
 {
   "busStopId": "140000184",
@@ -391,13 +363,11 @@
       "busStopStName": "명촌차고지(기점)",
       "busStopEdName": "노포동역(종점)"
     }
+  ]
+}
 ```
-
-<br>
-
-* 조건 실패 (404)
-  
-  사용자 위치에서 500M 이내에 정류장이 존재하지 않을때 발생 ( LOCATION-ERROR-01 )
+- 조건 실패 (404)
+  - 500M 이내 정류장 없음 (LOCATION-ERROR-01)
 ```json
 {
   "status": 404,
@@ -406,9 +376,7 @@
   "message": "사용자 위치 500M 반경에 정류장이 없습니다."
 }
 ```
-
-
-   사용자 위치에서 50M 이내에 정류장이 존재하지 않을때 발생 ( LOCATION-ERROR-02 )
+  - 50M 이내 정류장 없음 (LOCATION-ERROR-02)
 ```json
 {
   "status": 404,
@@ -417,7 +385,3 @@
   "message": "사용자 위치 50M 반경에 정류장이 없습니다."
 }
 ```
-
-<br>
-<hr>
-<br>
