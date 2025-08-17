@@ -130,7 +130,10 @@ POST /bus/stopinfo
   "message": "요청이 정상적으로 끝났습니다"
 }
 ```
----
+- 버스 정보 저장 API - DB 최종 저장 상태
+<img width="2076" height="58" alt="Image" src="https://github.com/user-attachments/assets/9402bf79-d5c6-4e18-a20e-5e6a550e3352" />
+
+----
 
 #### 버스 노선 정보 저장 API 💿
 - 요청
@@ -150,7 +153,11 @@ POST /bus/routeinfo
   "message": "요청이 정상적으로 끝났습니다"
 }
 ```
----
+- 버스 노선 정보 저장 API - DB 최종 저장 상태
+<img width="1619" height="57" alt="Image" src="https://github.com/user-attachments/assets/b0ed7de2-0d1b-44ae-8e65-60ee7faacc14" />
+<img width="305" height="54" alt="Image" src="https://github.com/user-attachments/assets/1da1ecfb-8f4b-478e-a7bc-f31597ab7062" />
+
+----
 
 #### 버스 정류장별 노선 정보 저장 API 💿
 - 요청
@@ -193,7 +200,13 @@ POST /bus/stoprouteinfo
   - 내부적으로 외부 API를 호출하기 때문에 시간 소요가 클 수 있습니다.
   - 데이터가 이미 존재하면, 누락된 부분만 업데이트하므로 시간이 추가로 소요될 수 있습니다.
 
----
+<br>
+
+-  버스 정류장별 노선 정보 저장 API - DB 최종 저장 상태
+-  기존에 저장된 (버스 정류장 정보 저장 API만 실행했을때) 상태에서 BUSSTOP_ROUTE_ID 데이터가 추가됌
+<img width="460" height="58" alt="Image" src="https://github.com/user-attachments/assets/2430ee9d-770b-4f60-ab8b-d22981ed12f6" />
+
+----
 
 #### 버스 노선별 시간표 저장 API 💿
 - 요청
@@ -213,6 +226,11 @@ POST /bus/timetable
   "message": "요청이 정상적으로 끝났습니다"
 }
 ```
+
+-  버스 노선별 시간표 저장 API - DB 최종 저장 상태
+-  기존에 저장된 (버스 노선 정보 저장 API만 실행했을때) 상태에서 BRT_TIMETABLE 데이터가 추가됌
+<img width="587" height="56" alt="Image" src="https://github.com/user-attachments/assets/371aead9-dc7a-4c72-8461-271256c8a1de" />
+
 ---
 
 ### [버스 정보 조회 API]
