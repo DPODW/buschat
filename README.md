@@ -210,6 +210,7 @@ POST /bus/stoprouteinfo
 }
 ```
 - 주의사항
+  - 버스 정류장 정보가 미리 저장되어있어야, 정상적으로 저장됩니다.
   - 내부적으로 외부 API를 호출하기 때문에 시간 소요가 클 수 있습니다.
   - 데이터가 이미 존재하면, 누락된 부분만 업데이트하므로 시간이 추가로 소요될 수 있습니다.
 
@@ -239,6 +240,9 @@ POST /bus/timetable
   "message": "요청이 정상적으로 끝났습니다"
 }
 ```
+- 버스 노선선 정보가 미리 저장되어있어야, 정상적으로 저장됩니다.
+
+<br>
 
 -  버스 노선별 시간표 저장 API - DB 최종 저장 상태
 -  기존에 저장된 (버스 노선 정보 저장 API만 실행했을때) 상태에서 BRT_TIMETABLE 데이터가 추가됌
@@ -295,6 +299,9 @@ GET /bus/stopinfo/우미
   ]
 }
 ```
+- 정류장 정보와 , 정류장을 지나가는 버스 정보를 반환
+
+<br>
 
 - 검색 결과 없음 (404)
 ```json
@@ -326,13 +333,13 @@ GET /bus/stopinfo/arrival/196020415
 ```json
 [
   {
-    "busPrevStopCnt": "6",
-    "busArrivalTime": 364,
-    "busRouteId": "196000441",
-    "busStopId": "196020415",
-    "busStopName": "우미린2차 푸르지오2차",
-    "nowBusStopName": "입암",
-    "busRouteNm": "543(덕하공영차고지(종점) 방면)",
+    "busPrevStopCnt": "6", (남은 정류장 수)
+    "busArrivalTime": 364, (버스 도착까지 남은 시간)
+    "busRouteId": "196000441", (버스 ID")
+    "busStopId": "196020415", (정류장 ID)
+    "busStopName": "우미린2차 푸르지오2차", (정류장 이름")
+    "nowBusStopName": "입암", (버스 현재 위치)
+    "busRouteNm": "543(덕하공영차고지(종점) 방면)", (버스 이름)
     "busStartTime": null,
     "busStopStName": null
   },
@@ -344,11 +351,14 @@ GET /bus/stopinfo/arrival/196020415
     "busStopName": null,
     "nowBusStopName": null,
     "busRouteNm": "5002(꽃바위 방면)",
-    "busStartTime": "23:30",
-    "busStopStName": "울산역"
+    "busStartTime": "23:30", (다음 버스 출발 시간)
+    "busStopStName": "울산역" (버스 출발 정류장)
   }
 ]
 ```
+- 미운행중인 버스는 [다음 버스 출발 시간] 과 [버스 출발 정류장(기점)] 정보를 제공합니다
+
+<br>
 
 - 검색 결과 없음 (404)
 ```json
