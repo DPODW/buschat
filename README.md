@@ -217,6 +217,11 @@ POST /bus/stoprouteinfo
 
 <br>
 
+- 동작과정을 간략히 설명한 글 입니다. <br>
+https://github.com/DPODW/buschat/wiki/버스-정류장별-노선-정보-저장-API-동작-과정
+
+<br>
+
 -  버스 정류장별 노선 정보 저장 API - DB 최종 저장 상태
 -  기존에 저장된 (버스 정류장 정보 저장 API만 실행했을때) 상태에서 BUSSTOP_ROUTE_ID 데이터가 추가됌
 <img width="460" height="58" alt="Image" src="https://github.com/user-attachments/assets/2430ee9d-770b-4f60-ab8b-d22981ed12f6" />
